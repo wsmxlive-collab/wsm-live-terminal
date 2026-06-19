@@ -7,6 +7,35 @@ import Comments from '../components/Comments.astro';
   <!-- Dynamic Real-Time Ticker Tape Banner -->
   <div class="w-full bg-[#0c1017] border-b border-gray-700 min-h-[40px]" id="tradingview-ticker-tape"></div>
 
+  <!-- Quick Price Summary -->
+  <section class="mt-4 w-full bg-[#111827] border border-gray-700 rounded-lg p-4 text-xs text-gray-300">
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div class="font-mono text-emerald-400 uppercase tracking-wider">Live Price Snap</div>
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 w-full sm:w-auto">
+        <div class="group rounded-md border border-gray-800 bg-[#0c1017] p-2 hover:border-blue-500" title="Bitcoin (BTC/USDT)">
+          <div class="text-gray-400 text-[10px] uppercase">BTC</div>
+          <div id="summary-price-btc" class="text-emerald-400 font-semibold">...</div>
+        </div>
+        <div class="group rounded-md border border-gray-800 bg-[#0c1017] p-2 hover:border-blue-500" title="Ethereum (ETH/USDT)">
+          <div class="text-gray-400 text-[10px] uppercase">ETH</div>
+          <div id="summary-price-eth" class="text-emerald-400 font-semibold">...</div>
+        </div>
+        <div class="group rounded-md border border-gray-800 bg-[#0c1017] p-2 hover:border-blue-500" title="NIFTY 50 (NSE:NIFTY)">
+          <div class="text-gray-400 text-[10px] uppercase">NIFTY</div>
+          <div id="summary-price-nifty" class="text-emerald-400 font-semibold">...</div>
+        </div>
+        <div class="group rounded-md border border-gray-800 bg-[#0c1017] p-2 hover:border-blue-500" title="S&P 500">
+          <div class="text-gray-400 text-[10px] uppercase">S&P500</div>
+          <div id="summary-price-sp500" class="text-emerald-400 font-semibold">...</div>
+        </div>
+        <div class="group rounded-md border border-gray-800 bg-[#0c1017] p-2 hover:border-blue-500" title="Dow Jones (TVC:DJI)">
+          <div class="text-gray-400 text-[10px] uppercase">DOW</div>
+          <div id="summary-price-dow" class="text-emerald-400 font-semibold">...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- CRYPTOWATCH-STYLE DYNAMIC MATRIX REPLICA CONTAINER WORKSPACE -->
   <div id="cryptowatch-dynamic-workspace" class="hidden w-full mt-4 p-4 bg-[#111827] border border-gray-700 rounded-lg">
     <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-2">
@@ -21,37 +50,49 @@ import Comments from '../components/Comments.astro';
 
   <!-- STANDARD CORE FALLBACK WORKSPACE INTERFACE -->
   <main id="wsm-standard-workspace" class="space-y-6 mt-4">
-    <!-- SECTION 3B: GLOBAL FUTURES & COMMODITY MONITOR -->
+    <!-- SECTION 1: Crypto Market Pulse -->
     <section class="bg-[#111827] border border-gray-700 p-4 rounded-lg">
-      <h2 class="text-xs font-bold text-gray-400 mb-4 uppercase tracking-wider font-mono">[SECTION 3B] Global Futures & Commodity Monitor</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-        
-        <!-- GIFT Nifty -->
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="NSE:NIFTY">
+      <h2 class="text-xs font-bold text-gray-400 mb-4 uppercase tracking-wider font-mono">[SECTION 1] Crypto Market Pulse</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="BINANCE:BTCUSDT">
           <div>
-            <span class="font-bold text-sm block mb-1">GIFT Nifty (NSE:NIFTY)</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="NSE:NIFTY"></div>
+            <span class="font-bold text-sm block mb-1">Bitcoin (BTC/USDT)</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="BINANCE:BTCUSDT"></div>
           </div>
           <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-gift-nifty"></div>
-          <Comments identifier="chart-gift-nifty" />
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-btc"></div>
+          <Comments identifier="chart-btc" />
         </div>
 
-        <!-- Dow Jones Futures -->
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="TVC:DJI">
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="BINANCE:ETHUSDT">
           <div>
-            <span class="font-bold text-sm block mb-1">Dow Jones Futures (TVC:DJI)</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="TVC:DJI"></div>
+            <span class="font-bold text-sm block mb-1">Ethereum (ETH/USDT)</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="BINANCE:ETHUSDT"></div>
           </div>
           <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-dow-futures"></div>
-          <Comments identifier="chart-dow-futures" />
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-eth"></div>
+          <Comments identifier="chart-eth" />
         </div>
 
-        <!-- Gold -->
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="BINANCE:SOLUSDT">
+          <div>
+            <span class="font-bold text-sm block mb-1">Solana (SOL/USDT)</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="BINANCE:SOLUSDT"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-sol"></div>
+          <Comments identifier="chart-sol" />
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: Precious Metals & Energy Commodities -->
+    <section class="bg-[#111827] border border-gray-700 p-4 rounded-lg">
+      <h2 class="text-xs font-bold text-gray-400 mb-4 uppercase tracking-wider font-mono">[SECTION 2] Precious Metals & Energy Commodities</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="TVC:GOLD">
           <div>
-            <span class="font-bold text-sm block mb-1">Gold Commodity (TVC:GOLD)</span>
+            <span class="font-bold text-sm block mb-1">Gold (TVC:GOLD)</span>
             <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="TVC:GOLD"></div>
           </div>
           <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
@@ -59,22 +100,125 @@ import Comments from '../components/Comments.astro';
           <Comments identifier="chart-gold" />
         </div>
 
-        <!-- Silver -->
         <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="TVC:SILVER">
           <div>
-            <span class="font-bold text-sm block mb-1">Silver Commodity (TVC:SILVER)</span>
+            <span class="font-bold text-sm block mb-1">Silver (TVC:SILVER)</span>
             <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="TVC:SILVER"></div>
           </div>
           <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-silver"></div>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-silver"></div>
           <Comments identifier="chart-silver" />
         </div>
 
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="COMEX:HG1!">
+          <div>
+            <span class="font-bold text-sm block mb-1">Copper (COMEX:HG1!)</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="COMEX:HG1!"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-copper"></div>
+          <Comments identifier="chart-copper" />
+        </div>
+
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="NYMEX:CL1!">
+          <div>
+            <span class="font-bold text-sm block mb-1">Crude Oil (NYMEX:CL1!)</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="NYMEX:CL1!"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-crude"></div>
+          <Comments identifier="chart-crude" />
+        </div>
+
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="NYMEX:NG1!">
+          <div>
+            <span class="font-bold text-sm block mb-1">Natural Gas (NYMEX:NG1!)</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="NYMEX:NG1!"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-natgas"></div>
+          <Comments identifier="chart-natgas" />
+        </div>
       </div>
     </section>
-    <!-- TWIN COLUMN DESKTOP WORKSPACE GRIDS -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
+
+    <!-- SECTION 3: Global Indices Monitor -->
+    <section class="bg-[#111827] border border-gray-700 p-4 rounded-lg">
+      <h2 class="text-xs font-bold text-gray-400 mb-4 uppercase tracking-wider font-mono">[SECTION 3] Global Indices Monitor</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="NSE:NIFTY">
+          <div>
+            <span class="font-bold text-sm block mb-1">NIFTY 50</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="NSE:NIFTY"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-nifty-idx"></div>
+          <Comments identifier="chart-nifty-idx" />
+        </div>
+
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="^GSPC">
+          <div>
+            <span class="font-bold text-sm block mb-1">S&P 500</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="^GSPC"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-sp500-idx"></div>
+          <Comments identifier="chart-sp500-idx" />
+        </div>
+
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="TVC:DJI">
+          <div>
+            <span class="font-bold text-sm block mb-1">Dow Jones</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="TVC:DJI"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-dow-idx"></div>
+          <Comments identifier="chart-dow-idx" />
+        </div>
+
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="^N225">
+          <div>
+            <span class="font-bold text-sm block mb-1">Nikkei 225</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="^N225"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-nikkei-idx"></div>
+          <Comments identifier="chart-nikkei-idx" />
+        </div>
+
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="^HSI">
+          <div>
+            <span class="font-bold text-sm block mb-1">Hang Seng</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="^HSI"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-hangseng-idx"></div>
+          <Comments identifier="chart-hangseng-idx" />
+        </div>
+
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="^GDAXI">
+          <div>
+            <span class="font-bold text-sm block mb-1">DAX</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="^GDAXI"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-dax-idx"></div>
+          <Comments identifier="chart-dax-idx" />
+        </div>
+
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="^FCHI">
+          <div>
+            <span class="font-bold text-sm block mb-1">CAC 40</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="^FCHI"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-cac-idx"></div>
+          <Comments identifier="chart-cac-idx" />
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: Major Index Watchlist & Market Monitor -->
       <!-- LEFT PANEL: WATCHLIST OVERVIEW -->
       <section class="space-y-6 bg-[#111827] border border-gray-700 p-4 rounded-lg">
         <div>
@@ -222,15 +366,10 @@ import Comments from '../components/Comments.astro';
           const display = innerDiv;
           display.textContent = '…';
           try {
-            // Prefer Binance direct call for BINANCE: symbols (CORS allowed)
-            if (symbolStr && symbolStr.startsWith('BINANCE:')) {
-              const s = symbolStr.split(':')[1];
-              const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${encodeURIComponent(s)}`);
-              if (res.ok) {
-                const j = await res.json();
-                display.textContent = j && j.price ? formatPrice(Number(j.price)) : 'N/A';
-                return;
-              }
+            const price = await fetchPriceForSymbol(symbolStr);
+            if (price !== null) {
+              display.textContent = formatPrice(price);
+              return;
             }
 
             // Try Finnhub proxy first (requires FINNHUB_API_KEY), then generic proxy
@@ -259,6 +398,47 @@ import Comments from '../components/Comments.astro';
         tryRenderWidget();
       });
     }
+
+    function updateSummaryPrices() {
+      const summaryMap = [
+        { id: 'summary-price-btc', symbol: 'BINANCE:BTCUSDT' },
+        { id: 'summary-price-eth', symbol: 'BINANCE:ETHUSDT' },
+        { id: 'summary-price-nifty', symbol: 'NSE:NIFTY' },
+        { id: 'summary-price-sp500', symbol: '^GSPC' },
+        { id: 'summary-price-dow', symbol: 'TVC:DJI' }
+      ];
+
+      summaryMap.forEach(async (item) => {
+        const el = document.getElementById(item.id);
+        if (!el) return;
+        el.textContent = '…';
+        const price = await fetchPriceForSymbol(item.symbol);
+        if (price !== null) {
+          el.textContent = formatPrice(price);
+          el.classList.add('text-emerald-400');
+          el.classList.remove('text-gray-400');
+          return;
+        }
+
+        const proxyRes = await fetch(`/api/price?symbol=${encodeURIComponent(item.symbol)}`);
+        if (proxyRes.ok) {
+          const j = await proxyRes.json();
+          if (j && j.price !== null) {
+            el.textContent = formatPrice(j.price);
+            el.classList.add('text-emerald-400');
+            el.classList.remove('text-gray-400');
+            return;
+          }
+        }
+
+        el.textContent = 'N/A';
+        el.classList.remove('text-emerald-400');
+        el.classList.add('text-gray-400');
+      });
+    }
+
+    updateSummaryPrices();
+    setInterval(updateSummaryPrices, 30000);
 
     // Ensure we attempt rendering mini prices when TradingView core appears
     (function waitAndRenderMiniPrices(retries = 0) {
@@ -413,5 +593,35 @@ import Comments from '../components/Comments.astro';
         }
       });
     });
+
+    // Fix for TradingView inline charts not showing on some live deployments
+    const ensureChartRendering = () => {
+      document.querySelectorAll('.asset-card').forEach((card) => {
+        const chart = card.querySelector('.chart-container');
+        if (!chart) return;
+        if (!chart.classList.contains('hidden') && chart.children.length === 0) {
+          const dataTickerFeed = card.getAttribute('data-ticker');
+          const targetElementId = chart.getAttribute('id');
+          if (window.TradingView && dataTickerFeed && targetElementId) {
+            // @ts-ignore
+            new window.TradingView.widget({
+              "width": "100%",
+              "height": "100%",
+              "symbol": dataTickerFeed,
+              "interval": "D",
+              "timezone": "Etc/UTC",
+              "theme": "dark",
+              "style": "1",
+              "locale": "en",
+              "container_id": targetElementId,
+              "aff_id": "167679"
+            });
+          }
+        }
+      });
+    };
+
+    window.addEventListener('load', ensureChartRendering);
+    window.addEventListener('resize', ensureChartRendering);
   </script>
 </Layout>
