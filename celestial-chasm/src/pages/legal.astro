@@ -1,0 +1,124 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="WSM Live - Legal & Support">
+  <h1 class="text-3xl font-bold text-gray-100 mb-6">Legal & Support</h1>
+
+  <div class="bg-gray-900 rounded-lg p-6 border border-gray-700 shadow-lg">
+    <div class="flex border-b border-gray-700 mb-6">
+      <button
+        class="tab-button px-4 py-2 text-gray-400 font-medium border-b-2 border-transparent hover:text-gray-200 hover:border-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 data-[active=true]:text-gray-200 data-[active=true]:border-blue-600"
+        data-tab="privacy"
+        aria-controls="privacy-panel"
+        role="tab"
+        aria-selected="true"
+      >
+        Privacy Policy
+      </button>
+      <button
+        class="tab-button px-4 py-2 text-gray-400 font-medium border-b-2 border-transparent hover:text-gray-200 hover:border-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        data-tab="terms"
+        aria-controls="terms-panel"
+        role="tab"
+        aria-selected="false"
+      >
+        Terms of Service
+      </button>
+      <button
+        class="tab-button px-4 py-2 text-gray-400 font-medium border-b-2 border-transparent hover:text-gray-200 hover:border-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        data-tab="disclaimer"
+        aria-controls="disclaimer-panel"
+        role="tab"
+        aria-selected="false"
+      >
+        Disclaimer
+      </button>
+      <button
+        class="tab-button px-4 py-2 text-gray-400 font-medium border-b-2 border-transparent hover:text-gray-200 hover:border-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        data-tab="contact"
+        aria-controls="contact-panel"
+        role="tab"
+        aria-selected="false"
+      >
+        Contact
+      </button>
+    </div>
+
+    <!-- Tab Panels -->
+    <div id="privacy-panel" role="tabpanel" tabindex="0" class="tab-panel text-gray-300 active" aria-labelledby="privacy-tab">
+      <h2 class="text-2xl font-semibold text-gray-100 mb-4">Privacy Policy</h2>
+      <p class="mb-4">Your privacy is important to us. This policy explains how we collect, use, and protect your personal information.</p>
+      <p class="mb-4">We collect information to provide better services to all our users. This includes:</p>
+      <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
+        <li>Information you give us: For example, when you sign up for a WSM Live Account, we’ll ask for personal information, like your name, email address, or telephone number.</li>
+        <li>Information we get from your use of our services: We may collect information about the services that you use and how you use them. This information includes:</li>
+        <ul class="list-circle list-inside ml-8 space-y-1">
+          <li>Device information</li>
+          <li>Log information</li>
+          <li>Location information</li>
+          <li>Local storage</li>
+          <li>Cookies and similar technologies</li>
+        </ul>
+      </ul>
+      <p>We use the information we collect from all of our services to provide, maintain, protect and improve them, to develop new ones, and to protect WSM Live and our users.</p>
+    </div>
+
+    <div id="terms-panel" role="tabpanel" tabindex="0" class="tab-panel hidden text-gray-300" aria-labelledby="terms-tab">
+      <h2 class="text-2xl font-semibold text-gray-100 mb-4">Terms of Service</h2>
+      <p class="mb-4">Welcome to WSM Live! These terms of service govern your access to and use of the WSM Live website and services.</p>
+      <p class="mb-4">By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the Service.</p>
+      <h3 class="text-xl font-semibold text-gray-100 mb-2">Accounts</h3>
+      <p class="mb-4">When you create an account with us, you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.</p>
+      <h3 class="text-xl font-semibold text-gray-100 mb-2">Content</h3>
+      <p>Our Service allows you to post, link, store, share and otherwise make available certain information, text, graphics, videos, or other material. You are responsible for the Content that you post on or through the Service, including its legality, reliability, and appropriateness.</p>
+    </div>
+
+    <div id="disclaimer-panel" role="tabpanel" tabindex="0" class="tab-panel hidden text-gray-300" aria-labelledby="disclaimer-tab">
+      <h2 class="text-2xl font-semibold text-gray-100 mb-4">Disclaimer</h2>
+      <p class="mb-4">The information provided by WSM Live on this website is for general informational purposes only and does not constitute financial advice.</p>
+      <p class="mb-4">All information on the Site is provided in good faith, however we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information on the Site.</p>
+      <p class="mb-4">Under no circumstance shall we have any liability to you for any loss or damage of any kind incurred as a result of the use of the site or reliance on any information provided on the site. Your use of the site and your reliance on any information on the site is solely at your own risk.</p>
+      <h3 class="text-xl font-semibold text-gray-100 mb-2">External Links Disclaimer</h3>
+      <p>The Site may contain (or you may be sent through the Site) links to other websites or content belonging to or originating from third parties or links to websites and features in banners or other advertising. Such external links are not investigated, monitored, or checked for accuracy, adequacy, validity, reliability, availability or completeness by us.</p>
+    </div>
+
+    <div id="contact-panel" role="tabpanel" tabindex="0" class="tab-panel hidden text-gray-300" aria-labelledby="contact-tab">
+      <h2 class="text-2xl font-semibold text-gray-100 mb-4">Contact Us</h2>
+      <p class="mb-4">If you have any questions about these Legal & Support documents, please contact us:</p>
+      <ul class="list-disc list-inside space-y-2 ml-4">
+        <li>By email: <a href="mailto:support@wsm.live" class="text-blue-400 hover:underline">support@wsm.live</a></li>
+        <li>By visiting this page on our website: <a href="#" class="text-blue-400 hover:underline">wsm.live/contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabButtons = document.querySelectorAll(".tab-button");
+      const tabPanels = document.querySelectorAll(".tab-panel");
+
+      tabButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          const targetTab = button.dataset.tab;
+
+          tabButtons.forEach(btn => {
+            btn.setAttribute("aria-selected", "false");
+            btn.removeAttribute("data-active");
+          });
+          tabPanels.forEach(panel => panel.classList.add("hidden"));
+
+          button.setAttribute("aria-selected", "true");
+          button.setAttribute("data-active", "true");
+          document.getElementById(`${targetTab}-panel`)?.classList.remove("hidden");
+        });
+
+        // Set initial active tab on load (e.g., Privacy Policy)
+        if (button.dataset.tab === "privacy") {
+          button.setAttribute("aria-selected", "true");
+          button.setAttribute("data-active", "true");
+        }
+      });
+    });
+  </script>
+</Layout>

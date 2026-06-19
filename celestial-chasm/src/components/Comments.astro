@@ -1,0 +1,31 @@
+---
+const { identifier, url } = Astro.props;
+const shortname = process.env.DISQUS_SHORTNAME || import.meta.env.PUBLIC_DISQUS_SHORTNAME || '';
+const threadId = `disqus-thread-${identifier}`;
+---
+
+<div class="mt-4 pt-4 border-t border-gray-700">
+  {shortname ? (
+    <div id={threadId} class="prose max-w-none text-sm text-gray-300"></div>
+  ) : (
+    <div class="text-xs text-gray-500">Comments disabled — set DISQUS_SHORTNAME in environment to enable Disqus.</div>
+  )}
+
+  {shortname ? (
+    <script is:inline>
+      {`
+      var disqus_config = function () {
+        this.page.identifier = '${identifier}';
+        try { this.page.url = '${url}' || document.location.href; } catch(e) { this.page.url = document.location.href; }
+      };
+      (function() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://${shortname}.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        s.async = true;
+        (d.head || d.body).appendChild(s);
+      })();
+      `}
+    </script>
+  ) : null}
+</div>

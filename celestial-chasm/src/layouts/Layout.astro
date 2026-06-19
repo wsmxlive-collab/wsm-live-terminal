@@ -1,0 +1,73 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { 
+  title = "WSM Live — Multi-Grid Trading Terminal", 
+  description = "An ultra-fast Financial Market Screener & Multi-Grid Trading Terminal for global assets: US Equities, Indian Equities, Commodities, and Cryptocurrencies."
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="bg-[#0c1017]">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- TradingView Core Library Load -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+  </head>
+  <body class="bg-[#0c1017] text-gray-200 min-h-screen flex flex-col font-sans antialiased">
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-[#0c1017]/80 backdrop-blur-md border-b border-gray-700 h-16 flex items-center px-4 md:px-8">
+      <div class="max-w-[1400px] w-full mx-auto flex items-center justify-between">
+        <a href="/" class="flex items-center gap-2 no-underline">
+          <svg class="w-6 h-6 text-blue-500 fill-current" viewBox="0 0 76 65">
+            <path d="M37.5273 0L75.0546 65H0L37.5273 0Z"></path>
+          </svg>
+          <span class="font-sans font-semibold tracking-tight text-lg text-gray-200">
+            WSM <span class="font-mono text-xs font-normal text-gray-400 bg-gray-800 px-1.5 py-0.5 rounded ml-1 border border-gray-700">LIVE</span>
+          </span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-4 text-sm font-medium" aria-label="Main Navigation">
+          <a href="/" class="text-gray-200 no-underline px-3 py-1.5 rounded-full bg-gray-800 border border-gray-700">Terminal</a>
+          <a href="/crypto" class="text-gray-400 no-underline px-3 py-1.5 rounded-full hover:text-gray-200">Crypto Terminal</a>
+          <a href="/blog" class="text-gray-400 no-underline px-3 py-1.5 rounded-full hover:text-gray-200">Analysis & Blog</a>
+          <a href="/legal" class="text-gray-400 no-underline px-3 py-1.5 rounded-full hover:text-gray-200">Legal & Support</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-mono bg-emerald-950/50 text-emerald-400 border border-emerald-800/60 animate-pulse">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Real-Time
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Injection Target Slot -->
+    <main id="main-content" class="flex-1 w-full max-w-[1400px] mx-auto px-4 md:px-8 py-6 outline-none">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#0c1017] border-t border-gray-700 py-8 px-4 text-center text-xs text-gray-500">
+      <p>© 2026 WSM Live. Watchlist Data Ingestion Matrix Streams via Shared Watchlist ID #335875673.</p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  @import "tailwindcss";
+  html, body { background-color: #0c1017 !important; color: #e5e7eb !important; margin: 0; }
+</style>

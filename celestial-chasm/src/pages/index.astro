@@ -1,0 +1,430 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Comments from '../components/Comments.astro';
+---
+
+<Layout title="WSM Live — Multi-Grid Trading Terminal">
+  <!-- Dynamic Real-Time Ticker Tape Banner -->
+  <div class="w-full bg-[#0c1017] border-b border-gray-700 min-h-[40px]" id="tradingview-ticker-tape"></div>
+
+  <!-- Top Horizontal Navigation & Affiliate Action Bar -->
+  <div class="w-full bg-[#111827] border-b border-gray-700 py-2 px-4 rounded-t-lg flex flex-wrap justify-between items-center text-xs gap-3 mt-2">
+    <div class="flex items-center gap-4 text-gray-400">
+      <span class="font-semibold text-emerald-400 font-mono">TRACKER:</span>
+      <a href="https://youtube.com" target="_blank" class="hover:text-white transition no-underline text-gray-400">YouTube</a>
+      <a href="https://facebook.com" target="_blank" class="hover:text-white transition no-underline text-gray-400">Facebook</a>
+      <a href="https://instagram.com" target="_blank" class="hover:text-white transition no-underline text-gray-400">Instagram</a>
+      <a href="https://reddit.com" target="_blank" class="hover:text-white transition no-underline text-gray-400">Reddit</a>
+      <a href="https://x.com" target="_blank" class="hover:text-white transition no-underline text-gray-400">X (Twitter)</a>
+    </div>
+    <a href="https://tradingview.com" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded font-medium transition no-underline font-sans">
+      🚀 Join TradingView Premium
+    </a>
+  </div>
+
+  <!-- CRYPTOWATCH-STYLE DYNAMIC MATRIX REPLICA CONTAINER WORKSPACE -->
+  <div id="cryptowatch-dynamic-workspace" class="hidden w-full mt-4 p-4 bg-[#111827] border border-gray-700 rounded-lg">
+    <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-2">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+        <h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono">⚡ Cryptowatch Active Multi-Grid Matrix</h2>
+      </div>
+      <a href="/" class="text-xs text-blue-400 hover:underline no-underline font-semibold bg-gray-800 px-2 py-1 rounded border border-gray-700 font-mono">Reset Dashboard</a>
+    </div>
+    <div id="dynamic-grid-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+  </div>
+
+  <!-- STANDARD CORE FALLBACK WORKSPACE INTERFACE -->
+  <main id="wsm-standard-workspace" class="space-y-6 mt-4">
+    <!-- SECTION 3B: GLOBAL FUTURES & COMMODITY MONITOR -->
+    <section class="bg-[#111827] border border-gray-700 p-4 rounded-lg">
+      <h2 class="text-xs font-bold text-gray-400 mb-4 uppercase tracking-wider font-mono">[SECTION 3B] Global Futures & Commodity Monitor</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        
+        <!-- GIFT Nifty -->
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="NSE:NIFTY1!">
+          <div>
+            <span class="font-bold text-sm block mb-1">GIFT Nifty (NIFTY1!)</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="NSE:NIFTY1!"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-gift-nifty"></div>
+          <Comments identifier="chart-gift-nifty" />
+        </div>
+
+        <!-- Dow Jones Futures -->
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="TVC:DJI">
+          <div>
+            <span class="font-bold text-sm block mb-1">Dow Jones Futures (DJIA1!)</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="TVC:DJI"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-dow-futures"></div>
+          <Comments identifier="chart-dow-futures" />
+        </div>
+
+        <!-- Gold -->
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="COMEX:GC1!">
+          <div>
+            <span class="font-bold text-sm block mb-1">Gold Commodity (GOLD1!)</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="COMEX:GC1!"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-gold"></div>
+          <Comments identifier="chart-gold" />
+        </div>
+
+        <!-- Silver -->
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="COMEX:SI1!">
+          <div>
+            <span class="font-bold text-sm block mb-1">Silver Commodity (SILVER1!)</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="COMEX:SI1!"></div>
+          </div>
+          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
+          <div class="chart-container hidden w-full w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-silver"></div>
+          <Comments identifier="chart-silver" />
+        </div>
+
+      </div>
+    </section>
+    <!-- TWIN COLUMN DESKTOP WORKSPACE GRIDS -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <!-- LEFT PANEL: WATCHLIST OVERVIEW -->
+      <section class="space-y-6 bg-[#111827] border border-gray-700 p-4 rounded-lg">
+        <div>
+          <h2 class="text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider font-mono">[SECTION 2] Live Watchlist Market Matrix</h2>
+          <div class="bg-[#0c1017] rounded border border-gray-700 p-1 min-h-[450px]" id="tradingview-watchlist-matrix"></div>
+        </div>
+      </section>
+
+      <!-- RIGHT PANEL: CORE INDEX MONITORS -->
+      <section class="space-y-6 bg-[#111827] border border-gray-700 p-4 rounded-lg">
+        <div>
+          <h2 class="text-xs font-bold text-gray-400 mb-4 uppercase tracking-wider font-mono">[SECTION 3] Major Index Monitor</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md asset-card" data-ticker="NSE:NIFTY">
+              <span class="text-sm font-bold block mb-1">NIFTY 50</span>
+              <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="NSE:NIFTY"></div>
+              <button class="chart-toggle-btn w-full text-xs bg-blue-600 py-1.5 rounded text-white font-sans">[+ View Inline Chart]</button>
+              <div class="chart-container hidden h-[360px] mt-3 border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-nifty50"></div>
+              <Comments identifier="chart-nifty50" />
+            </div>
+            <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md asset-card" data-ticker="TVC:DJI">
+              <span class="text-sm font-bold block mb-1">DOW JONES (^DJI)</span>
+              <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="TVC:DJI"></div>
+              <button class="chart-toggle-btn w-full text-xs bg-blue-600 py-1.5 rounded text-white font-sans">[+ View Inline Chart]</button>
+              <div class="chart-container hidden h-[360px] mt-3 border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-dow-average"></div>
+              <Comments identifier="chart-dow-average" />
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <!-- Global Core Automation Script Integration Blocks -->
+  <script>
+    function updateChartsHeight() {
+      const dynamicGrid = document.getElementById('dynamic-grid-container');
+      if (!dynamicGrid) return;
+      
+      const chartContainers = dynamicGrid.querySelectorAll('.cryptowatch-frame-box');
+      chartContainers.forEach(container => {
+        // @ts-ignore
+        container.style.height = "360px";
+      });
+    }
+
+    function runSizingSequencerLoop() {
+      updateChartsHeight();
+      setTimeout(updateChartsHeight, 10);
+      setTimeout(updateChartsHeight, 50);
+      setTimeout(updateChartsHeight, 100);
+      setTimeout(updateChartsHeight, 200);
+      setTimeout(updateChartsHeight, 500);
+      setTimeout(updateChartsHeight, 1000);
+    }
+
+    function buildDynamicGridMatrix() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const cryptoQueryParam = urlParams.get('c');
+
+      if (!cryptoQueryParam) return false;
+
+      const tickerArray = cryptoQueryParam.split(',');
+      if (tickerArray.length === 0) return false;
+
+      document.getElementById('wsm-standard-workspace')?.classList.add('hidden');
+      document.getElementById('cryptowatch-dynamic-workspace')?.classList.remove('hidden');
+      
+      const gridContainer = document.getElementById('dynamic-grid-container');
+      if (!gridContainer) return false;
+      gridContainer.innerHTML = ''; 
+
+      tickerArray.forEach((ticker, idx) => {
+        const elementUniqueId = `cryptowatch-node-frame-${idx}`;
+        const cleanTicker = ticker.trim();
+        
+        const cardNode = document.createElement('div');
+        cardNode.className = "bg-[#0c1017] border border-gray-700 p-4 rounded-md flex flex-col justify-between";
+        
+        // CRUCIAL TYPO REPAIR BIND: Explicitly changed cardElement to cardNode to activate DOM compiler
+        cardNode.innerHTML = `
+          <div class="mb-2 flex justify-between items-center border-b border-gray-800 pb-1.5">
+            <span class="font-bold text-xs text-blue-400 font-mono uppercase tracking-wide">${cleanTicker}</span>
+            <span class="text-[10px] text-gray-500 font-mono">Live Matrix Stream</span>
+          </div>
+          <div id="${elementUniqueId}" style="width: 100%; height: 360px;" class="cryptowatch-frame-box rounded border border-gray-700 overflow-hidden bg-[#0c1017]"></div>
+        `;
+        gridContainer.appendChild(cardNode);
+
+        // Mount chart objects instantly after node validation loop passes
+        // @ts-ignore
+        if (window.TradingView && window.TradingView.widget) {
+          // @ts-ignore
+          new window.TradingView.widget({
+            "width": "100%",
+            "height": "100%",
+            "symbol": cleanTicker,
+            "interval": "D",
+            "timezone": "Etc/UTC",
+            "theme": "dark",
+            "style": "1",
+            "locale": "en",
+            "enable_publishing": false,
+            "hide_side_toolbar": true,
+            "allow_symbol_change": true,
+            "container_id": elementUniqueId,
+            "aff_id": "167679"
+          });
+        }
+      });
+      
+      runSizingSequencerLoop();
+      return true;
+    }
+
+    function renderMiniPrices() {
+      const targets = document.querySelectorAll('.price-holder');
+      targets.forEach((el, idx) => {
+        const symbolStr = el.getAttribute('data-symbol');
+        const nodeUniqueId = `quote-widget-${idx}`;
+        const innerDiv = document.createElement('div');
+        innerDiv.id = nodeUniqueId;
+        el.appendChild(innerDiv);
+
+        const tryRenderWidget = async (retries = 0) => {
+          // @ts-ignore
+          if (window.TradingView && window.TradingView.SingleQuoteWidget) {
+            try {
+              // @ts-ignore
+              new window.TradingView.SingleQuoteWidget({
+                symbol: symbolStr,
+                width: "100%",
+                colorTheme: "dark",
+                isTransparent: true,
+                locale: "en",
+                container_id: nodeUniqueId
+              });
+              return;
+            } catch (e) {
+              // continue to fallback
+            }
+          }
+
+          const display = innerDiv;
+          display.textContent = '…';
+          try {
+            // Prefer Binance direct call for BINANCE: symbols (CORS allowed)
+            if (symbolStr && symbolStr.startsWith('BINANCE:')) {
+              const s = symbolStr.split(':')[1];
+              const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${encodeURIComponent(s)}`);
+              if (res.ok) {
+                const j = await res.json();
+                display.textContent = j && j.price ? formatPrice(Number(j.price)) : 'N/A';
+                return;
+              }
+            }
+
+            // Try Finnhub proxy first (requires FINNHUB_API_KEY), then generic proxy
+            const fhRes = await fetch(`/api/price-finnhub?symbol=${encodeURIComponent(symbolStr)}`);
+            if (fhRes.ok) {
+              const j = await fhRes.json();
+              if (j && j.price) { display.textContent = formatPrice(j.price); return; }
+            }
+
+            const proxyRes = await fetch(`/api/price?symbol=${encodeURIComponent(symbolStr)}`);
+            if (proxyRes.ok) {
+              const j2 = await proxyRes.json();
+              if (j2 && j2.price) { display.textContent = formatPrice(j2.price); return; }
+            }
+
+            // Last resort: show a TradingView link with affiliate id so user can click through
+            const tvSafe = symbolStr ? symbolStr.replace(':','-') : '';
+            const tvUrl = `https://www.tradingview.com/symbols/${encodeURIComponent(tvSafe)}/?aff_id=167679`;
+            display.innerHTML = `<a href="${tvUrl}" target="_blank" rel="noopener noreferrer" class="text-sm text-blue-400 underline">Open on TradingView</a>`;
+          } catch (err) {
+            if (retries < 8) setTimeout(() => tryRenderWidget(retries + 1), 300);
+            else display.textContent = 'N/A';
+          }
+        };
+
+        tryRenderWidget();
+      });
+    }
+
+    // Ensure we attempt rendering mini prices when TradingView core appears
+    (function waitAndRenderMiniPrices(retries = 0) {
+      if (window.TradingView) {
+        renderMiniPrices();
+      } else if (retries < 20) {
+        setTimeout(() => waitAndRenderMiniPrices(retries + 1), 200);
+      }
+    })();
+
+    async function fetchPriceForSymbol(symbolStr) {
+      if (!symbolStr) return null;
+      // Example formats: "BINANCE:SOLUSDT", "BITFINEX:BTCUSD"
+      if (symbolStr.startsWith('BINANCE:')) {
+        const s = symbolStr.split(':')[1];
+        try {
+          const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${encodeURIComponent(s)}`);
+          if (!res.ok) return null;
+          const j = await res.json();
+          return Number(j.price);
+        } catch (e) { return null; }
+      }
+
+      if (symbolStr.startsWith('BITFINEX:')) {
+        const pair = symbolStr.split(':')[1]; // e.g., BTCUSD
+        const apiSym = 't' + pair.replace('/', '');
+        try {
+          const res = await fetch(`https://api-pub.bitfinex.com/v2/ticker/${apiSym}`);
+          if (!res.ok) return null;
+          const j = await res.json();
+          // Bitfinex ticker response: [ BID, BID_SIZE, ASK, ASK_SIZE, DAILY_CHANGE, DAILY_CHANGE_PERC, LAST_PRICE, VOLUME, HIGH, LOW ]
+          return Number(j[6]);
+        } catch (e) { return null; }
+      }
+
+      // Add more providers as needed
+      return null;
+    }
+
+    function formatPrice(num) {
+      if (num === null || typeof num === 'undefined' || Number.isNaN(num)) return 'N/A';
+      if (num >= 1000) return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
+      if (num >= 1) return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 });
+      return num.toString();
+    }
+
+    function launchSystemEngine() {
+      // Wait for the TradingView core to be available, then append embed scripts.
+      // @ts-ignore
+      if (window.TradingView) {
+        // Append ticker tape and watchlist embeds immediately (they are independent external widgets)
+        const tapeBox = document.getElementById('tradingview-ticker-tape');
+        if (tapeBox && !tapeBox._tv_loaded) {
+          const tapeScriptNode = document.createElement('script');
+          tapeScriptNode.type = 'text/javascript';
+          tapeScriptNode.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
+          tapeScriptNode.async = true;
+          tapeScriptNode.innerHTML = JSON.stringify({
+            "symbols": [
+              {"proName": "FOREXCOM:SPX", "title": "S&P 500"},
+              {"proName": "FOREXCOM:NSX", "title": "NASDAQ 100"}
+            ],
+            "showSymbolLogo": true,
+            "colorTheme": "dark",
+            "isTransparent": true,
+            "displayMode": "adaptive",
+            "locale": "en",
+            "aff_id": "167679"
+          });
+          tapeBox.appendChild(tapeScriptNode);
+          tapeBox._tv_loaded = true;
+        }
+
+        const matrixBox = document.getElementById('tradingview-watchlist-matrix');
+        if (matrixBox && !matrixBox._tv_loaded) {
+          const listScriptNode = document.createElement('script');
+          listScriptNode.type = 'text/javascript';
+          listScriptNode.src = 'https://s3.tradingview.com/external-embedding/embed-widget-watchlist.js';
+          listScriptNode.async = true;
+          listScriptNode.innerHTML = JSON.stringify({
+            "colorTheme": "dark",
+            "dateRange": "12M",
+            "showChart": false,
+            "locale": "en",
+            "isTransparent": true,
+            "showSymbolLogo": true,
+            "width": "100%",
+            "height": "450",
+            "aff_id": "167679",
+            "tabs": [{ "title": "WSM Watchlist", "playlistId": "335875673", "type": "watchlist" }]
+          });
+          matrixBox.appendChild(listScriptNode);
+          matrixBox._tv_loaded = true;
+        }
+
+        // If the full widget API is present, build dynamic grids and mini prices.
+        // @ts-ignore
+        if (window.TradingView.widget && window.TradingView.SingleQuoteWidget) {
+          const hasDynamicGrid = buildDynamicGridMatrix();
+          if (!hasDynamicGrid) {
+            renderMiniPrices();
+          }
+        } else {
+          // Try again soon to mount widgets that rely on the full API
+          setTimeout(launchSystemEngine, 200);
+        }
+      } else {
+        setTimeout(launchSystemEngine, 100);
+      }
+    }
+
+    launchSystemEngine();
+    window.addEventListener('resize', updateChartsHeight);
+
+    const terminalCards = document.querySelectorAll('.asset-card');
+    terminalCards.forEach(card => {
+      const toggleButton = card.querySelector('.chart-toggle-btn');
+      const graphicBox = card.querySelector('.chart-container');
+      const dataTickerFeed = card.getAttribute('data-ticker');
+      const targetElementId = graphicBox ? graphicBox.getAttribute('id') : null;
+
+      if (!toggleButton || !graphicBox || !targetElementId) return;
+
+      toggleButton.addEventListener('click', () => {
+        const isCurrentlyHidden = graphicBox.classList.contains('hidden');
+
+        if (isCurrentlyHidden) {
+          graphicBox.classList.remove('hidden');
+          toggleButton.textContent = '[- Minimize Chart]';
+          // @ts-ignore
+          toggleButton.style.backgroundColor = '#7f1d1d';
+
+          // @ts-ignore
+          new window.TradingView.widget({
+            "width": "100%",
+            "height": "100%",
+            "symbol": dataTickerFeed,
+            "interval": "D",
+            "timezone": "Etc/UTC",
+            "theme": "dark",
+            "style": "1",
+            "locale": "en",
+            "container_id": targetElementId,
+            "aff_id": "167679"
+          });
+        } else {
+          graphicBox.classList.add('hidden');
+          graphicBox.innerHTML = ''; 
+          toggleButton.textContent = '[+ View Inline Chart]';
+          // @ts-ignore
+          toggleButton.style.backgroundColor = '#2563eb';
+        }
+      });
+    });
+  </script>
+</Layout>
