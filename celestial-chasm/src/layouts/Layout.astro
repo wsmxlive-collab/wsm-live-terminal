@@ -8,6 +8,22 @@ const {
   title = "WSM Live — Multi-Grid Trading Terminal", 
   description = "An ultra-fast Financial Market Screener & Multi-Grid Trading Terminal for global assets: US Equities, Indian Equities, Commodities, and Cryptocurrencies."
 } = Astro.props;
+
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+
+const isHomeActive = currentPath === '/';
+const isCryptoActive = currentPath === '/crypto';
+const isBlogActive = currentPath === '/blog';
+const isLegalActive = currentPath === '/legal';
+
+import SocialRibbon from '../components/SocialRibbon.astro';
+
+const navItems = [
+  { href: '/', label: 'Terminal', active: isHomeActive },
+  { href: '/crypto', label: 'Crypto Terminal', active: isCryptoActive },
+  { href: '/blog', label: 'Analysis & Blog', active: isBlogActive },
+  { href: '/legal', label: 'Legal & Support', active: isLegalActive },
+];
 ---
 
 <!doctype html>
@@ -40,11 +56,18 @@ const {
           </span>
         </a>
 
-        <nav class="hidden md:flex items-center gap-4 text-sm font-medium" aria-label="Main Navigation">
-          <a href="/" class="text-gray-200 no-underline px-3 py-1.5 rounded-full bg-gray-800 border border-gray-700">Terminal</a>
-          <a href="/crypto" class="text-gray-400 no-underline px-3 py-1.5 rounded-full hover:text-gray-200">Crypto Terminal</a>
-          <a href="/blog" class="text-gray-400 no-underline px-3 py-1.5 rounded-full hover:text-gray-200">Analysis & Blog</a>
-          <a href="/legal" class="text-gray-400 no-underline px-3 py-1.5 rounded-full hover:text-gray-200">Legal & Support</a>
+        <nav class="flex overflow-x-auto whitespace-nowrap gap-2 text-sm font-medium -mx-4 px-4 md:mx-0 md:px-0" aria-label="Main Navigation">
+          {navItems.map((item) => (
+            <a
+              href={item.href}
+              aria-current={item.active ? 'page' : undefined}
+              class={`inline-flex shrink-0 no-underline px-3 py-1.5 rounded-full ${item.active
+                ? 'text-gray-200 bg-gray-800 border border-gray-700'
+                : 'text-gray-400 hover:text-gray-200'}`}
+            >
+              {item.label}
+            </a>
+          ))}
         </nav>
 
         <div class="flex items-center gap-3">
@@ -54,6 +77,37 @@ const {
         </div>
       </div>
     </header>
+
+    <SocialRibbon />
+
+    <script is:inline>
+      const normalizePath = (path) => {
+        const cleaned = String(path ?? '').trim().replace(/\/+$/g, '');
+        return cleaned === '' ? '/' : cleaned;
+      };
+      const activePath = normalizePath(window.location.pathname);
+      document.querySelectorAll('header nav a').forEach((link) => {
+        const href = normalizePath(link.getAttribute('href') || '/');
+        if (href === activePath) {
+          link.classList.remove('text-gray-400', 'hover:text-gray-200');
+          link.classList.add('text-gray-200', 'bg-gray-800', 'border', 'border-gray-700');
+          link.setAttribute('aria-current', 'page');
+        } else {
+          link.classList.remove('text-gray-200', 'bg-gray-800', 'border', 'border-gray-700');
+          link.classList.add('text-gray-400', 'hover:text-gray-200');
+          link.removeAttribute('aria-current');
+        }
+      });
+
+      const toggleBtn = document.getElementById('mobile-nav-toggle');
+      const mobilePanel = document.getElementById('mobile-nav-panel');
+      if (toggleBtn && mobilePanel) {
+        toggleBtn.addEventListener('click', () => {
+          const isOpen = mobilePanel.classList.toggle('hidden');
+          toggleBtn.setAttribute('aria-expanded', String(!isOpen));
+        });
+      }
+    </script>
 
     <!-- Main Content Injection Target Slot -->
     <main id="main-content" class="flex-1 w-full max-w-[1400px] mx-auto px-4 md:px-8 py-6 outline-none">

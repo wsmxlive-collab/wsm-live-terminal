@@ -7,21 +7,6 @@ import Comments from '../components/Comments.astro';
   <!-- Dynamic Real-Time Ticker Tape Banner -->
   <div class="w-full bg-[#0c1017] border-b border-gray-700 min-h-[40px]" id="tradingview-ticker-tape"></div>
 
-  <!-- Top Horizontal Navigation & Affiliate Action Bar -->
-  <div class="w-full bg-[#111827] border-b border-gray-700 py-2 px-4 rounded-t-lg flex flex-wrap justify-between items-center text-xs gap-3 mt-2">
-    <div class="flex items-center gap-4 text-gray-400">
-      <span class="font-semibold text-emerald-400 font-mono">TRACKER:</span>
-      <a href="https://youtube.com" target="_blank" class="hover:text-white transition no-underline text-gray-400">YouTube</a>
-      <a href="https://facebook.com" target="_blank" class="hover:text-white transition no-underline text-gray-400">Facebook</a>
-      <a href="https://instagram.com" target="_blank" class="hover:text-white transition no-underline text-gray-400">Instagram</a>
-      <a href="https://reddit.com" target="_blank" class="hover:text-white transition no-underline text-gray-400">Reddit</a>
-      <a href="https://x.com" target="_blank" class="hover:text-white transition no-underline text-gray-400">X (Twitter)</a>
-    </div>
-    <a href="https://tradingview.com" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded font-medium transition no-underline font-sans">
-      🚀 Join TradingView Premium
-    </a>
-  </div>
-
   <!-- CRYPTOWATCH-STYLE DYNAMIC MATRIX REPLICA CONTAINER WORKSPACE -->
   <div id="cryptowatch-dynamic-workspace" class="hidden w-full mt-4 p-4 bg-[#111827] border border-gray-700 rounded-lg">
     <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-2">
@@ -42,10 +27,10 @@ import Comments from '../components/Comments.astro';
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         
         <!-- GIFT Nifty -->
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="NSE:NIFTY1!">
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="NSE:NIFTY">
           <div>
-            <span class="font-bold text-sm block mb-1">GIFT Nifty (NIFTY1!)</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="NSE:NIFTY1!"></div>
+            <span class="font-bold text-sm block mb-1">GIFT Nifty (NSE:NIFTY)</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="NSE:NIFTY"></div>
           </div>
           <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
           <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-gift-nifty"></div>
@@ -55,7 +40,7 @@ import Comments from '../components/Comments.astro';
         <!-- Dow Jones Futures -->
         <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="TVC:DJI">
           <div>
-            <span class="font-bold text-sm block mb-1">Dow Jones Futures (DJIA1!)</span>
+            <span class="font-bold text-sm block mb-1">Dow Jones Futures (TVC:DJI)</span>
             <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="TVC:DJI"></div>
           </div>
           <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
@@ -64,10 +49,10 @@ import Comments from '../components/Comments.astro';
         </div>
 
         <!-- Gold -->
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="COMEX:GC1!">
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="TVC:GOLD">
           <div>
-            <span class="font-bold text-sm block mb-1">Gold Commodity (GOLD1!)</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="COMEX:GC1!"></div>
+            <span class="font-bold text-sm block mb-1">Gold Commodity (TVC:GOLD)</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="TVC:GOLD"></div>
           </div>
           <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
           <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-gold"></div>
@@ -75,10 +60,10 @@ import Comments from '../components/Comments.astro';
         </div>
 
         <!-- Silver -->
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="COMEX:SI1!">
+        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="TVC:SILVER">
           <div>
-            <span class="font-bold text-sm block mb-1">Silver Commodity (SILVER1!)</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="COMEX:SI1!"></div>
+            <span class="font-bold text-sm block mb-1">Silver Commodity (TVC:SILVER)</span>
+            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="TVC:SILVER"></div>
           </div>
           <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
           <div class="chart-container hidden w-full w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-silver"></div>
@@ -151,7 +136,10 @@ import Comments from '../components/Comments.astro';
 
       if (!cryptoQueryParam) return false;
 
-      const tickerArray = cryptoQueryParam.split(',');
+      const tickerArray = cryptoQueryParam
+        .split(',')
+        .map((ticker) => ticker.trim().replace(/\/+$|^\s+|\s+$/g, ''))
+        .filter(Boolean);
       if (tickerArray.length === 0) return false;
 
       document.getElementById('wsm-standard-workspace')?.classList.add('hidden');
@@ -163,12 +151,11 @@ import Comments from '../components/Comments.astro';
 
       tickerArray.forEach((ticker, idx) => {
         const elementUniqueId = `cryptowatch-node-frame-${idx}`;
-        const cleanTicker = ticker.trim();
+        const cleanTicker = ticker.trim().replace(/\/+$|^\s+|\s+$/g, '');
         
         const cardNode = document.createElement('div');
         cardNode.className = "bg-[#0c1017] border border-gray-700 p-4 rounded-md flex flex-col justify-between";
         
-        // CRUCIAL TYPO REPAIR BIND: Explicitly changed cardElement to cardNode to activate DOM compiler
         cardNode.innerHTML = `
           <div class="mb-2 flex justify-between items-center border-b border-gray-800 pb-1.5">
             <span class="font-bold text-xs text-blue-400 font-mono uppercase tracking-wide">${cleanTicker}</span>

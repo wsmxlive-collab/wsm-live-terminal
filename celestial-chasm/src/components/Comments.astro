@@ -13,10 +13,9 @@ const threadId = `disqus-thread-${identifier}`;
 
   {shortname ? (
     <script is:inline>
-      {`
-      var disqus_config = function () {
-        this.page.identifier = '${identifier}';
-        try { this.page.url = '${url}' || document.location.href; } catch(e) { this.page.url = document.location.href; }
+      {`var disqus_config = function () {
+        this.page.identifier = ${JSON.stringify(identifier)};
+        try { this.page.url = ${JSON.stringify(url || '')} || document.location.href; } catch(e) { this.page.url = document.location.href; }
       };
       (function() {
         var d = document, s = d.createElement('script');
@@ -24,8 +23,7 @@ const threadId = `disqus-thread-${identifier}`;
         s.setAttribute('data-timestamp', +new Date());
         s.async = true;
         (d.head || d.body).appendChild(s);
-      })();
-      `}
+      })();`}
     </script>
   ) : null}
 </div>
