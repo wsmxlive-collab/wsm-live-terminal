@@ -1,0 +1,20 @@
+# Ignore local environment files
+.env
+.env.*
+
+# Ignore app environment files
+celestial-chasm/.env
+celestial-chasm/.env.*
+
+# Build and dependency directories
+celestial-chasm/dist/
+celestial-chasm/node_modules/
+
+# OS files
+.DS_Store
+
+# VS Code workspace settings
+.vscode/
+
+# Generated Astro files
+celestial-chasm/.astro/
