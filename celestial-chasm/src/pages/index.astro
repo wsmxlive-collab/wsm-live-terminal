@@ -27,64 +27,107 @@ const topUsaStocks = ['GOOG', 'MSFT', 'SPACEX', 'AAPL', 'AMZN', 'TSLA', 'NVDA', 
 
   <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
     
-    <div class="bg-gray-900 border border-gray-700 rounded-lg p-3">
-      <div class="font-mono text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-        <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9h18"></path></svg>
-        Global Indices Reference
-      </div>
-      <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 font-mono text-xs font-medium text-gray-300">
-        <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=DJ%3ADJI&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
-          <span class="text-base leading-none">🇺🇸</span> Dow Jones 
-          <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-        </a>
-        <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=CAPITALCOM%3AUS500&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
-          <span class="text-base leading-none">🇺🇸</span> S&P 500 
-          <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-        </a>
-        <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=NASDAQ%3AIXIC&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
-          <span class="text-base leading-none">🇺🇸</span> NASDAQ 
-          <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-        </a>
-        <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=NASDAQ%3AQQQ&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
-          <span class="text-base leading-none">🇺🇸</span> QQQ 
-          <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-        </a>
-        <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=NSE%3ANIFTY&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
-          <span class="text-base leading-none">🇮🇳</span> Nifty50 
-          <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-        </a>
-        <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=HKEX%3AHSI&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
-          <span class="text-base leading-none">🇭🇰</span> HangSeng 
-          <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-        </a>
-      </div>
-    </div>
+<div class="bg-gray-900 border border-gray-700 rounded-lg p-3">
+  <div class="font-mono text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+    <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9h18"></path></svg>
+    Global Indices Reference
+  </div>
+  <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 font-mono text-xs font-medium text-gray-300">
+    <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=DJ%3ADJI&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
+      <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+      Dow Jones 
+      <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+    </a>
+    <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=CAPITALCOM%3AUS500&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
+      <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+      S&P 500 
+      <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+    </a>
+    <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=NASDAQ%3AIXIC&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
+      <svg class="w-3.5 h-3.5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+      NASDAQ 
+      <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+    </a>
+    <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=NASDAQ%3AQQQ&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
+      <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+      QQQ 
+      <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+    </a>
+    <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=NSE%3ANIFTY&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
+      <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+      Nifty50 
+      <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+    </a>
+    <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=HKEX%3AHSI&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
+      <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h4a2 2 0 002-2v-1a2 2 0 012-2h1.945a9.001 9.001 0 11-16.945 0z"></path></svg>
+      HangSeng 
+      <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+    </a>
+  </div>
+</div>
 
-    <div class="bg-gray-900 border border-gray-700 rounded-lg p-3">
-      <div class="font-mono text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-        <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-        USA Market Sectors Reference
-      </div>
-      <div class="flex flex-wrap gap-2 text-xs font-mono">
-        {topUsaStocks.map((ticker) => {
-          const querySymbol = ticker === 'SPACEX' ? 'PRIVATE:SPACEX' : `NASDAQ:${ticker}`;
-          return (
-            <a 
-              href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=${encodeURIComponent(querySymbol)}&utm_source=wsmlive.com`} 
-              target="_blank" 
-              class="px-2.5 py-1 bg-[#0c1017] border border-gray-800 rounded text-gray-300 hover:border-blue-400 flex items-center gap-1.5 transition no-underline"
-            >
-              <span>🇺🇸 {ticker}</span>
-              <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-            </a>
-          );
-        })}
-      </div>
-    </div>
-  </section>
+<div class="bg-gray-900 border border-gray-700 rounded-lg p-3">
+  <div class="font-mono text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+    <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+    USA Market Sectors Reference
+  </div>
+  <div class="flex flex-wrap gap-2 text-xs font-mono">
+    {topUsaStocks.map((ticker) => {
+      const querySymbol = ticker === 'SPACEX' ? 'PRIVATE:SPACEX' : `NASDAQ:${ticker}`;
+      return (
+        <a 
+          href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=${encodeURIComponent(querySymbol)}&utm_source=wsmlive.com`} 
+          target="_blank" 
+          class="px-2.5 py-1 bg-[#0c1017] border border-gray-800 rounded text-gray-300 hover:border-blue-400 flex items-center gap-1.5 transition no-underline"
+        >
+          {/* Exact Brand Matching Logos */}
+          {ticker === 'TSLA' && (
+            <svg class="w-3.5 h-3.5 text-[#E82127]" fill="currentColor" viewBox="0 0 24 24"><path d="M11.575 4.386c1.722-.016 3.447.16 5.137.524a.177.177 0 0 0 .193-.095l.745-1.332a.193.193 0 0 0-.05-.246C15.358 1.488 13.522 1 11.575 1S7.792 1.488 5.55 3.237a.193.193 0 0 0-.05.246l.745 1.332a.177.177 0 0 0 .193.095c1.69-.364 3.415-.54 5.137-.524zM11.575 6.012c-2.316.02-4.62.433-6.811 1.223a.185.185 0 0 0-.117.234l.322 1.258c.023.09.112.146.204.123 2.062-.519 4.185-.783 6.402-.783s4.34.264 6.402.783a.18.18 0 0 0 .204-.123l.322-1.258a.185.185 0 0 0-.117-.234c-2.19-.79-4.495-1.203-6.811-1.223zm6.368 3.51a.155.155 0 0 0-.131-.059c-2.008.28-4.103.424-6.237.424s-4.229-.144-6.237-.424a.155.155 0 0 0-.131.059L4.12 11.16c-.053.064-.047.158.014.215.932.863 3.56 2.946 6.84 5.372a1.05 1.05 0 0 0 1.253 0c3.279-2.426 5.907-4.51 6.84-5.372a.16.16 0 0 0 .014-.215l-1.12-1.636zm-6.368 11.134a.276.276 0 0 1-.167-.056C9.096 18.91 6.474 16.353 5.4 15.013a.195.195 0 0 1 .032-.275l.951-.722a.19.19 0 0 1 .253.023c.87.974 3.12 3.237 4.94 5.176 1.82-1.939 4.07-4.202 4.94-5.176a.19.19 0 0 1 .253-.023l.951.722a.195.195 0 0 1 .032.275c-1.074 1.34-3.696 3.897-6.008 5.588a.276.276 0 0 1-.167.056z"/></svg>
+          )}
+          {(ticker === 'GOOGL' || ticker === 'GOOGLE' || ticker === 'GOOG') && (
+            <svg class="w-3.5 h-3.5 text-[#4285F4]" fill="currentColor" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/></svg>
+          )}
+          {ticker === 'SPACEX' && (
+            <svg class="w-3.5 h-3.5 text-gray-200" fill="currentColor" viewBox="0 0 24 24"><path d="M18.2 3.1c-.2-.1-.5 0-.6.2l-3.9 5.2c-2.4-.6-5.1-.1-7.1 1.4-1.2.9-2 2.2-2.4 3.6l-.3 1.1c-.1.2 0 .5.2.6l1.3.8c.2.1.4.1.6-.1l.9-.9c1.4-1.4 3.3-2.1 5.2-1.9l-4.7 6.3c-.2.2-.1.5.1.7l1.1.8c.1.1.3.1.4 0l10.4-14c.2-.2.1-.5-.2-.7zm-4.7 7.9c-.6.6-1.5.6-2.1 0-.6-.6-.6-1.5 0-2.1.6-.6 1.5-.6 2.1 0 .6.5.6 1.5 0 2.1z"/></svg>
+          )}
+          {(ticker === 'INTC' || ticker === 'INTEL') && (
+            <svg class="w-3.5 h-3.5 text-[#0068B5]" fill="currentColor" viewBox="0 0 24 24"><path d="M21.3 2.7H2.7C1.2 2.7 0 3.9 0 5.4v13.2c0 1.5 1.2 2.7 2.7 2.7h18.6c1.5 0 2.7-1.2 2.7-2.7V5.4c0-1.5-1.2-2.7-2.7-2.7zM6.5 17.1H4.6V7.7h1.9v9.4zm5.8 0h-1.8v-4.3c0-.9-.6-1.3-1.3-1.3-.8 0-1.3.5-1.3 1.3v4.3H6.1V9.4h1.8v1.1c.4-.7 1.1-1.3 2.1-1.3 1.5 0 2.7 1 2.7 2.8v5.1zm5.8-3.4c0 2.2-1.4 3.6-3.4 3.6-2.1 0-3.5-1.4-3.5-3.6V12c0-2.2 1.4-3.6 3.5-3.6 2 0 3.4 1.4 3.4 3.6v1.7zm1.9 1.5h-1.5v1.9h-1.9v-1.9h-1.5v-1.9h1.5v-1.5h1.9v1.5h1.5v1.9zm-5.4-3.2c0-.9-.5-1.4-1.4-1.4s-1.4.5-1.4 1.4v1.5c0 .9.5 1.4 1.4 1.4s1.4-.5 1.4-1.4V12z"/></svg>
+          )}
+          {ticker === 'PEP' && (
+            <svg class="w-3.5 h-3.5 text-[#004B93]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 1.5c4.13 0 7.57 2.97 8.34 6.91H3.66c.77-3.94 4.21-6.91 8.34-6.91zm-8.45 8.41h16.9c-.4 4.09-3.84 7.24-8.45 7.24-4.61 0-8.05-3.15-8.45-7.24z"/></svg>
+          )}
+          {ticker === 'PG' && (
+            <svg class="w-3.5 h-3.5 text-[#003CA5]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2.5 5.5c1.4 0 2.5 1.1 2.5 2.5s-1.1 2.5-2.5 2.5-2.5-1.1-2.5-2.5 1.1-2.5 2.5-2.5zm5 4c1.1 0 2 1 2 2.2s-.9 2.2-2 2.2-2-1-2-2.2.9-2.2 2-2.2z"/></svg>
+          )}
+          {ticker === 'MSFT' && (
+            <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z"/></svg>
+          )}
+          {ticker === 'AAPL' && (
+            <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+          )}
+          {ticker === 'AMZN' && (
+            <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+          )}
+          {ticker === 'NVDA' && (
+            <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 5h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2z" /></svg>
+          )}
+          {/* Universal Fallback Logo Asset for any other tickers dynamically loaded */}
+          {['TSLA', 'GOOGL', 'GOOGLE', 'GOOG', 'SPACEX', 'INTC', 'INTEL', 'PEP', 'PG', 'MSFT', 'AAPL', 'AMZN', 'NVDA'].indexOf(ticker) === -1 && (
+            <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          )}
 
-  <Comments identifier="global-macro" defaultTitle="Global Market Discussions" />
+          <span>{ticker}</span>
+          
+          {/* Upward Trending Real-time Institutional Chart Vector Icon */}
+          <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+        </a>
+      );
+    })}
+  </div>
+</div>
+</section>
 
+<Comments identifier="global-macro" defaultTitle="Global Market Discussions" />
 
   <section class="mt-6 bg-gray-900 border border-gray-700 rounded-lg p-4">
     <h3 class="text-xs font-bold text-amber-400 font-mono uppercase tracking-wider mb-1 flex items-center gap-1.5">
@@ -174,129 +217,144 @@ const topUsaStocks = ['GOOG', 'MSFT', 'SPACEX', 'AAPL', 'AMZN', 'TSLA', 'NVDA', 
     </div>
   </section>
 
-  <section class="bg-gray-900 border border-gray-700 rounded-lg p-4 mt-6">
-    <div class="border-b border-gray-800 pb-2 mb-4">
-      <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
-        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-        Cryptocurrency Live Stream Terminal
-      </h2>
-    </div>
+        <section class="bg-gray-900/40 border border-gray-800 rounded-xl p-4 shadow-xl backdrop-blur-sm">
+            <div class="border-b border-gray-800 pb-3 mb-4 flex justify-between items-center">
+              <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                Cryptocurrency Live Stream Terminal
+              </h2>
+              <span class="text-[10px] font-mono text-gray-500 bg-gray-950 px-2 py-0.5 rounded border border-gray-800">WebSocket Active</span>
+            </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="bg-[#0c1017] p-3 rounded border border-blue-500/30 bg-blue-950/10 flex flex-col gap-2 live-asset-box" id="box-btc">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-mono font-bold text-gray-200">Bitcoin (BTC/USD)</span>
-          <button class="live-chart-trigger px-2 py-0.5 text-[10px] font-mono bg-blue-950/60 text-blue-400 rounded border border-blue-800/60 hover:bg-blue-600 hover:text-white transition cursor-pointer flex items-center gap-1" data-symbol="BINANCE:BTCUSDT" data-target="chart-pane-btc" data-parent-box="box-btc">
-            View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-          </button>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="bg-[#070b12] p-4 rounded-lg border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300 flex flex-col gap-2 live-asset-box" id="box-btc">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono font-bold text-gray-200 flex items-center gap-1.5">
+                    <span class="text-amber-500 font-sans font-bold">₿</span> Bitcoin (BTC/USD)
+                  </span>
+                  <button class="live-chart-trigger px-2.5 py-1 text-[10px] font-mono bg-blue-950/40 text-blue-400 rounded-md border border-blue-900/60 hover:bg-blue-600 hover:text-white hover:border-blue-500 transition-all duration-200 cursor-pointer flex items-center gap-1" data-symbol="BINANCE:BTCUSDT" data-target="chart-pane-btc" data-parent-box="box-btc">
+                    View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                  </button>
+                </div>
+                <div class="tv-price-holder min-h-[36px] flex items-center" data-symbol="BINANCE:BTCUSDT">—</div>
+                <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-btc"></div>
+              </div>
+
+              <div class="bg-[#070b12] p-4 rounded-lg border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300 flex flex-col gap-2 live-asset-box" id="box-eth">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono font-bold text-gray-200 flex items-center gap-1.5">
+                    <span class="text-indigo-400 font-sans font-bold">Ξ</span> Ethereum (ETH/USD)
+                  </span>
+                  <button class="live-chart-trigger px-2.5 py-1 text-[10px] font-mono bg-blue-950/40 text-blue-400 rounded-md border border-blue-900/60 hover:bg-blue-600 hover:text-white hover:border-blue-500 transition-all duration-200 cursor-pointer flex items-center gap-1" data-symbol="BINANCE:ETHUSDT" data-target="chart-pane-eth" data-parent-box="box-eth">
+                    View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                  </button>
+                </div>
+                <div class="tv-price-holder min-h-[36px] flex items-center" data-symbol="BINANCE:ETHUSDT">—</div>
+                <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-eth"></div>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-gray-800 grid grid-cols-1 lg:grid-cols-10 gap-4">
+              <div class="lg:col-span-3 font-mono text-[11px]">
+                <span class="text-gray-500 font-bold block mb-1.5 uppercase tracking-wider text-[10px]">Altcoin Reference Index:</span>
+                <div class="grid grid-cols-2 gap-1.5">
+                  <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=BINANCE:SOLUSDT`} target="_blank" class="p-1.5 bg-[#060a10] border border-gray-800 hover:border-blue-500/40 text-gray-400 hover:text-white rounded transition block truncate no-underline">Solana (SOL) 📺</a>
+                  <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=BINANCE:XRPUSDT`} target="_blank" class="p-1.5 bg-[#060a10] border border-gray-800 hover:border-blue-500/40 text-gray-400 hover:text-white rounded transition block truncate no-underline">Ripple (XRP) 📺</a>
+                  <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=BINANCE:BNBUSDT`} target="_blank" class="p-1.5 bg-[#060a10] border border-gray-800 hover:border-blue-500/40 text-gray-400 hover:text-white rounded transition block truncate no-underline">Binance (BNB) 📺</a>
+                  <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=BINANCE:ADAUSDT`} target="_blank" class="p-1.5 bg-[#060a10] border border-gray-800 hover:border-blue-500/40 text-gray-400 hover:text-white rounded transition block truncate no-underline">Cardano (ADA) 📺</a>
+                </div>
+              </div>
+              <div class="lg:col-span-7">
+                <Comments identifier="crypto-terminal" defaultTitle="Crypto Market Sentiment Boards" />
+              </div>
+            </div>
+          </section>
+
+          <section class="bg-gray-900/40 border border-gray-800 rounded-xl p-4 shadow-xl backdrop-blur-sm">
+            <div class="border-b border-gray-800 pb-3 mb-4 flex justify-between items-center">
+              <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                Precious Metals Live Stream Terminal
+              </h2>
+              <span class="text-[10px] font-mono text-gray-500 bg-gray-950 px-2 py-0.5 rounded border border-gray-800">COMEX Live</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="bg-[#070b12] p-4 rounded-lg border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300 flex flex-col gap-2 live-asset-box" id="box-gold">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono font-bold text-gray-200 flex items-center gap-1.5">
+                    🥇 Gold Spot (XAU/USD)
+                  </span>
+                  <button class="live-chart-trigger px-2.5 py-1 text-[10px] font-mono bg-blue-950/40 text-blue-400 rounded-md border border-blue-900/60 hover:bg-blue-600 hover:text-white hover:border-blue-500 transition-all duration-200 cursor-pointer flex items-center gap-1" data-symbol="TVC:GOLD" data-target="chart-pane-gold" data-parent-box="box-gold">
+                    View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                  </button>
+                </div>
+                <div class="tv-price-holder min-h-[36px] flex items-center" data-symbol="TVC:GOLD">—</div>
+                <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-gold"></div>
+              </div>
+
+              <div class="bg-[#070b12] p-4 rounded-lg border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300 flex flex-col gap-2 live-asset-box" id="box-silver">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono font-bold text-gray-200 flex items-center gap-1.5">
+                    🥈 Silver Spot (XAG/USD)
+                  </span>
+                  <button class="live-chart-trigger px-2.5 py-1 text-[10px] font-mono bg-blue-950/40 text-blue-400 rounded-md border border-blue-900/60 hover:bg-blue-600 hover:text-white hover:border-blue-500 transition-all duration-200 cursor-pointer flex items-center gap-1" data-symbol="TVC:SILVER" data-target="chart-pane-silver" data-parent-box="box-silver">
+                    View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                  </button>
+                </div>
+                <div class="tv-price-holder min-h-[36px] flex items-center" data-symbol="TVC:SILVER">—</div>
+                <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-silver"></div>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-gray-800/60">
+              <Comments identifier="metals" defaultTitle="Gold & Silver Commodity Discussions" />
+            </div>
+          </section>
+
+          <section class="bg-gray-900/40 border border-gray-800 rounded-xl p-4 shadow-xl backdrop-blur-sm">
+            <div class="border-b border-gray-800 pb-3 mb-4 flex justify-between items-center">
+              <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Commodities & Energy Live Stream Terminal
+              </h2>
+              <span class="text-[10px] font-mono text-gray-500 bg-gray-950 px-2 py-0.5 rounded border border-gray-800">NYMEX Live</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="bg-[#070b12] p-4 rounded-lg border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300 flex flex-col gap-2 live-asset-box" id="box-crude">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono font-bold text-gray-200 flex items-center gap-1.5">
+                    🛢️ Crude Oil WTI (TVC:USOIL)
+                  </span>
+                  <button class="live-chart-trigger px-2.5 py-1 text-[10px] font-mono bg-blue-950/40 text-blue-400 rounded-md border border-blue-900/60 hover:bg-blue-600 hover:text-white hover:border-blue-500 transition-all duration-200 cursor-pointer flex items-center gap-1" data-symbol="TVC:USOIL" data-target="chart-pane-crude" data-parent-box="box-crude">
+                    View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                  </button>
+                </div>
+                <div class="tv-price-holder min-h-[36px] flex items-center" data-symbol="TVC:USOIL">—</div>
+                <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-crude"></div>
+              </div>
+
+              <div class="bg-[#070b12] p-4 rounded-lg border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300 flex flex-col gap-2 live-asset-box" id="box-natgas">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono font-bold text-gray-200 flex items-center gap-1.5">
+                    🔥 Natural Gas (CAPITALCOM:NATURALGAS)
+                  </span>
+                  <button class="live-chart-trigger px-2.5 py-1 text-[10px] font-mono bg-blue-950/40 text-blue-400 rounded-md border border-blue-900/60 hover:bg-blue-600 hover:text-white hover:border-blue-500 transition-all duration-200 cursor-pointer flex items-center gap-1" data-symbol="CAPITALCOM:NATURALGAS" data-target="chart-pane-natgas" data-parent-box="box-natgas">
+                    View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                  </button>
+                </div>
+                <div class="tv-price-holder min-h-[36px] flex items-center" data-symbol="CAPITALCOM:NATURALGAS">—</div>
+                <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-natgas"></div>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-gray-800/60">
+              <Comments identifier="commodities-energy" defaultTitle="Commodities & Global Energy Markets Conversations" />
+            </div>
+          </section>
+
         </div>
-        <div class="tv-price-holder min-h-[32px] flex items-center" data-symbol="BINANCE:BTCUSDT">—</div>
-        <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-btc"></div>
-      </div>
-
-      <div class="bg-[#0c1017] p-3 rounded border border-blue-500/30 bg-blue-950/10 flex flex-col gap-2 live-asset-box" id="box-eth">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-mono font-bold text-gray-200">Ethereum (ETH/USD)</span>
-          <button class="live-chart-trigger px-2 py-0.5 text-[10px] font-mono bg-blue-950/60 text-blue-400 rounded border border-blue-800/60 hover:bg-blue-600 hover:text-white transition cursor-pointer flex items-center gap-1" data-symbol="BINANCE:ETHUSDT" data-target="chart-pane-eth" data-parent-box="box-eth">
-            View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-          </button>
-        </div>
-        <div class="tv-price-holder min-h-[32px] flex items-center" data-symbol="BINANCE:ETHUSDT">—</div>
-        <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-eth"></div>
-      </div>
-    </div>
-
-    <div class="mt-4 pt-3 border-t border-gray-800 grid grid-cols-1 lg:grid-cols-10 gap-4">
-      <div class="lg:col-span-3 font-mono text-[11px]">
-        <span class="text-gray-500 font-bold block mb-1">Altcoin Reference Index:</span>
-        <div class="grid grid-cols-2 gap-1.5">
-          <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=BINANCE:SOLUSDT`} target="_blank" class="p-1 bg-[#0c1017] border border-gray-800 text-gray-400 hover:text-white rounded no-underline block truncate">Solana (SOL) 📺</a>
-          <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=BINANCE:XRPUSDT`} target="_blank" class="p-1 bg-[#0c1017] border border-gray-800 text-gray-400 hover:text-white rounded no-underline block truncate">Ripple (XRP) 📺</a>
-          <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=BINANCE:BNBUSDT`} target="_blank" class="p-1 bg-[#0c1017] border border-gray-800 text-gray-400 hover:text-white rounded no-underline block truncate">Binance (BNB) 📺</a>
-          <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=BINANCE:ADAUSDT`} target="_blank" class="p-1 bg-[#0c1017] border border-gray-800 text-gray-400 hover:text-white rounded no-underline block truncate">Cardano (ADA) 📺</a>
-        </div>
-      </div>
-      <div class="lg:col-span-7">
-        <Comments identifier="crypto-terminal" defaultTitle="Crypto Market Sentiment Boards" />
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-gray-900 border border-gray-700 rounded-lg p-4 mt-6">
-    <div class="border-b border-gray-800 pb-2 mb-4">
-      <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
-        <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
-        Precious Metals Live Stream Terminal
-      </h2>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="bg-[#0c1017] p-3 rounded border border-blue-500/30 bg-blue-950/10 flex flex-col gap-2 live-asset-box" id="box-gold">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-mono font-bold text-gray-200">Gold Spot (XAU/USD)</span>
-          <button class="live-chart-trigger px-2 py-0.5 text-[10px] font-mono bg-blue-950/60 text-blue-400 rounded border border-blue-800/60 hover:bg-blue-600 hover:text-white transition cursor-pointer flex items-center gap-1" data-symbol="TVC:GOLD" data-target="chart-pane-gold" data-parent-box="box-gold">
-            View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-          </button>
-        </div>
-        <div class="tv-price-holder min-h-[32px] flex items-center" data-symbol="TVC:GOLD">—</div>
-        <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-gold"></div>
-      </div>
-
-      <div class="bg-[#0c1017] p-3 rounded border border-blue-500/30 bg-blue-950/10 flex flex-col gap-2 live-asset-box" id="box-silver">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-mono font-bold text-gray-200">Silver Spot (XAG/USD)</span>
-          <button class="live-chart-trigger px-2 py-0.5 text-[10px] font-mono bg-blue-950/60 text-blue-400 rounded border border-blue-800/60 hover:bg-blue-600 hover:text-white transition cursor-pointer flex items-center gap-1" data-symbol="TVC:SILVER" data-target="chart-pane-silver" data-parent-box="box-silver">
-            View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-          </button>
-        </div>
-        <div class="tv-price-holder min-h-[32px] flex items-center" data-symbol="TVC:SILVER">—</div>
-        <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-silver"></div>
-      </div>
-    </div>
-
-    <div class="mt-4 pt-3 border-t border-gray-800">
-      <Comments identifier="metals" defaultTitle="Gold & Silver Commodity Discussions" />
-    </div>
-  </section>
-
-  <section class="bg-gray-900 border border-gray-700 rounded-lg p-4">
-      <div class="border-b border-gray-800 pb-2 mb-4">
-        <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
-          <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-          Commodities & Energy Terminal
-        </h2>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-[#0c1017] p-3 rounded border border-blue-500/30 bg-blue-950/10 flex flex-col gap-2" id="box-crude">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono font-bold text-gray-200">Crude Oil WTI (TVC:USOIL)</span>
-            <button class="live-chart-trigger px-2 py-0.5 text-[10px] font-mono bg-blue-950/60 text-blue-400 rounded border border-blue-800/60 hover:bg-blue-600 hover:text-white transition cursor-pointer flex items-center gap-1" data-symbol="TVC:USOIL" data-target="chart-pane-crude" data-parent-box="box-crude">
-              View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-            </button>
-          </div>
-          <div id="price-feed-crude" class="text-md font-semibold text-emerald-400 tracking-wide font-mono min-h-[32px] flex items-center">Loading...</div>
-          <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-crude"></div>
-        </div>
-
-        <div class="bg-[#0c1017] p-3 rounded border border-blue-500/30 bg-blue-950/10 flex flex-col gap-2" id="box-natgas">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono font-bold text-gray-200">Natural Gas (CAPITALCOM:NATURALGAS)</span>
-            <button class="live-chart-trigger px-2 py-0.5 text-[10px] font-mono bg-blue-950/60 text-blue-400 rounded border border-blue-800/60 hover:bg-blue-600 hover:text-white transition cursor-pointer flex items-center gap-1" data-symbol="CAPITALCOM:NATURALGAS" data-target="chart-pane-natgas" data-parent-box="box-natgas">
-              View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-            </button>
-          </div>
-          <div id="price-feed-natgas" class="text-md font-semibold text-emerald-400 tracking-wide font-mono min-h-[32px] flex items-center">Loading...</div>
-          <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-natgas"></div>
-        </div>
-      </div>
-
-      <div class="mt-4 pt-3 border-t border-gray-800">
-        <Comments identifier="commodities-energy" defaultTitle="Commodities & Energy Reference Discussions" />
-      </div>
-    </section>
-
-  </div>
 
   <div class="flex flex-col gap-6 mt-6">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
