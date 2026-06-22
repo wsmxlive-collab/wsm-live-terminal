@@ -1,627 +1,603 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Comments from '../components/Comments.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog').catch(() => []);
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// All distinct content category feeds completely restored
+const usaGainers = sortedPosts.filter(p => p.data.category === 'usa-top-gainers').slice(0, 7);
+const nseGainers = sortedPosts.filter(p => p.data.category === 'nse-top-gainers').slice(0, 7);
+const usaNews = sortedPosts.filter(p => p.data.category === 'usa-stock-news').slice(0, 7);
+const nseNews = sortedPosts.filter(p => p.data.category === 'nse-stock-news').slice(0, 7);
+const earningsReviews = sortedPosts.filter(p => p.data.category === 'earnings-reviews').slice(0, 7);
+const usaIpos = sortedPosts.filter(p => p.data.category === 'usa-ipos').slice(0, 7);
+const indiaIpos = sortedPosts.filter(p => p.data.category === 'india-ipos').slice(0, 7);
+
+const affiliateChartId = "B0eRLjZ7";
+
+// Clean list of top USA stock tickers mapped out for clean rendering
+const topUsaStocks = ['GOOG', 'MSFT', 'SPACEX', 'AAPL', 'AMZN', 'TSLA', 'NVDA', 'INTC', 'PEP', 'PG'];
 ---
 
-<Layout title="WSM Live — Multi-Grid Trading Terminal">
-  <!-- Dynamic Real-Time Ticker Tape Banner -->
-  <div class="w-full bg-[#0c1017] border-b border-gray-700 min-h-[40px]" id="tradingview-ticker-tape"></div>
+<Layout title="WSM Live — Ultimate Multi-Grid Trading Terminal">
+  
+  <div class="w-full bg-[#0c1017] border-b border-gray-800 min-h-[46px] overflow-hidden mb-4" id="tv-ticker-tape-container"></div>
 
-  <!-- Quick Price Summary -->
-  <section class="mt-4 w-full bg-[#111827] border border-gray-700 rounded-lg p-4 text-xs text-gray-300">
-    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-      <div class="font-mono text-emerald-400 uppercase tracking-wider">Live Price Snap</div>
-      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 w-full sm:w-auto">
-        <div class="group rounded-md border border-gray-800 bg-[#0c1017] p-2 hover:border-blue-500" title="Bitcoin (BTC/USDT)">
-          <div class="text-gray-400 text-[10px] uppercase">BTC</div>
-          <div id="summary-price-btc" class="text-emerald-400 font-semibold">...</div>
-        </div>
-        <div class="group rounded-md border border-gray-800 bg-[#0c1017] p-2 hover:border-blue-500" title="Ethereum (ETH/USDT)">
-          <div class="text-gray-400 text-[10px] uppercase">ETH</div>
-          <div id="summary-price-eth" class="text-emerald-400 font-semibold">...</div>
-        </div>
-        <div class="group rounded-md border border-gray-800 bg-[#0c1017] p-2 hover:border-blue-500" title="NIFTY 50 (NSE:NIFTY)">
-          <div class="text-gray-400 text-[10px] uppercase">NIFTY</div>
-          <div id="summary-price-nifty" class="text-emerald-400 font-semibold">...</div>
-        </div>
-        <div class="group rounded-md border border-gray-800 bg-[#0c1017] p-2 hover:border-blue-500" title="S&P 500">
-          <div class="text-gray-400 text-[10px] uppercase">S&P500</div>
-          <div id="summary-price-sp500" class="text-emerald-400 font-semibold">...</div>
-        </div>
-        <div class="group rounded-md border border-gray-800 bg-[#0c1017] p-2 hover:border-blue-500" title="Dow Jones (TVC:DJI)">
-          <div class="text-gray-400 text-[10px] uppercase">DOW</div>
-          <div id="summary-price-dow" class="text-emerald-400 font-semibold">...</div>
-        </div>
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+    
+    <div class="bg-gray-900 border border-gray-700 rounded-lg p-3">
+      <div class="font-mono text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9h18"></path></svg>
+        Global Indices Reference
+      </div>
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 font-mono text-xs font-medium text-gray-300">
+        <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=DJ%3ADJI&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
+          <span class="text-base leading-none">🇺🇸</span> Dow Jones 
+          <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+        </a>
+        <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=CAPITALCOM%3AUS500&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
+          <span class="text-base leading-none">🇺🇸</span> S&P 500 
+          <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+        </a>
+        <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=NASDAQ%3AIXIC&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
+          <span class="text-base leading-none">🇺🇸</span> NASDAQ 
+          <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+        </a>
+        <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=NASDAQ%3AQQQ&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
+          <span class="text-base leading-none">🇺🇸</span> QQQ 
+          <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+        </a>
+        <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=NSE%3ANIFTY&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
+          <span class="text-base leading-none">🇮🇳</span> Nifty50 
+          <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+        </a>
+        <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=HKEX%3AHSI&utm_source=wsmlive.com`} target="_blank" class="hover:text-blue-400 flex items-center gap-1.5 no-underline text-gray-200">
+          <span class="text-base leading-none">🇭🇰</span> HangSeng 
+          <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="bg-gray-900 border border-gray-700 rounded-lg p-3">
+      <div class="font-mono text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+        USA Market Sectors Reference
+      </div>
+      <div class="flex flex-wrap gap-2 text-xs font-mono">
+        {topUsaStocks.map((ticker) => {
+          const querySymbol = ticker === 'SPACEX' ? 'PRIVATE:SPACEX' : `NASDAQ:${ticker}`;
+          return (
+            <a 
+              href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=${encodeURIComponent(querySymbol)}&utm_source=wsmlive.com`} 
+              target="_blank" 
+              class="px-2.5 py-1 bg-[#0c1017] border border-gray-800 rounded text-gray-300 hover:border-blue-400 flex items-center gap-1.5 transition no-underline"
+            >
+              <span>🇺🇸 {ticker}</span>
+              <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+            </a>
+          );
+        })}
       </div>
     </div>
   </section>
 
-  <!-- CRYPTOWATCH-STYLE DYNAMIC MATRIX REPLICA CONTAINER WORKSPACE -->
-  <div id="cryptowatch-dynamic-workspace" class="hidden w-full mt-4 p-4 bg-[#111827] border border-gray-700 rounded-lg">
-    <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-2">
-      <div class="flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-        <h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono">⚡ Cryptowatch Active Multi-Grid Matrix</h2>
+  <Comments identifier="global-macro" defaultTitle="Global Market Discussions" />
+
+
+  <section class="mt-6 bg-gray-900 border border-gray-700 rounded-lg p-4">
+    <h3 class="text-xs font-bold text-amber-400 font-mono uppercase tracking-wider mb-1 flex items-center gap-1.5">
+      <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+      The Power Of Holding Early IPO Investments vs. Today
+    </h3>
+    <p class="text-[11px] font-mono text-gray-400 mb-4">See how a $100 / ₹10,000 early investment in market changed over time:</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+      <div class="bg-[#0c1017] p-3 rounded border border-gray-800">
+        <h4 class="text-[11px] font-mono font-bold text-blue-400 border-b border-gray-800 pb-1.5 mb-2">USA Blue-Chips (Base $100 Reference)</h4>
+        <div class="space-y-2 text-xs font-mono">
+          <div class="flex justify-between text-gray-300"><span>NVDA <span class="text-gray-600">(0.04 Adj Entry)</span></span><span class="text-emerald-400 font-bold">$526,000 Approx</span></div>
+          <div class="flex justify-between text-gray-300"><span>TESLA <span class="text-gray-600">(IPO Entry)</span></span><span class="text-emerald-400 font-bold">$148,000 Approx</span></div>
+          <div class="flex justify-between text-gray-300"><span>APPLE <span class="text-gray-600">(Historic Base)</span></span><span class="text-emerald-400 font-bold">$389,000 Approx</span></div>
+        </div>
       </div>
-      <a href="/" class="text-xs text-blue-400 hover:underline no-underline font-semibold bg-gray-800 px-2 py-1 rounded border border-gray-700 font-mono">Reset Dashboard</a>
+      <div class="bg-[#0c1017] p-3 rounded border border-gray-800">
+        <h4 class="text-[11px] font-mono font-bold text-orange-400 border-b border-gray-800 pb-1.5 mb-2">India Blue-Chips (Base ₹10,000 Reference)</h4>
+        <div class="space-y-2 text-xs font-mono">
+          <div class="flex justify-between text-gray-300"><span>Reliance Ind <span class="text-gray-600">(Bonus Adjusted)</span></span><span class="text-emerald-400 font-bold">₹2,840,000 Approx</span></div>
+          <div class="flex justify-between text-gray-300"><span>Tata Motors <span class="text-gray-600">(Cycle Lows)</span></span><span class="text-emerald-400 font-bold">₹1,120,000 Approx</span></div>
+        </div>
+      </div>
     </div>
-    <div id="dynamic-grid-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    <Comments identifier="what-if-early" defaultTitle="What If You Invested Early Discussions" />
+  </section>
+
+  <section class="mt-6 bg-gray-950 border border-gray-800 rounded-lg p-4 font-mono">
+    <div class="border-b border-gray-800 pb-2 mb-3 flex flex-wrap items-center justify-between gap-2">
+      <div>
+        <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">How much can you safely invest in the Market?</h3>
+        <p class="text-[11px] text-gray-500">Enter your monthly income metrics below to find your exact market surplus.</p>
+      </div>
+      <div>
+        <select id="wsm-calc-currency" class="bg-gray-900 border border-gray-700 text-xs text-gray-300 rounded px-2 py-0.5 outline-none font-bold">
+          <option value="$">USD ($)</option>
+          <option value="₹">INR (₹)</option>
+          <option value="£">GBP (£)</option>
+        </select>
+      </div>
+    </div>
+    <div class="overflow-x-auto w-full">
+      <table class="w-full text-left text-xs min-w-[950px] border border-gray-900">
+        <thead>
+          <tr class="bg-gray-900 text-gray-400 border-b border-gray-800">
+            <th class="p-2 border-r border-gray-800">Salary</th>
+            <th class="p-2 border-r border-gray-800">EMI(loans)</th>
+            <th class="p-2 border-r border-gray-800">Rent/Housing</th>
+            <th class="p-2 border-r border-gray-800">Insurance</th>
+            <th class="p-2 border-r border-gray-800">Bills (Water, Elec, Wifi)</th>
+            <th class="p-2 border-r border-gray-800">Kids School Fees</th>
+            <th class="p-2 border-r border-gray-800">Emergency Fund</th>
+            <th class="p-2 border-r border-gray-800">Foods, Groceries</th>
+            <th class="p-2 border-r border-gray-800">Fuel & Daily Commute</th>
+            <th class="p-2 border-r border-gray-800">Travel | Shopping</th>
+            <th class="p-2 bg-blue-950/40 text-blue-400 font-bold">Available to Invest</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-[#0c1017] text-gray-200 border-b border-gray-900">
+            <td class="p-1 border-r border-gray-800"><input type="number" id="inp-salary" class="w-full bg-transparent border-none p-1 outline-none text-emerald-400 font-bold" value="1000" /></td>
+            <td class="p-1 border-r border-gray-800"><input type="number" id="inp-emi" class="w-full bg-transparent border-none p-1 outline-none text-red-400" value="250" /></td>
+            <td class="p-1 border-r border-gray-800"><input type="number" id="inp-rent" class="w-full bg-transparent border-none p-1 outline-none text-red-400" value="70" /></td>
+            <td class="p-1 border-r border-gray-800"><input type="number" id="inp-ins" class="w-full bg-transparent border-none p-1 outline-none text-red-400" value="100" /></td>
+            <td class="p-1 border-r border-gray-800"><input type="number" id="inp-bills" class="w-full bg-transparent border-none p-1 outline-none text-red-400" value="80" /></td>
+            <td class="p-1 border-r border-gray-800"><input type="number" id="inp-fees" class="w-full bg-transparent border-none p-1 outline-none text-red-400" value="100" /></td>
+            <td class="p-1 border-r border-gray-800"><input type="number" id="inp-emergency" class="w-full bg-transparent border-none p-1 outline-none text-amber-500" value="120" /></td>
+            <td class="p-1 border-r border-gray-800"><input type="number" id="inp-food" class="w-full bg-transparent border-none p-1 outline-none text-red-400" value="50" /></td>
+            <td class="p-1 border-r border-gray-800"><input type="number" id="inp-fuel" class="w-full bg-transparent border-none p-1 outline-none text-red-400" value="40" /></td>
+            <td class="p-1 border-r border-gray-800"><input type="number" id="inp-shop" class="w-full bg-transparent border-none p-1 outline-none text-red-400" value="40" /></td>
+            <td class="p-2 bg-blue-950/20 text-blue-400 font-bold text-center border-none" id="out-investment-net">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-900 border border-gray-700 rounded-lg p-4">
+    <div>
+      <h4 class="text-[11px] font-semibold text-amber-400 font-mono uppercase mb-2 tracking-wide">Earnings Calendar (Global & IN)</h4>
+      <div class="w-full h-[260px] bg-[#0c1017] rounded border border-gray-800 overflow-hidden" id="wsm-home-earnings-box"></div>
+    </div>
+    <div>
+      <h4 class="text-[11px] font-semibold text-emerald-400 font-mono uppercase mb-2 tracking-wide">Economic Calendar (FOMC, Inventories)</h4>
+      <div class="w-full h-[260px] bg-[#0c1017] rounded border border-gray-800 overflow-hidden" id="wsm-home-economic-box"></div>
+    </div>
+  </section>
+
+  <section class="bg-gray-900 border border-gray-700 rounded-lg p-4 mt-6">
+    <div class="border-b border-gray-800 pb-2 mb-4">
+      <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+        Cryptocurrency Live Stream Terminal
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-[#0c1017] p-3 rounded border border-blue-500/30 bg-blue-950/10 flex flex-col gap-2 live-asset-box" id="box-btc">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-mono font-bold text-gray-200">Bitcoin (BTC/USD)</span>
+          <button class="live-chart-trigger px-2 py-0.5 text-[10px] font-mono bg-blue-950/60 text-blue-400 rounded border border-blue-800/60 hover:bg-blue-600 hover:text-white transition cursor-pointer flex items-center gap-1" data-symbol="BINANCE:BTCUSDT" data-target="chart-pane-btc" data-parent-box="box-btc">
+            View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+          </button>
+        </div>
+        <div class="tv-price-holder min-h-[32px] flex items-center" data-symbol="BINANCE:BTCUSDT">—</div>
+        <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-btc"></div>
+      </div>
+
+      <div class="bg-[#0c1017] p-3 rounded border border-blue-500/30 bg-blue-950/10 flex flex-col gap-2 live-asset-box" id="box-eth">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-mono font-bold text-gray-200">Ethereum (ETH/USD)</span>
+          <button class="live-chart-trigger px-2 py-0.5 text-[10px] font-mono bg-blue-950/60 text-blue-400 rounded border border-blue-800/60 hover:bg-blue-600 hover:text-white transition cursor-pointer flex items-center gap-1" data-symbol="BINANCE:ETHUSDT" data-target="chart-pane-eth" data-parent-box="box-eth">
+            View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+          </button>
+        </div>
+        <div class="tv-price-holder min-h-[32px] flex items-center" data-symbol="BINANCE:ETHUSDT">—</div>
+        <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-eth"></div>
+      </div>
+    </div>
+
+    <div class="mt-4 pt-3 border-t border-gray-800 grid grid-cols-1 lg:grid-cols-10 gap-4">
+      <div class="lg:col-span-3 font-mono text-[11px]">
+        <span class="text-gray-500 font-bold block mb-1">Altcoin Reference Index:</span>
+        <div class="grid grid-cols-2 gap-1.5">
+          <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=BINANCE:SOLUSDT`} target="_blank" class="p-1 bg-[#0c1017] border border-gray-800 text-gray-400 hover:text-white rounded no-underline block truncate">Solana (SOL) 📺</a>
+          <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=BINANCE:XRPUSDT`} target="_blank" class="p-1 bg-[#0c1017] border border-gray-800 text-gray-400 hover:text-white rounded no-underline block truncate">Ripple (XRP) 📺</a>
+          <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=BINANCE:BNBUSDT`} target="_blank" class="p-1 bg-[#0c1017] border border-gray-800 text-gray-400 hover:text-white rounded no-underline block truncate">Binance (BNB) 📺</a>
+          <a href={`https://www.tradingview.com/chart/${affiliateChartId}/?symbol=BINANCE:ADAUSDT`} target="_blank" class="p-1 bg-[#0c1017] border border-gray-800 text-gray-400 hover:text-white rounded no-underline block truncate">Cardano (ADA) 📺</a>
+        </div>
+      </div>
+      <div class="lg:col-span-7">
+        <Comments identifier="crypto-terminal" defaultTitle="Crypto Market Sentiment Boards" />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-gray-900 border border-gray-700 rounded-lg p-4 mt-6">
+    <div class="border-b border-gray-800 pb-2 mb-4">
+      <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+        Precious Metals Live Stream Terminal
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-[#0c1017] p-3 rounded border border-blue-500/30 bg-blue-950/10 flex flex-col gap-2 live-asset-box" id="box-gold">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-mono font-bold text-gray-200">Gold Spot (XAU/USD)</span>
+          <button class="live-chart-trigger px-2 py-0.5 text-[10px] font-mono bg-blue-950/60 text-blue-400 rounded border border-blue-800/60 hover:bg-blue-600 hover:text-white transition cursor-pointer flex items-center gap-1" data-symbol="TVC:GOLD" data-target="chart-pane-gold" data-parent-box="box-gold">
+            View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+          </button>
+        </div>
+        <div class="tv-price-holder min-h-[32px] flex items-center" data-symbol="TVC:GOLD">—</div>
+        <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-gold"></div>
+      </div>
+
+      <div class="bg-[#0c1017] p-3 rounded border border-blue-500/30 bg-blue-950/10 flex flex-col gap-2 live-asset-box" id="box-silver">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-mono font-bold text-gray-200">Silver Spot (XAG/USD)</span>
+          <button class="live-chart-trigger px-2 py-0.5 text-[10px] font-mono bg-blue-950/60 text-blue-400 rounded border border-blue-800/60 hover:bg-blue-600 hover:text-white transition cursor-pointer flex items-center gap-1" data-symbol="TVC:SILVER" data-target="chart-pane-silver" data-parent-box="box-silver">
+            View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+          </button>
+        </div>
+        <div class="tv-price-holder min-h-[32px] flex items-center" data-symbol="TVC:SILVER">—</div>
+        <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-silver"></div>
+      </div>
+    </div>
+
+    <div class="mt-4 pt-3 border-t border-gray-800">
+      <Comments identifier="metals" defaultTitle="Gold & Silver Commodity Discussions" />
+    </div>
+  </section>
+
+  <section class="bg-gray-900 border border-gray-700 rounded-lg p-4">
+      <div class="border-b border-gray-800 pb-2 mb-4">
+        <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          Commodities & Energy Terminal
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-[#0c1017] p-3 rounded border border-blue-500/30 bg-blue-950/10 flex flex-col gap-2" id="box-crude">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-gray-200">Crude Oil WTI (TVC:USOIL)</span>
+            <button class="live-chart-trigger px-2 py-0.5 text-[10px] font-mono bg-blue-950/60 text-blue-400 rounded border border-blue-800/60 hover:bg-blue-600 hover:text-white transition cursor-pointer flex items-center gap-1" data-symbol="TVC:USOIL" data-target="chart-pane-crude" data-parent-box="box-crude">
+              View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+            </button>
+          </div>
+          <div id="price-feed-crude" class="text-md font-semibold text-emerald-400 tracking-wide font-mono min-h-[32px] flex items-center">Loading...</div>
+          <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-crude"></div>
+        </div>
+
+        <div class="bg-[#0c1017] p-3 rounded border border-blue-500/30 bg-blue-950/10 flex flex-col gap-2" id="box-natgas">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-gray-200">Natural Gas (CAPITALCOM:NATURALGAS)</span>
+            <button class="live-chart-trigger px-2 py-0.5 text-[10px] font-mono bg-blue-950/60 text-blue-400 rounded border border-blue-800/60 hover:bg-blue-600 hover:text-white transition cursor-pointer flex items-center gap-1" data-symbol="CAPITALCOM:NATURALGAS" data-target="chart-pane-natgas" data-parent-box="box-natgas">
+              View Chart <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+            </button>
+          </div>
+          <div id="price-feed-natgas" class="text-md font-semibold text-emerald-400 tracking-wide font-mono min-h-[32px] flex items-center">Loading...</div>
+          <div class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300" id="chart-pane-natgas"></div>
+        </div>
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-gray-800">
+        <Comments identifier="commodities-energy" defaultTitle="Commodities & Energy Reference Discussions" />
+      </div>
+    </section>
+
   </div>
 
-  <!-- STANDARD CORE FALLBACK WORKSPACE INTERFACE -->
-  <main id="wsm-standard-workspace" class="space-y-6 mt-4">
-    <!-- SECTION 1: Crypto Market Pulse -->
-    <section class="bg-[#111827] border border-gray-700 p-4 rounded-lg">
-      <h2 class="text-xs font-bold text-gray-400 mb-4 uppercase tracking-wider font-mono">[SECTION 1] Crypto Market Pulse</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="BINANCE:BTCUSDT">
-          <div>
-            <span class="font-bold text-sm block mb-1">Bitcoin (BTC/USDT)</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="BINANCE:BTCUSDT"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-btc"></div>
-          <Comments identifier="chart-btc" />
+  <div class="flex flex-col gap-6 mt-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <section class="bg-gray-900 border border-gray-700 rounded-lg p-4">
+        <div class="border-b border-gray-800 pb-2 mb-3">
+          <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono">🇺🇸 USA Top Gainers Radar</h2>
         </div>
-
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="BINANCE:ETHUSDT">
-          <div>
-            <span class="font-bold text-sm block mb-1">Ethereum (ETH/USDT)</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="BINANCE:ETHUSDT"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-eth"></div>
-          <Comments identifier="chart-eth" />
-        </div>
-
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="BINANCE:SOLUSDT">
-          <div>
-            <span class="font-bold text-sm block mb-1">Solana (SOL/USDT)</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="BINANCE:SOLUSDT"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-sol"></div>
-          <Comments identifier="chart-sol" />
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 2: Precious Metals & Energy Commodities -->
-    <section class="bg-[#111827] border border-gray-700 p-4 rounded-lg">
-      <h2 class="text-xs font-bold text-gray-400 mb-4 uppercase tracking-wider font-mono">[SECTION 2] Precious Metals & Energy Commodities</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="TVC:GOLD">
-          <div>
-            <span class="font-bold text-sm block mb-1">Gold (TVC:GOLD)</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="TVC:GOLD"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-gold"></div>
-          <Comments identifier="chart-gold" />
-        </div>
-
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="TVC:SILVER">
-          <div>
-            <span class="font-bold text-sm block mb-1">Silver (TVC:SILVER)</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="TVC:SILVER"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-silver"></div>
-          <Comments identifier="chart-silver" />
-        </div>
-
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="COMEX:HG1!">
-          <div>
-            <span class="font-bold text-sm block mb-1">Copper (COMEX:HG1!)</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="COMEX:HG1!"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-copper"></div>
-          <Comments identifier="chart-copper" />
-        </div>
-
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="NYMEX:CL1!">
-          <div>
-            <span class="font-bold text-sm block mb-1">Crude Oil (NYMEX:CL1!)</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="NYMEX:CL1!"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-crude"></div>
-          <Comments identifier="chart-crude" />
-        </div>
-
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="NYMEX:NG1!">
-          <div>
-            <span class="font-bold text-sm block mb-1">Natural Gas (NYMEX:NG1!)</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="NYMEX:NG1!"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-natgas"></div>
-          <Comments identifier="chart-natgas" />
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 3: Global Indices Monitor -->
-    <section class="bg-[#111827] border border-gray-700 p-4 rounded-lg">
-      <h2 class="text-xs font-bold text-gray-400 mb-4 uppercase tracking-wider font-mono">[SECTION 3] Global Indices Monitor</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="NSE:NIFTY">
-          <div>
-            <span class="font-bold text-sm block mb-1">NIFTY 50</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="NSE:NIFTY"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-nifty-idx"></div>
-          <Comments identifier="chart-nifty-idx" />
-        </div>
-
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="^GSPC">
-          <div>
-            <span class="font-bold text-sm block mb-1">S&P 500</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="^GSPC"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-sp500-idx"></div>
-          <Comments identifier="chart-sp500-idx" />
-        </div>
-
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="TVC:DJI">
-          <div>
-            <span class="font-bold text-sm block mb-1">Dow Jones</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="TVC:DJI"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-dow-idx"></div>
-          <Comments identifier="chart-dow-idx" />
-        </div>
-
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="^N225">
-          <div>
-            <span class="font-bold text-sm block mb-1">Nikkei 225</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="^N225"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-nikkei-idx"></div>
-          <Comments identifier="chart-nikkei-idx" />
-        </div>
-
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="^HSI">
-          <div>
-            <span class="font-bold text-sm block mb-1">Hang Seng</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="^HSI"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-hangseng-idx"></div>
-          <Comments identifier="chart-hangseng-idx" />
-        </div>
-
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="^GDAXI">
-          <div>
-            <span class="font-bold text-sm block mb-1">DAX</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="^GDAXI"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-dax-idx"></div>
-          <Comments identifier="chart-dax-idx" />
-        </div>
-
-        <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md flex flex-col justify-between asset-card" data-ticker="^FCHI">
-          <div>
-            <span class="font-bold text-sm block mb-1">CAC 40</span>
-            <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="^FCHI"></div>
-          </div>
-          <button class="chart-toggle-btn w-full text-center text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded transition">[+ View Inline Chart]</button>
-          <div class="chart-container hidden w-full h-[320px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-cac-idx"></div>
-          <Comments identifier="chart-cac-idx" />
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 4: Major Index Watchlist & Market Monitor -->
-      <!-- LEFT PANEL: WATCHLIST OVERVIEW -->
-      <section class="space-y-6 bg-[#111827] border border-gray-700 p-4 rounded-lg">
-        <div>
-          <h2 class="text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider font-mono">[SECTION 2] Live Watchlist Market Matrix</h2>
-          <div class="bg-[#0c1017] rounded border border-gray-700 p-1 min-h-[450px]" id="tradingview-watchlist-matrix"></div>
+        <div class="space-y-2">
+          {usaGainers.map((post) => (
+            <div class="bg-[#0c1017] p-2 rounded border border-gray-800 flex flex-col gap-2" id={`wrap-${post.slug}`}>
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="font-bold text-blue-400">{post.data.title}</span>
+                <span class="text-gray-400 font-bold bg-gray-900 px-1.5 py-0.5 rounded text-[11px] uppercase tracking-wider">
+                  List Price: <span class="text-emerald-400">{post.data.currentPrice || 'N/A'}</span>
+                </span>
+              </div>
+              <p class="text-[11px] font-mono text-gray-400 line-clamp-2 m-0">{post.data.description}</p>
+              <div class="flex items-center justify-between mt-1">
+                <button class="live-chart-trigger px-2 py-1 text-[10px] font-mono bg-blue-950/40 text-blue-400 rounded border border-blue-900/60 hover:bg-blue-600 hover:text-white transition cursor-pointer" data-symbol={`NASDAQ:${post.data.title.split(' ')[0]}`} data-target={`pane-${post.slug}`} data-parent-box={`wrap-${post.slug}`}>View Chart</button>
+                <a href={`/blog/${post.slug}`} class="text-[10px] font-mono text-blue-400 hover:underline no-underline">Analysis ➔</a>
+              </div>
+              <div id={`pane-${post.slug}`} class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300"></div>
+            </div>
+          ))}
         </div>
       </section>
 
-      <!-- RIGHT PANEL: CORE INDEX MONITORS -->
-      <section class="space-y-6 bg-[#111827] border border-gray-700 p-4 rounded-lg">
-        <div>
-          <h2 class="text-xs font-bold text-gray-400 mb-4 uppercase tracking-wider font-mono">[SECTION 3] Major Index Monitor</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md asset-card" data-ticker="NSE:NIFTY">
-              <span class="text-sm font-bold block mb-1">NIFTY 50</span>
-              <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="NSE:NIFTY"></div>
-              <button class="chart-toggle-btn w-full text-xs bg-blue-600 py-1.5 rounded text-white font-sans">[+ View Inline Chart]</button>
-              <div class="chart-container hidden h-[360px] mt-3 border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-nifty50"></div>
-              <Comments identifier="chart-nifty50" />
+      <section class="bg-gray-900 border border-gray-700 rounded-lg p-4">
+        <div class="border-b border-gray-800 pb-2 mb-3">
+          <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono">🇮🇳 NSE India Top Gainers Radar</h2>
+        </div>
+        <div class="space-y-2">
+          {nseGainers.map((post) => (
+            <div class="bg-[#0c1017] p-2 rounded border border-gray-800 flex flex-col gap-2" id={`wrap-${post.slug}`}>
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="font-bold text-orange-400">{post.data.title}</span>
+                <span class="text-gray-400 font-bold bg-gray-900 px-1.5 py-0.5 rounded text-[11px] uppercase tracking-wider">
+                  List Price: <span class="text-emerald-400">{post.data.currentPrice || 'N/A'}</span>
+                </span>
+              </div>
+              <p class="text-[11px] font-mono text-gray-400 line-clamp-2 m-0">{post.data.description}</p>
+              <div class="flex items-center justify-between mt-1">
+                <button class="live-chart-trigger px-2 py-1 text-[10px] font-mono bg-blue-950/40 text-blue-400 rounded border border-blue-900/60 hover:bg-blue-600 hover:text-white transition cursor-pointer" data-symbol={`NSE:${post.data.title.split(' ')[0]}`} data-target={`pane-${post.slug}`} data-parent-box={`wrap-${post.slug}`}>View Chart</button>
+                <a href={`/blog/${post.slug}`} class="text-[10px] font-mono text-blue-400 hover:underline no-underline">Analysis ➔</a>
+              </div>
+              <div id={`pane-${post.slug}`} class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300"></div>
             </div>
-            <div class="bg-[#0c1017] p-4 border border-gray-700 rounded-md asset-card" data-ticker="TVC:DJI">
-              <span class="text-sm font-bold block mb-1">DOW JONES (^DJI)</span>
-              <div class="h-[46px] overflow-hidden mb-2 price-holder" data-symbol="TVC:DJI"></div>
-              <button class="chart-toggle-btn w-full text-xs bg-blue-600 py-1.5 rounded text-white font-sans">[+ View Inline Chart]</button>
-              <div class="chart-container hidden h-[360px] mt-3 border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-dow-average"></div>
-              <Comments identifier="chart-dow-average" />
-            </div>
-          </div>
+          ))}
         </div>
       </section>
+
+      <section class="bg-gray-900 border border-gray-700 rounded-lg p-4">
+        <div class="border-b border-gray-800 pb-2 mb-3">
+          <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono">🇺🇸 USA Equity Intelligence Stream</h2>
+        </div>
+        <div class="space-y-2">
+          {usaNews.map((post) => (
+            <div class="bg-[#0c1017] p-2 rounded border border-gray-800 flex flex-col gap-1">
+              <a href={`/blog/${post.slug}`} class="text-xs font-bold font-mono text-blue-400 hover:underline no-underline block">{post.data.title}</a>
+              <p class="text-[11px] font-mono text-gray-400 m-0 line-clamp-2">{post.data.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="bg-gray-900 border border-gray-700 rounded-lg p-4">
+        <div class="border-b border-gray-800 pb-2 mb-3">
+          <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono">🇮🇳 Indian Corporate Intelligence Wire</h2>
+        </div>
+        <div class="space-y-2">
+          {nseNews.map((post) => (
+            <div class="bg-[#0c1017] p-2 rounded border border-gray-800 flex flex-col gap-1">
+              <a href={`/blog/${post.slug}`} class="text-xs font-bold font-mono text-orange-400 hover:underline no-underline block">{post.data.title}</a>
+              <p class="text-[11px] font-mono text-gray-400 m-0 line-clamp-2">{post.data.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="bg-gray-900 border border-gray-700 rounded-lg p-4">
+        <div class="border-b border-gray-800 pb-2 mb-3">
+          <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono">📊 Corporate Quarterly Balance Sheets Audit</h2>
+        </div>
+        <div class="space-y-2">
+          {earningsReviews.map((post) => (
+            <div class="bg-[#0c1017] p-2 rounded border border-gray-800 flex flex-col gap-1">
+              <a href={`/blog/${post.slug}`} class="text-xs font-bold font-mono text-purple-400 hover:underline no-underline block">{post.data.title}</a>
+              <p class="text-[11px] font-mono text-gray-400 m-0 line-clamp-2">{post.data.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="bg-gray-900 border border-gray-700 rounded-lg p-4">
+        <div class="border-b border-gray-800 pb-2 mb-3">
+          <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono">🚀 USA IPO Early-Stage Pipeline</h2>
+        </div>
+        <div class="space-y-2">
+          {usaIpos.map((post) => (
+            <div class="bg-[#0c1017] p-2 rounded border border-gray-800 flex flex-col gap-1">
+              <a href={`/blog/${post.slug}`} class="text-xs font-bold font-mono text-emerald-400 hover:underline no-underline block">{post.data.title}</a>
+              <p class="text-[11px] font-mono text-gray-400 m-0 line-clamp-2">{post.data.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="bg-gray-900 border border-gray-700 rounded-lg p-4 lg:col-span-2">
+        <div class="border-b border-gray-800 pb-2 mb-3">
+          <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono">🚀 Indian Primary Markets & IPO Grey Market Premium Index</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {indiaIpos.map((post) => (
+            <div class="bg-[#0c1017] p-2 rounded border border-gray-800 flex flex-col gap-1">
+              <a href={`/blog/${post.slug}`} class="text-xs font-bold font-mono text-amber-500 hover:underline no-underline block">{post.data.title}</a>
+              <p class="text-[11px] font-mono text-gray-400 m-0 line-clamp-2">{post.data.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
     </div>
-  </main>
-  <!-- Global Core Automation Script Integration Blocks -->
-  <script>
-    function updateChartsHeight() {
-      const dynamicGrid = document.getElementById('dynamic-grid-container');
-      if (!dynamicGrid) return;
-      
-      const chartContainers = dynamicGrid.querySelectorAll('.cryptowatch-frame-box');
-      chartContainers.forEach(container => {
-        // @ts-ignore
-        container.style.height = "360px";
+  </div>
+
+</Layout>
+
+<script is:inline>
+  // Budget Surplus Matrix Processing Engine
+  function calculateWSMNet() {
+    const salary = parseFloat(document.getElementById('inp-salary')?.value) || 0;
+    const emi = parseFloat(document.getElementById('inp-emi')?.value) || 0;
+    const rent = parseFloat(document.getElementById('inp-rent')?.value) || 0;
+    const ins = parseFloat(document.getElementById('inp-ins')?.value) || 0;
+    const bills = parseFloat(document.getElementById('inp-bills')?.value) || 0;
+    const fees = parseFloat(document.getElementById('inp-fees')?.value) || 0;
+    const emergency = parseFloat(document.getElementById('inp-emergency')?.value) || 0;
+    const food = parseFloat(document.getElementById('inp-food')?.value) || 0;
+    const fuel = parseFloat(document.getElementById('inp-fuel')?.value) || 0;
+    const shop = parseFloat(document.getElementById('inp-shop')?.value) || 0;
+
+    const currency = document.getElementById('wsm-calc-currency')?.value || '$';
+    const totalDeductions = emi + rent + ins + bills + fees + emergency + food + fuel + shop;
+    const balance = salary - totalDeductions;
+
+    const netOut = document.getElementById('out-investment-net');
+    if (netOut) {
+      if (balance >= 0) {
+        netOut.className = "p-2 bg-emerald-950/40 text-emerald-400 font-bold text-center border-none transition";
+        netOut.innerText = `${currency} ${balance.toLocaleString()}`;
+      } else {
+        netOut.className = "p-2 bg-red-950/40 text-red-400 font-bold text-center border-none transition";
+        netOut.innerText = `${currency} ${balance.toLocaleString()} (Deficit)`;
+      }
+    }
+  }
+
+  // Bind Calculation Elements
+  ['inp-salary','inp-emi','inp-rent','inp-ins','inp-bills','inp-fees','inp-emergency','inp-food','inp-fuel','inp-shop','wsm-calc-currency'].forEach(id => {
+    document.getElementById(id)?.addEventListener('input', calculateWSMNet);
+    document.getElementById(id)?.addEventListener('change', calculateWSMNet);
+  });
+
+  // Dynamic Widget Initialization Blocks
+  document.addEventListener('DOMContentLoaded', () => {
+    calculateWSMNet();
+
+    // 1. Ticker Tape Feed Injection
+    if (document.getElementById('tv-ticker-tape-container')) {
+      const script = document.createElement('script');
+      script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
+      script.async = true;
+      script.innerHTML = JSON.stringify({
+        "symbols": [
+          {"proName": "FOREXCOM:SPXUSD", "title": "S&P 500 Index"},
+          {"proName": "FOREXCOM:NSXUSD", "title": "US Tech 100"},
+          {"proName": "FX_IDC:INRUSD", "title": "USD to INR"},
+          {"proName": "BITSTAMP:BTCUSD", "title": "Bitcoin"},
+          {"proName": "BITSTAMP:ETHUSD", "title": "Ethereum"}
+        ],
+        "showSymbolLogo": true,
+        "colorTheme": "dark",
+        "isTransparent": true,
+        "displayMode": "adaptive",
+        "locale": "en"
       });
+      document.getElementById('tv-ticker-tape-container').appendChild(script);
     }
 
-    function runSizingSequencerLoop() {
-      updateChartsHeight();
-      setTimeout(updateChartsHeight, 10);
-      setTimeout(updateChartsHeight, 50);
-      setTimeout(updateChartsHeight, 100);
-      setTimeout(updateChartsHeight, 200);
-      setTimeout(updateChartsHeight, 500);
-      setTimeout(updateChartsHeight, 1000);
+    // 2. Earnings Stream Injection
+    if (document.getElementById('wsm-home-earnings-box')) {
+      const eScript = document.createElement('script');
+      eScript.src = 'https://s3.tradingview.com/external-embedding/embed-widget-events.js';
+      eScript.async = true;
+      eScript.innerHTML = JSON.stringify({
+        "colorTheme": "dark",
+        "isTransparent": true,
+        "width": "100%",
+        "height": "100%",
+        "locale": "en",
+        "importanceFilter": "-1,0,1",
+        "currencyFilter": "USD,INR"
+      });
+      document.getElementById('wsm-home-earnings-box').appendChild(eScript);
     }
 
-    function buildDynamicGridMatrix() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const cryptoQueryParam = urlParams.get('c');
+    // 3. Macro Economic Stream Injection
+    if (document.getElementById('wsm-home-economic-box')) {
+      const ecScript = document.createElement('script');
+      ecScript.src = 'https://s3.tradingview.com/external-embedding/embed-widget-timeline.js';
+      ecScript.async = true;
+      ecScript.innerHTML = JSON.stringify({
+        "colorTheme": "dark",
+        "isTransparent": true,
+        "displayMode": "regular",
+        "width": "100%",
+        "height": "100%",
+        "locale": "en",
+        "feedMode": "market",
+        "market": "crypto"
+      });
+      document.getElementById('wsm-home-economic-box').appendChild(ecScript);
+    }
 
-      if (!cryptoQueryParam) return false;
-
-      const tickerArray = cryptoQueryParam
-        .split(',')
-        .map((ticker) => ticker.trim().replace(/\/+$|^\s+|\s+$/g, ''))
-        .filter(Boolean);
-      if (tickerArray.length === 0) return false;
-
-      document.getElementById('wsm-standard-workspace')?.classList.add('hidden');
-      document.getElementById('cryptowatch-dynamic-workspace')?.classList.remove('hidden');
-      
-      const gridContainer = document.getElementById('dynamic-grid-container');
-      if (!gridContainer) return false;
-      gridContainer.innerHTML = ''; 
-
-      tickerArray.forEach((ticker, idx) => {
-        const elementUniqueId = `cryptowatch-node-frame-${idx}`;
-        const cleanTicker = ticker.trim().replace(/\/+$|^\s+|\s+$/g, '');
+    // 4. Live SingleQuote Engine Injection (Fixes Crypto & Precious Metals mismatched text prices)
+    function renderLivePrices() {
+      document.querySelectorAll('.tv-price-holder').forEach(el => {
+        const symbol = el.getAttribute('data-symbol');
+        if (!symbol || el.children.length > 0) return;
         
-        const cardNode = document.createElement('div');
-        cardNode.className = "bg-[#0c1017] border border-gray-700 p-4 rounded-md flex flex-col justify-between";
-        
-        cardNode.innerHTML = `
-          <div class="mb-2 flex justify-between items-center border-b border-gray-800 pb-1.5">
-            <span class="font-bold text-xs text-blue-400 font-mono uppercase tracking-wide">${cleanTicker}</span>
-            <span class="text-[10px] text-gray-500 font-mono">Live Matrix Stream</span>
-          </div>
-          <div id="${elementUniqueId}" style="width: 100%; height: 360px;" class="cryptowatch-frame-box rounded border border-gray-700 overflow-hidden bg-[#0c1017]"></div>
-        `;
-        gridContainer.appendChild(cardNode);
-
-        // Mount chart objects instantly after node validation loop passes
-        // @ts-ignore
-        if (window.TradingView && window.TradingView.widget) {
-          // @ts-ignore
-          new window.TradingView.widget({
-            "width": "100%",
-            "height": "100%",
-            "symbol": cleanTicker,
-            "interval": "D",
-            "timezone": "Etc/UTC",
-            "theme": "dark",
-            "style": "1",
-            "locale": "en",
-            "enable_publishing": false,
-            "hide_side_toolbar": true,
-            "allow_symbol_change": true,
-            "container_id": elementUniqueId,
-            "aff_id": "167679"
-          });
-        }
-      });
-      
-      runSizingSequencerLoop();
-      return true;
-    }
-
-    function renderMiniPrices() {
-      const targets = document.querySelectorAll('.price-holder');
-      targets.forEach((el, idx) => {
-        const symbolStr = el.getAttribute('data-symbol');
-        const nodeUniqueId = `quote-widget-${idx}`;
-        const innerDiv = document.createElement('div');
-        innerDiv.id = nodeUniqueId;
-        el.appendChild(innerDiv);
-
-        const tryRenderWidget = async (retries = 0) => {
-          // @ts-ignore
-          if (window.TradingView && window.TradingView.SingleQuoteWidget) {
-            try {
-              // @ts-ignore
-              new window.TradingView.SingleQuoteWidget({
-                symbol: symbolStr,
-                width: "100%",
-                colorTheme: "dark",
-                isTransparent: true,
-                locale: "en",
-                container_id: nodeUniqueId
-              });
-              return;
-            } catch (e) {
-              // continue to fallback
-            }
-          }
-
-          const display = innerDiv;
-          display.textContent = '…';
-          try {
-            const price = await fetchPriceForSymbol(symbolStr);
-            if (price !== null) {
-              display.textContent = formatPrice(price);
-              return;
-            }
-
-            // Try Finnhub proxy first (requires FINNHUB_API_KEY), then generic proxy
-            const fhRes = await fetch(`/api/price-finnhub?symbol=${encodeURIComponent(symbolStr)}`);
-            if (fhRes.ok) {
-              const j = await fhRes.json();
-              if (j && j.price) { display.textContent = formatPrice(j.price); return; }
-            }
-
-            const proxyRes = await fetch(`/api/price?symbol=${encodeURIComponent(symbolStr)}`);
-            if (proxyRes.ok) {
-              const j2 = await proxyRes.json();
-              if (j2 && j2.price) { display.textContent = formatPrice(j2.price); return; }
-            }
-
-            // Last resort: show a TradingView link with affiliate id so user can click through
-            const tvSafe = symbolStr ? symbolStr.replace(':','-') : '';
-            const tvUrl = `https://www.tradingview.com/symbols/${encodeURIComponent(tvSafe)}/?aff_id=167679`;
-            display.innerHTML = `<a href="${tvUrl}" target="_blank" rel="noopener noreferrer" class="text-sm text-blue-400 underline">Open on TradingView</a>`;
-          } catch (err) {
-            if (retries < 8) setTimeout(() => tryRenderWidget(retries + 1), 300);
-            else display.textContent = 'N/A';
-          }
-        };
-
-        tryRenderWidget();
+        const qScript = document.createElement('script');
+        qScript.src = 'https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js';
+        qScript.async = true;
+        qScript.innerHTML = JSON.stringify({
+          "symbol": symbol,
+          "width": "100%",
+          "colorTheme": "dark",
+          "isTransparent": true,
+          "locale": "en"
+        });
+        el.appendChild(qScript);
       });
     }
 
-    function updateSummaryPrices() {
-      const summaryMap = [
-        { id: 'summary-price-btc', symbol: 'BINANCE:BTCUSDT' },
-        { id: 'summary-price-eth', symbol: 'BINANCE:ETHUSDT' },
-        { id: 'summary-price-nifty', symbol: 'NSE:NIFTY' },
-        { id: 'summary-price-sp500', symbol: '^GSPC' },
-        { id: 'summary-price-dow', symbol: 'TVC:DJI' }
-      ];
-
-      summaryMap.forEach(async (item) => {
-        const el = document.getElementById(item.id);
-        if (!el) return;
-        el.textContent = '…';
-        const price = await fetchPriceForSymbol(item.symbol);
-        if (price !== null) {
-          el.textContent = formatPrice(price);
-          el.classList.add('text-emerald-400');
-          el.classList.remove('text-gray-400');
-          return;
-        }
-
-        const proxyRes = await fetch(`/api/price?symbol=${encodeURIComponent(item.symbol)}`);
-        if (proxyRes.ok) {
-          const j = await proxyRes.json();
-          if (j && j.price !== null) {
-            el.textContent = formatPrice(j.price);
-            el.classList.add('text-emerald-400');
-            el.classList.remove('text-gray-400');
-            return;
-          }
-        }
-
-        el.textContent = 'N/A';
-        el.classList.remove('text-emerald-400');
-        el.classList.add('text-gray-400');
-      });
-    }
-
-    updateSummaryPrices();
-    setInterval(updateSummaryPrices, 30000);
-
-    // Ensure we attempt rendering mini prices when TradingView core appears
-    (function waitAndRenderMiniPrices(retries = 0) {
-      if (window.TradingView) {
-        renderMiniPrices();
-      } else if (retries < 20) {
-        setTimeout(() => waitAndRenderMiniPrices(retries + 1), 200);
+    (function checkTradingViewAvailability(retries = 0) {
+      if (window.TradingView || retries > 10) {
+        renderLivePrices();
+      } else {
+        setTimeout(() => checkTradingViewAvailability(retries + 1), 300);
       }
     })();
+  });
 
-    async function fetchPriceForSymbol(symbolStr) {
-      if (!symbolStr) return null;
-      // Example formats: "BINANCE:SOLUSDT", "BITFINEX:BTCUSD"
-      if (symbolStr.startsWith('BINANCE:')) {
-        const s = symbolStr.split(':')[1];
-        try {
-          const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${encodeURIComponent(s)}`);
-          if (!res.ok) return null;
-          const j = await res.json();
-          return Number(j.price);
-        } catch (e) { return null; }
+  // Dynamic Interactive Chart Overlay Injection Engine
+  document.addEventListener('click', (e) => {
+    const triggerBtn = e.target.closest('.live-chart-trigger');
+    if (!triggerBtn) return;
+
+    const embeddedAssetSymbol = triggerBtn.getAttribute('data-symbol');
+    const targetContainerId = triggerBtn.getAttribute('data-target');
+    const parentBoxId = triggerBtn.getAttribute('data-parent-box');
+
+    const viewPane = document.getElementById(targetContainerId);
+    const parentBox = document.getElementById(parentBoxId);
+
+    if (!viewPane) return;
+
+    if (viewPane.classList.contains('hidden')) {
+      viewPane.classList.remove('hidden');
+      viewPane.className = "w-full h-[320px] block overflow-hidden rounded border border-blue-500/40 transition-all duration-300 mt-2";
+      triggerBtn.innerHTML = 'Close Terminal ✕';
+
+      if (parentBox) {
+        parentBox.classList.remove('border-blue-500/30', 'bg-blue-950/10');
+        parentBox.classList.add('border-emerald-500/50', 'bg-emerald-950/20');
       }
 
-      if (symbolStr.startsWith('BITFINEX:')) {
-        const pair = symbolStr.split(':')[1]; // e.g., BTCUSD
-        const apiSym = 't' + pair.replace('/', '');
-        try {
-          const res = await fetch(`https://api-pub.bitfinex.com/v2/ticker/${apiSym}`);
-          if (!res.ok) return null;
-          const j = await res.json();
-          // Bitfinex ticker response: [ BID, BID_SIZE, ASK, ASK_SIZE, DAILY_CHANGE, DAILY_CHANGE_PERC, LAST_PRICE, VOLUME, HIGH, LOW ]
-          return Number(j[6]);
-        } catch (e) { return null; }
+      if (viewPane.children.length === 0 && window.TradingView) {
+        new window.TradingView.widget({
+          "autosize": true,
+          "symbol": embeddedAssetSymbol,
+          "interval": "D",
+          "timezone": "Etc/UTC",
+          "theme": "dark",
+          "style": "1",
+          "locale": "en",
+          "enable_publishing": false,
+          "hide_top_toolbar": false,
+          "container_id": targetContainerId
+        });
       }
-
-      // Add more providers as needed
-      return null;
-    }
-
-    function formatPrice(num) {
-      if (num === null || typeof num === 'undefined' || Number.isNaN(num)) return 'N/A';
-      if (num >= 1000) return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
-      if (num >= 1) return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 });
-      return num.toString();
-    }
-
-    function launchSystemEngine() {
-      // Wait for the TradingView core to be available, then append embed scripts.
-      // @ts-ignore
-      if (window.TradingView) {
-        // Append ticker tape and watchlist embeds immediately (they are independent external widgets)
-        const tapeBox = document.getElementById('tradingview-ticker-tape');
-        if (tapeBox && !tapeBox._tv_loaded) {
-          const tapeScriptNode = document.createElement('script');
-          tapeScriptNode.type = 'text/javascript';
-          tapeScriptNode.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
-          tapeScriptNode.async = true;
-          tapeScriptNode.innerHTML = JSON.stringify({
-            "symbols": [
-              {"proName": "FOREXCOM:SPX", "title": "S&P 500"},
-              {"proName": "FOREXCOM:NSX", "title": "NASDAQ 100"}
-            ],
-            "showSymbolLogo": true,
-            "colorTheme": "dark",
-            "isTransparent": true,
-            "displayMode": "adaptive",
-            "locale": "en",
-            "aff_id": "167679"
-          });
-          tapeBox.appendChild(tapeScriptNode);
-          tapeBox._tv_loaded = true;
-        }
-
-        const matrixBox = document.getElementById('tradingview-watchlist-matrix');
-        if (matrixBox && !matrixBox._tv_loaded) {
-          const listScriptNode = document.createElement('script');
-          listScriptNode.type = 'text/javascript';
-          listScriptNode.src = 'https://s3.tradingview.com/external-embedding/embed-widget-watchlist.js';
-          listScriptNode.async = true;
-          listScriptNode.innerHTML = JSON.stringify({
-            "colorTheme": "dark",
-            "dateRange": "12M",
-            "showChart": false,
-            "locale": "en",
-            "isTransparent": true,
-            "showSymbolLogo": true,
-            "width": "100%",
-            "height": "450",
-            "aff_id": "167679",
-            "tabs": [{ "title": "WSM Watchlist", "playlistId": "335875673", "type": "watchlist" }]
-          });
-          matrixBox.appendChild(listScriptNode);
-          matrixBox._tv_loaded = true;
-        }
-
-        // If the full widget API is present, build dynamic grids and mini prices.
-        // @ts-ignore
-        if (window.TradingView.widget && window.TradingView.SingleQuoteWidget) {
-          const hasDynamicGrid = buildDynamicGridMatrix();
-          if (!hasDynamicGrid) {
-            renderMiniPrices();
-          }
-        } else {
-          // Try again soon to mount widgets that rely on the full API
-          setTimeout(launchSystemEngine, 200);
-        }
-      } else {
-        setTimeout(launchSystemEngine, 100);
+    } else {
+      viewPane.classList.add('hidden');
+      viewPane.className = "w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300";
+      viewPane.innerHTML = '';
+      triggerBtn.innerHTML = 'View Chart <svg class="w-3 h-3 inline ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>';
+      
+      if (parentBox) {
+        parentBox.classList.remove('border-emerald-500/50', 'bg-emerald-950/20');
+        parentBox.classList.add('border-blue-500/30', 'bg-blue-950/10');
       }
     }
-
-    launchSystemEngine();
-    window.addEventListener('resize', updateChartsHeight);
-
-    const terminalCards = document.querySelectorAll('.asset-card');
-    terminalCards.forEach(card => {
-      const toggleButton = card.querySelector('.chart-toggle-btn');
-      const graphicBox = card.querySelector('.chart-container');
-      const dataTickerFeed = card.getAttribute('data-ticker');
-      const targetElementId = graphicBox ? graphicBox.getAttribute('id') : null;
-
-      if (!toggleButton || !graphicBox || !targetElementId) return;
-
-      toggleButton.addEventListener('click', () => {
-        const isCurrentlyHidden = graphicBox.classList.contains('hidden');
-
-        if (isCurrentlyHidden) {
-          graphicBox.classList.remove('hidden');
-          toggleButton.textContent = '[- Minimize Chart]';
-          // @ts-ignore
-          toggleButton.style.backgroundColor = '#7f1d1d';
-
-          // @ts-ignore
-          new window.TradingView.widget({
-            "width": "100%",
-            "height": "100%",
-            "symbol": dataTickerFeed,
-            "interval": "D",
-            "timezone": "Etc/UTC",
-            "theme": "dark",
-            "style": "1",
-            "locale": "en",
-            "container_id": targetElementId,
-            "aff_id": "167679"
-          });
-        } else {
-          graphicBox.classList.add('hidden');
-          graphicBox.innerHTML = ''; 
-          toggleButton.textContent = '[+ View Inline Chart]';
-          // @ts-ignore
-          toggleButton.style.backgroundColor = '#2563eb';
-        }
-      });
-    });
-
-    // Fix for TradingView inline charts not showing on some live deployments
-    const ensureChartRendering = () => {
-      document.querySelectorAll('.asset-card').forEach((card) => {
-        const chart = card.querySelector('.chart-container');
-        if (!chart) return;
-        if (!chart.classList.contains('hidden') && chart.children.length === 0) {
-          const dataTickerFeed = card.getAttribute('data-ticker');
-          const targetElementId = chart.getAttribute('id');
-          if (window.TradingView && dataTickerFeed && targetElementId) {
-            // @ts-ignore
-            new window.TradingView.widget({
-              "width": "100%",
-              "height": "100%",
-              "symbol": dataTickerFeed,
-              "interval": "D",
-              "timezone": "Etc/UTC",
-              "theme": "dark",
-              "style": "1",
-              "locale": "en",
-              "container_id": targetElementId,
-              "aff_id": "167679"
-            });
-          }
-        }
-      });
-    };
-
-    window.addEventListener('load', ensureChartRendering);
-    window.addEventListener('resize', ensureChartRendering);
-  </script>
-</Layout>
+  });
+</script>
