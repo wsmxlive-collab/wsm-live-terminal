@@ -55,7 +55,6 @@ const tabConfig: Record<string, { label: string; icon: string; activeClasses: st
 };
 ---
 
-
 <div class="mt-4 pt-4 border-t border-gray-700 w-full">
   <div class="flex flex-wrap items-center justify-between pb-2 mb-2 gap-4">
     <div class="flex flex-col gap-1.5 w-full sm:w-auto">
@@ -82,7 +81,6 @@ const tabConfig: Record<string, { label: string; icon: string; activeClasses: st
     </div>
   </div>
 
-  <!-- Dynamic Multi-Color Horizontal Tabs UI -->
   <div class="w-full mb-4 overflow-x-auto no-scrollbar border-b border-gray-800/60">
     <div class="flex gap-2 min-w-max pb-2.5" id="disqus_tab_container">
       {channelList.map((channel, index) => {
@@ -106,12 +104,10 @@ const tabConfig: Record<string, { label: string; icon: string; activeClasses: st
             data-glow-style={config.glowClass}
             class={`disqus-tab group px-4 py-2 text-xs font-medium font-mono rounded-md transition-all duration-200 border cursor-pointer flex items-center gap-2.5 ${stateClasses}`}
           >
-            <!-- Hoverable Icon Holder -->
             <span class="flex items-center justify-center opacity-85 transition-opacity duration-200 group-hover:opacity-100 text-current" set:html={config.icon} />
             
             <span>{config.label}</span>
 
-            <!-- Dynamic Live Asset Pulse Dots -->
             <span class={`tab-pulse-dot relative flex h-1.5 w-1.5 transition-all duration-200 ${index === 0 ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}>
               <span class={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-60 ${config.pulseBg}`}></span>
               <span class={`relative inline-flex rounded-full h-1.5 w-1.5 ${config.dotBg}`}></span>
@@ -167,7 +163,7 @@ const tabConfig: Record<string, { label: string; icon: string; activeClasses: st
         });
       } else {
         var d = document, s = d.createElement('script');
-        s.src = 'https://' + targetShortname + '://';
+        s.src = 'https://' + targetShortname + '.disqus.com/embed.js';
         s.setAttribute('data-timestamp', +new Date());
         s.async = true;
         (d.head || d.body).appendChild(s);
@@ -188,10 +184,13 @@ const tabConfig: Record<string, { label: string; icon: string; activeClasses: st
 
           // Revert all tabs to baseline configuration and hide active pulse animations
           tabs.forEach(t => {
-            const activeStyles = t.getAttribute('data-active-styles').split(' ');
-            const glowStyle = t.getAttribute('data-glow-style');
+            const activeStylesAttr = t.getAttribute('data-active-styles') || '';
+            const activeStyles = activeStylesAttr.split(' ').filter(c => c.trim() !== '');
+            const glowStyle = t.getAttribute('data-glow-style') || '';
             
-            t.classList.remove(...activeStyles, 'shadow-sm', glowStyle);
+            if (activeStyles.length) t.classList.remove(...activeStyles);
+            if (glowStyle) t.classList.remove('shadow-sm', glowStyle);
+            
             t.classList.add('bg-[#0c1017]', 'text-gray-400', 'border-gray-800/80', 'hover:text-gray-200', 'hover:border-gray-700');
             
             const dot = t.querySelector('.tab-pulse-dot');
@@ -202,11 +201,14 @@ const tabConfig: Record<string, { label: string; icon: string; activeClasses: st
           });
 
           // Inject color parameters onto the newly clicked target button
-          const targetActiveStyles = this.getAttribute('data-active-styles').split(' ');
-          const targetGlowStyle = this.getAttribute('data-glow-style');
+          const targetActiveStylesAttr = this.getAttribute('data-active-styles') || '';
+          const targetActiveStyles = targetActiveStylesAttr.split(' ').filter(c => c.trim() !== '');
+          const targetGlowStyle = this.getAttribute('data-glow-style') || '';
 
           this.classList.remove('bg-[#0c1017]', 'text-gray-400', 'border-gray-800/80', 'hover:text-gray-200', 'hover:border-gray-700');
-          this.classList.add(...targetActiveStyles, 'shadow-sm', targetGlowStyle);
+          
+          if (targetActiveStyles.length) this.classList.add(...targetActiveStyles);
+          if (targetGlowStyle) this.classList.add('shadow-sm', targetGlowStyle);
           
           // Show and expand the current dot pulse layout anchor
           const activeDot = this.querySelector('.tab-pulse-dot');
@@ -231,4 +233,3 @@ const tabConfig: Record<string, { label: string; icon: string; activeClasses: st
     }
   })();
 </script>
-
