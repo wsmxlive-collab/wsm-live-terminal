@@ -5,8 +5,6 @@ interface Props {
 }
 
 const { channels = "market-discussions", defaultTitle = "Market Discussions" } = Astro.props;
-const shortname = import.meta.env.DISQUS_SHORTNAME || import.meta.env.PUBLIC_DISQUS_SHORTNAME || "wsmx-live";
-
 const channelList = channels.split(',').map(c => c.trim());
 ---
 
@@ -23,39 +21,40 @@ const channelList = channels.split(',').map(c => c.trim());
             class={`px-2 py-0.5 text-[11px] font-medium font-mono rounded transition-all disqus-tab-btn ${idx === 0 ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-gray-200'}`}
             data-channel-id={chan}
           >
-            {chan === 'metals' ? 'Precious Metals & Energy' : chan === 'indices' ? 'Global Indices' : chan.toUpperCase()}
+            {chan === 'metals' ? '🥇 Metals' : chan === 'market-discussions' ? '📈 Markets' : '🌐 Global Macro'}
           </button>
         ))}
       </div>
     )}
   </div>
 
-  {shortname ? (
-    <div id="disqus_thread" class="prose max-w-none text-sm text-gray-300 w-full"></div>
-  ) : (
-    <div class="text-xs text-gray-500">Comments disabled — set DISQUS_SHORTNAME in environment to enable Disqus.</div>
-  )}
+  <div id="disqus_thread" class="w-full bg-[#070b12] p-4 rounded-lg border border-gray-800 min-h-[300px]"></div>
 </div>
 
-{shortname ? (
-  <script is:inline data-shortname={shortname} data-initial-channel={channelList[0]}>
-    const currentScript = document.currentScript;
-    const sName = currentScript.getAttribute('data-shortname');
-    let activeChannel = currentScript.getAttribute('data-initial-channel');
+<script is:inline define:vars={{ channelList }}>
+  (function() {
+    let activeChannel = channelList[0];
 
-    function getCleanUrl(channel) {
-      // Automatically resolves the protocol and domain name dynamically (localhost or wsmlive.com)
-      return window.location.origin + window.location.pathname + '?feed=' + channel;
+    // Dynamically derive the shortname from the active hosting domain to avoid public exposure
+    function getShortname() {
+      const hostname = window.location.hostname;
+      // Trims subdomains or fallback to index if testing locally on localhost
+      if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return "wsmx-live"; 
+      }
+      return hostname.replace('www.', '').split('.')[0];
     }
 
-    window.disqus_config = function () {
-      this.page.url = getCleanUrl(activeChannel);
-      this.page.identifier = 'wsm-live-channel-' + activeChannel;
-    };
+    function getCleanUrl(channel) {
+      const base = window.location.origin + window.location.pathname;
+      return base.replace(/\/$/, '') + '?channel=' + channel;
+    }
 
     function executeDisqusFrame() {
       const box = document.getElementById('disqus_thread');
       if (box) box.innerHTML = '';
+
+      const targetShortname = getShortname();
 
       if (window.DISQUS) {
         window.DISQUS.reset({
@@ -67,19 +66,17 @@ const channelList = channels.split(',').map(c => c.trim());
         });
       } else {
         var d = document, s = d.createElement('script');
-        s.src = 'https://' + sName + '.disqus.com/embed.js';
+        s.src = 'https://' + targetShortname + '.disqus.com/embed.js';
         s.setAttribute('data-timestamp', +new Date());
         s.async = true;
         (d.head || d.body).appendChild(s);
       }
     }
 
-    if (sName) {
-      if (document.readyState === 'complete') {
-        executeDisqusFrame();
-      } else {
-        window.addEventListener('load', executeDisqusFrame);
-      }
+    if (document.readyState === 'complete') {
+      executeDisqusFrame();
+    } else {
+      window.addEventListener('load', executeDisqusFrame);
     }
 
     // Interactive Tab Channel Switcher Logic
@@ -89,7 +86,7 @@ const channelList = channels.split(',').map(c => c.trim());
           b.classList.remove('bg-blue-600', 'text-white');
           b.classList.add('text-gray-400', 'hover:text-gray-200');
         });
-        
+
         btn.classList.remove('text-gray-400', 'hover:text-gray-200');
         btn.classList.add('bg-blue-600', 'text-white');
 
@@ -97,5 +94,5 @@ const channelList = channels.split(',').map(c => c.trim());
         executeDisqusFrame();
       });
     });
-  </script>
-) : null}
+  })();
+</script>
