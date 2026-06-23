@@ -5,6 +5,14 @@ interface Props {
 }
 
 const { channels = "market-discussions", defaultTitle = "Market Discussions" } = Astro.props;
+
+// Securely read the shortname on the server side using the Cloudflare Pages runtime context
+const cloudflareEnv = Astro.locals.runtime?.env;
+const rawShortname = cloudflareEnv?.DISQUS_SHORTNAME || import.meta.env.DISQUS_SHORTNAME || "wsmx-live";
+
+// Obfuscate it here on the server so it is never printed as clear text in the client HTML markup
+const encryptedShortname = Buffer.from(rawShortname).toString('base64');
+
 const channelList = channels.split(',').map(c => c.trim());
 ---
 
@@ -31,18 +39,17 @@ const channelList = channels.split(',').map(c => c.trim());
   <div id="disqus_thread" class="w-full bg-[#070b12] p-4 rounded-lg border border-gray-800 min-h-[300px]"></div>
 </div>
 
-<script is:inline define:vars={{ channelList }}>
+<script is:inline define:vars={{ encryptedShortname, channelList }}>
   (function() {
     let activeChannel = channelList[0];
 
-    // Dynamically derive the shortname from the active hosting domain to avoid public exposure
+    // Decode the server-passed obfuscated identifier in local script memory scope only
     function getShortname() {
-      const hostname = window.location.hostname;
-      // Trims subdomains or fallback to index if testing locally on localhost
-      if (hostname === 'localhost' || hostname === '127.0.0.1') {
-        return "wsmx-live"; 
+      try {
+        return atob(encryptedShortname);
+      } catch (e) {
+        return "wsmx-live";
       }
-      return hostname.replace('www.', '').split('.')[0];
     }
 
     function getCleanUrl(channel) {
