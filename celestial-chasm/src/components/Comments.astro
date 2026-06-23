@@ -1,12 +1,12 @@
 ---
 interface Props {
-  channels?: string; 
+  channels?: string;
   defaultTitle?: string;
 }
 
-// Fixed hardcoded array sync for the custom channel identifier routing
+// Kept your exact structural channels so Disqus links your existing data perfectly
 const { 
-  channels = "crypto, gold-silver, oil-gas, usa-market, nifty", 
+  channels = "market-discussions, metals, global-macro, usa-dow-nifty50", 
   defaultTitle = "Live Market Terminal Feed" 
 } = Astro.props;
 
@@ -16,86 +16,124 @@ const rawShortname = cloudflareEnv?.DISQUS_SHORTNAME || import.meta.env.DISQUS_S
 
 // Obfuscate it here on the server so it is never printed as clear text in the client HTML markup
 const encryptedShortname = Buffer.from(rawShortname).toString('base64');
-
 const channelList = channels.split(',').map(c => c.trim());
+
+// Unique high-fidelity custom SVG paths and customized theme classes for each market type
+const tabConfig: Record<string, { label: string; icon: string; activeClasses: string; glowClass: string; dotBg: string; pulseBg: string }> = {
+  "market-discussions": {
+    label: "Crypto Discussions",
+    icon: `<svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 8h4.5a2.5 2.5 0 0 1 0 5H9m0 0h5.5a2.5 2.5 0 0 1 0 5H9M10 6v2m4-2v2m-4 10v2m4-2v2M9 13h5"></path></svg>`,
+    activeClasses: "bg-purple-950/40 text-purple-400 border-purple-500/40 font-bold",
+    glowClass: "shadow-purple-950/50",
+    dotBg: "bg-purple-400",
+    pulseBg: "bg-purple-500"
+  },
+  "metals": {
+    label: "Gold & Silver",
+    icon: `<svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 19h20M5 19l2-8h10l2 8M8 11l1-4h6l1 4M10 7l.5-3h3l.5 3"></path></svg>`,
+    activeClasses: "bg-amber-950/40 text-amber-400 border-amber-500/40 font-bold",
+    glowClass: "shadow-amber-950/50",
+    dotBg: "bg-amber-400",
+    pulseBg: "bg-amber-500"
+  },
+  "global-macro": {
+    label: "Crude Oil & NatGas",
+    icon: `<svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-13-7-13S5 10.7 5 15a7 7 0 0 0 7 7z"></path></svg>`,
+    activeClasses: "bg-emerald-950/40 text-emerald-400 border-emerald-500/40 font-bold",
+    glowClass: "shadow-emerald-950/50",
+    dotBg: "bg-emerald-400",
+    pulseBg: "bg-emerald-500"
+  },
+  "usa-dow-nifty50": {
+    label: "USA Dow & Nifty 50",
+    icon: `<svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path><circle cx="18.7" cy="8" r="1"></circle></svg>`,
+    activeClasses: "bg-cyan-950/40 text-cyan-400 border-cyan-500/40 font-bold",
+    glowClass: "shadow-cyan-950/50",
+    dotBg: "bg-cyan-400",
+    pulseBg: "bg-cyan-500"
+  }
+};
 ---
 
-<div class="mt-6 pt-4 border-t border-gray-800 w-full text-gray-100">
-  <div class="flex flex-col gap-4 pb-4 mb-2">
-    
-    <div class="flex flex-wrap items-start justify-between gap-4">
-      <div class="flex flex-col gap-1.5 w-full sm:w-auto">
-        <h3 class="text-xs font-bold text-gray-400 font-mono tracking-wider uppercase">
-          {defaultTitle}
-        </h3>
-        <div class="text-[10px] text-amber-400 font-mono flex flex-col gap-1 bg-amber-950/30 p-3 rounded-lg border border-amber-900/40 max-w-xl shadow-inner">
-          <span class="font-bold flex items-center gap-1 text-amber-500 text-[11px]">
-            ⚡ Quick Anonymous Posting:
-          </span>
-          <span class="text-gray-300">1. Click the <strong class="text-white">"Name"</strong> field inside the chat box below.</span>
-          <span class="text-gray-300">2. Check the box: <span class="text-amber-300 underline font-medium">"I'd rather post as a guest"</span>.</span>
-          <span class="text-gray-300">3. Choose any nickname & any fake email (e.g., <span class="text-white font-mono bg-gray-900 px-1 py-0.5 rounded">anon@live.com</span>).</span>
-        </div>
-      </div>
-      
-      <div class="flex bg-gray-950 p-1 rounded-lg border border-gray-800 items-center px-3 py-1.5 gap-2 self-start sm:self-center shadow-lg">
-        <span class="relative flex h-2 w-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+
+<div class="mt-4 pt-4 border-t border-gray-700 w-full">
+  <div class="flex flex-wrap items-center justify-between pb-2 mb-2 gap-4">
+    <div class="flex flex-col gap-1.5 w-full sm:w-auto">
+      <h3 class="text-xs font-semibold text-gray-400 font-mono tracking-wider uppercase">
+        {defaultTitle}
+      </h3>
+      <div class="text-[10px] text-amber-400 font-mono flex flex-col gap-0.5 bg-amber-950/20 p-2 rounded border border-amber-900/30 max-w-xl">
+        <span class="font-bold flex items-center gap-1 text-amber-500">
+          ⚡ Quick Anonymous Posting:
         </span>
-        <span class="text-[11px] font-bold font-mono text-emerald-400 uppercase tracking-wider">
-          💬 Discussions Live
-        </span>
+        <span>1. Click the "Name" field inside the chat box below.</span>
+        <span>2. Check the checkbox: <span class="text-white underline">"I'd rather post as a guest"</span>.</span>
+        <span>3. Pick any nickname and enter email (e.g., <span class="text-white font-bold">anon@live.com</span>). <span class="text-amber-500 font-bold">No verification required!</span></span>
       </div>
     </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:flex md:flex-wrap bg-gray-950 p-1.5 rounded-xl border border-gray-800/80 gap-1.5 w-full shadow-2xl">
-      {channelList.map((chan, idx) => (
-        <button 
-          class={`px-3.5 py-2 text-[11px] font-bold font-mono rounded-lg transition-all duration-200 flex items-center justify-center md:justify-start gap-2 border cursor-pointer disqus-tab-btn w-full md:w-auto ${idx === 0 ? 'bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-600/20' : 'text-gray-400 border-transparent bg-transparent hover:text-white hover:bg-gray-900/60'}`}
-          data-channel-id={chan}
-        >
-          {chan === 'crypto' && (
-            <svg class="w-3.5 h-3.5 text-yellow-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span class="tracking-wide">Crypto Chat</span>
-          )}
-          
-          {chan === 'gold-silver' && (
-            <svg class="w-3.5 h-3.5 text-amber-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-            </svg>
-            <span class="tracking-wide">GOLD & Silver</span>
-          )}
-          
-          {chan === 'oil-gas' && (
-            <svg class="w-3.5 h-3.5 text-orange-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-            </svg>
-            <span class="tracking-wide">Oil & Gas</span>
-          )}
-          
-          {chan === 'usa-market' && (
-            <svg class="w-3.5 h-3.5 text-blue-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-            <span class="tracking-wide">USA Markets</span>
-          )}
-          
-          {chan === 'nifty' && (
-            <svg class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
-            <span class="tracking-wide">Nifty Index</span>
-          )}
-        </button>
-      ))}
+    <div class="flex bg-[#0c1017] p-0.5 rounded border border-gray-800 items-center px-2.5 py-1 gap-2 self-start sm:self-center">
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+      </span>
+      <span class="text-[11px] font-bold font-mono text-gray-200 uppercase tracking-wide">
+        💬 Discussions Live
+      </span>
     </div>
   </div>
 
-  <div id="disqus_thread" class="w-full bg-[#070b12] p-4 rounded-xl border border-gray-800 min-h-[380px] text-gray-100 shadow-inner" style="color-scheme: dark !important;"></div>
+  <!-- Dynamic Multi-Color Horizontal Tabs UI -->
+  <div class="w-full mb-4 overflow-x-auto no-scrollbar border-b border-gray-800/60">
+    <div class="flex gap-2 min-w-max pb-2.5" id="disqus_tab_container">
+      {channelList.map((channel, index) => {
+        const config = tabConfig[channel] || {
+          label: channel.replace(/-/g, ' ').replace(/(^\w|\s\w)/g, m => m.toUpperCase()),
+          icon: `<svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>`,
+          activeClasses: "bg-blue-950/40 text-blue-400 border-blue-500/40 font-bold",
+          glowClass: "shadow-blue-950/50",
+          dotBg: "bg-blue-400",
+          pulseBg: "bg-blue-500"
+        };
+        
+        const stateClasses = index === 0 
+          ? `${config.activeClasses} shadow-sm ${config.glowClass}`
+          : "bg-[#0c1017] text-gray-400 border-gray-800/80 hover:text-gray-200 hover:border-gray-700";
+
+        return (
+          <button
+            data-channel={channel}
+            data-active-styles={config.activeClasses}
+            data-glow-style={config.glowClass}
+            class={`disqus-tab group px-4 py-2 text-xs font-medium font-mono rounded-md transition-all duration-200 border cursor-pointer flex items-center gap-2.5 ${stateClasses}`}
+          >
+            <!-- Hoverable Icon Holder -->
+            <span class="flex items-center justify-center opacity-85 transition-opacity duration-200 group-hover:opacity-100 text-current" set:html={config.icon} />
+            
+            <span>{config.label}</span>
+
+            <!-- Dynamic Live Asset Pulse Dots -->
+            <span class={`tab-pulse-dot relative flex h-1.5 w-1.5 transition-all duration-200 ${index === 0 ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}>
+              <span class={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-60 ${config.pulseBg}`}></span>
+              <span class={`relative inline-flex rounded-full h-1.5 w-1.5 ${config.dotBg}`}></span>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  </div>
+
+  <div id="disqus_thread" class="w-full bg-[#070b12] p-4 rounded-lg border border-gray-800 min-h-[300px]"></div>
 </div>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>
 
 <script is:inline define:vars={{ encryptedShortname, channelList }}>
   (function() {
@@ -117,9 +155,8 @@ const channelList = channels.split(',').map(c => c.trim());
     function executeDisqusFrame() {
       const box = document.getElementById('disqus_thread');
       if (box) box.innerHTML = '';
-
       const targetShortname = getShortname();
-
+      
       if (window.DISQUS) {
         window.DISQUS.reset({
           reload: true,
@@ -130,33 +167,68 @@ const channelList = channels.split(',').map(c => c.trim());
         });
       } else {
         var d = document, s = d.createElement('script');
-        s.src = 'https://' + targetShortname + '.disqus.com/embed.js';
+        s.src = 'https://' + targetShortname + '://';
         s.setAttribute('data-timestamp', +new Date());
         s.async = true;
         (d.head || d.body).appendChild(s);
       }
     }
 
-    if (document.readyState === 'complete') {
-      executeDisqusFrame();
-    } else {
-      window.addEventListener('load', executeDisqusFrame);
+    function initTabs() {
+      const container = document.getElementById('disqus_tab_container');
+      if (!container) return;
+
+      const tabs = container.querySelectorAll('.disqus-tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const selectedChannel = this.getAttribute('data-channel');
+          if (selectedChannel === activeChannel) return;
+
+          activeChannel = selectedChannel;
+
+          // Revert all tabs to baseline configuration and hide active pulse animations
+          tabs.forEach(t => {
+            const activeStyles = t.getAttribute('data-active-styles').split(' ');
+            const glowStyle = t.getAttribute('data-glow-style');
+            
+            t.classList.remove(...activeStyles, 'shadow-sm', glowStyle);
+            t.classList.add('bg-[#0c1017]', 'text-gray-400', 'border-gray-800/80', 'hover:text-gray-200', 'hover:border-gray-700');
+            
+            const dot = t.querySelector('.tab-pulse-dot');
+            if (dot) {
+              dot.classList.remove('scale-100', 'opacity-100');
+              dot.classList.add('scale-0', 'opacity-0');
+            }
+          });
+
+          // Inject color parameters onto the newly clicked target button
+          const targetActiveStyles = this.getAttribute('data-active-styles').split(' ');
+          const targetGlowStyle = this.getAttribute('data-glow-style');
+
+          this.classList.remove('bg-[#0c1017]', 'text-gray-400', 'border-gray-800/80', 'hover:text-gray-200', 'hover:border-gray-700');
+          this.classList.add(...targetActiveStyles, 'shadow-sm', targetGlowStyle);
+          
+          // Show and expand the current dot pulse layout anchor
+          const activeDot = this.querySelector('.tab-pulse-dot');
+          if (activeDot) {
+            activeDot.classList.remove('scale-0', 'opacity-0');
+            activeDot.classList.add('scale-100', 'opacity-100');
+          }
+
+          executeDisqusFrame();
+        });
+      });
     }
 
-    // Dynamic Tab Switching Handler Matrix
-    document.querySelectorAll('.disqus-tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.disqus-tab-btn').forEach(b => {
-          b.classList.remove('bg-blue-600', 'text-white', 'border-blue-500', 'shadow-md', 'shadow-blue-600/20');
-          b.classList.add('text-gray-400', 'border-transparent', 'bg-transparent');
-        });
-
-        btn.classList.remove('text-gray-400', 'border-transparent', 'bg-transparent');
-        btn.classList.add('bg-blue-600', 'text-white', 'border-blue-500', 'shadow-md', 'shadow-blue-600/20');
-
-        activeChannel = btn.getAttribute('data-channel-id');
+    if (document.readyState === 'complete') {
+      initTabs();
+      executeDisqusFrame();
+    } else {
+      window.addEventListener('load', () => {
+        initTabs();
         executeDisqusFrame();
       });
-    });
+    }
   })();
 </script>
+
