@@ -1,127 +1,165 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+// Pulls the Disqus shortname safely from environmental context
+const disqusShortname = import.meta.env.DISQUS_SHORTNAME || "";
 ---
 
 <Layout title="WSM Live - Crypto Terminal">
   <h1 class="text-3xl font-bold text-gray-100 mb-6">Cryptocurrency Terminal</h1>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <!-- Bitcoin Card -->
-    <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg">
-      <h2 class="text-xl font-semibold text-gray-100 mb-1">Bitcoin (BTC/USD)</h2>
-      <div id="btc-price" class="text-emerald-400 text-sm font-medium mb-2">—</div>
-      <p class="text-gray-400 mb-4">Real-time price, volume, and market cap for Bitcoin.</p>
-      <button class="chart-toggle-btn inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-chart-id="btc-chart">
-        + View Live Chart
-      </button>
-      <div id="btc-chart" class="tradingview-widget-container hidden mt-4 rounded-md overflow-hidden h-[360px]">
-        <div id="btc-embed" style="width:100%;height:100%;"></div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start mb-12">
+    
+    <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg asset-card" data-ticker="BITFINEX:BTCUSD">
+      <div class="flex items-center justify-between gap-4 w-full border-b border-gray-800 pb-3">
+        <div class="flex items-center gap-4 min-w-0 flex-1">
+          <h2 class="text-lg font-semibold text-gray-100 whitespace-nowrap">Bitcoin (BTC/USD)</h2>
+          <div id="btc-price" class="price-holder min-w-[120px] h-[32px] flex items-center" data-symbol="BINANCE:BTCUSDT">—</div>
+        </div>
+        <button class="chart-toggle-btn p-2 rounded border border-blue-500/30 bg-blue-950/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all flex-shrink-0" title="Toggle Chart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        </button>
       </div>
+      <div class="chart-container hidden w-full h-[360px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-btc"></div>
     </div>
 
-    <!-- Ethereum Card -->
-    <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg">
-      <h2 class="text-xl font-semibold text-gray-100 mb-1">Ethereum (ETH/USD)</h2>
-      <div id="eth-price" class="text-emerald-400 text-sm font-medium mb-2">—</div>
-      <p class="text-gray-400 mb-4">Real-time price, volume, and market cap for Ethereum.</p>
-      <button class="chart-toggle-btn inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-chart-id="eth-chart">
-        + View Live Chart
-      </button>
-      <div id="eth-chart" class="tradingview-widget-container hidden mt-4 rounded-md overflow-hidden h-[360px]">
-        <div id="eth-embed" style="width:100%;height:100%;"></div>
+    <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg asset-card" data-ticker="BITFINEX:ETHUSD">
+      <div class="flex items-center justify-between gap-4 w-full border-b border-gray-800 pb-3">
+        <div class="flex items-center gap-4 min-w-0 flex-1">
+          <h2 class="text-lg font-semibold text-gray-100 whitespace-nowrap">Ethereum (ETH/USD)</h2>
+          <div id="eth-price" class="price-holder min-w-[120px] h-[32px] flex items-center" data-symbol="BINANCE:ETHUSDT">—</div>
+        </div>
+        <button class="chart-toggle-btn p-2 rounded border border-blue-500/30 bg-blue-950/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all flex-shrink-0" title="Toggle Chart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        </button>
       </div>
+      <div class="chart-container hidden w-full h-[360px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-eth"></div>
     </div>
 
-    <!-- Altcoins Overview Card -->
-    <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg">
-      <h2 class="text-xl font-semibold text-gray-100 mb-1">Altcoins Overview</h2>
-      <div id="alt-price" class="text-emerald-400 text-sm font-medium mb-2">—</div>
-      <p class="text-gray-400 mb-4">Track top altcoins and their market performance.</p>
-      <button class="chart-toggle-btn inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-chart-id="altcoins-chart">
-        + View Live Chart
-      </button>
-      <div id="altcoins-chart" class="tradingview-widget-container hidden mt-4 rounded-md overflow-hidden h-[360px]">
-        <div id="altcoins-embed" style="width:100%;height:100%;"></div>
+    <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg asset-card" data-ticker="BINANCE:SOLUSDT">
+      <div class="flex items-center justify-between gap-4 w-full border-b border-gray-800 pb-3">
+        <div class="flex items-center gap-4 min-w-0 flex-1">
+          <h2 class="text-lg font-semibold text-gray-100 whitespace-nowrap">Solana (SOL/USD)</h2>
+          <div id="sol-price" class="price-holder min-w-[120px] h-[32px] flex items-center" data-symbol="BINANCE:SOLUSDT">—</div>
+        </div>
+        <button class="chart-toggle-btn p-2 rounded border border-blue-500/30 bg-blue-950/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all flex-shrink-0" title="Toggle Chart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        </button>
       </div>
+      <div class="chart-container hidden w-full h-[360px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-sol"></div>
     </div>
+
+    <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg asset-card" data-ticker="BINANCE:LTCUSDT">
+      <div class="flex items-center justify-between gap-4 w-full border-b border-gray-800 pb-3">
+        <div class="flex items-center gap-4 min-w-0 flex-1">
+          <h2 class="text-lg font-semibold text-gray-100 whitespace-nowrap">Litecoin (LTC/USD)</h2>
+          <div id="ltc-price" class="price-holder min-w-[120px] h-[32px] flex items-center" data-symbol="BINANCE:LTCUSDT">—</div>
+        </div>
+        <button class="chart-toggle-btn p-2 rounded border border-blue-500/30 bg-blue-950/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all flex-shrink-0" title="Toggle Chart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        </button>
+      </div>
+      <div class="chart-container hidden w-full h-[360px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-ltc"></div>
+    </div>
+
+    <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg asset-card" data-ticker="BINANCE:DOGEUSDT">
+      <div class="flex items-center justify-between gap-4 w-full border-b border-gray-800 pb-3">
+        <div class="flex items-center gap-4 min-w-0 flex-1">
+          <h2 class="text-lg font-semibold text-gray-100 whitespace-nowrap">Dogecoin (DOGE/USD)</h2>
+          <div id="doge-price" class="price-holder min-w-[120px] h-[32px] flex items-center" data-symbol="BINANCE:DOGEUSDT">—</div>
+        </div>
+        <button class="chart-toggle-btn p-2 rounded border border-blue-500/30 bg-blue-950/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all flex-shrink-0" title="Toggle Chart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        </button>
+      </div>
+      <div class="chart-container hidden w-full h-[360px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-doge"></div>
+    </div>
+
+    <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg asset-card" data-ticker="MEXC:TRUMPUSDT">
+      <div class="flex items-center justify-between gap-4 w-full border-b border-gray-800 pb-3">
+        <div class="flex items-center gap-4 min-w-0 flex-1">
+          <h2 class="text-lg font-semibold text-gray-100 whitespace-nowrap">Trumpcoin (TRUMP/USD)</h2>
+          <div id="trump-price" class="price-holder min-w-[120px] h-[32px] flex items-center" data-symbol="MEXC:TRUMPUSDT">—</div>
+        </div>
+        <button class="chart-toggle-btn p-2 rounded border border-blue-500/30 bg-blue-950/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all flex-shrink-0" title="Toggle Chart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        </button>
+      </div>
+      <div class="chart-container hidden w-full h-[360px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-trump"></div>
+    </div>
+
   </div>
 
-  <script is:inline>
-    document.addEventListener("DOMContentLoaded", () => {
-      const toggleButtons = document.querySelectorAll(".chart-toggle-btn");
+  <div class="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow-xl mt-8">
+    <h3 class="text-lg font-semibold text-gray-100 font-mono mb-4 flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Crypto Discussions
+    </h3>
+    <div id="disqus_thread" class="w-full min-h-[300px]"></div>
+  </div>
 
-      toggleButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          const chartId = button.dataset.chartId;
-          const chartContainer = document.getElementById(chartId);
+  <script is:inline data-shortname={disqusShortname}>
+    const currentScript = document.currentScript;
+    const resolvedShortname = (currentScript ? currentScript.getAttribute('data-shortname') : '') || 'wsmx-live';
 
-          if (chartContainer) {
-            const isHidden = chartContainer.classList.contains("hidden");
-            chartContainer.classList.toggle("hidden", !isHidden);
-            button.textContent = isHidden ? "- Minimize" : "+ View Live Chart";
+    // Pure Dynamic Toggle Engine 
+    const cryptoCards = document.querySelectorAll('.asset-card');
+    cryptoCards.forEach(card => {
+      const toggleButton = card.querySelector('.chart-toggle-btn');
+      const graphicBox = card.querySelector('.chart-container');
+      const dataTickerFeed = card.getAttribute('data-ticker');
+      const targetElementId = graphicBox ? graphicBox.getAttribute('id') : null;
+
+      if (!toggleButton || !graphicBox || !targetElementId) return;
+
+      toggleButton.addEventListener('click', () => {
+        const isCurrentlyHidden = graphicBox.classList.contains('hidden');
+
+        if (isCurrentlyHidden) {
+          graphicBox.classList.remove('hidden');
+          toggleButton.classList.remove('border-blue-500/30', 'bg-blue-950/40', 'text-blue-400', 'hover:bg-blue-600');
+          toggleButton.classList.add('border-emerald-500/40', 'bg-emerald-950/60', 'text-emerald-400', 'hover:bg-emerald-600');
+
+          if (window.TradingView && dataTickerFeed && targetElementId && graphicBox.children.length === 0) {
+            // @ts-ignore
+            new window.TradingView.widget({
+              "width": "100%",
+              "height": "100%",
+              "symbol": dataTickerFeed,
+              "interval": "D",
+              "timezone": "Etc/UTC",
+              "theme": "dark",
+              "style": "1",
+              "locale": "en",
+              "container_id": targetElementId,
+              "aff_id": "167679"
+            });
           }
-        });
+        } else {
+          graphicBox.classList.add('hidden');
+          graphicBox.innerHTML = '';
+          toggleButton.classList.remove('border-emerald-500/40', 'bg-emerald-950/60', 'text-emerald-400', 'hover:bg-emerald-600');
+          toggleButton.classList.add('border-blue-500/30', 'bg-blue-950/40', 'text-blue-400', 'hover:bg-blue-600');
+        }
       });
     });
-  </script>
 
-  <script is:inline>
-    // Inject TradingView external-embedding widgets when a chart is first shown
-    function injectChart(containerId, symbol) {
-      const container = document.getElementById(containerId);
-      if (!container) return;
-      if (container._injected) return;
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-      script.async = true;
-      script.innerHTML = JSON.stringify({
-        "symbol": symbol,
-        "interval": "D",
-        "timezone": "Etc/UTC",
-        "theme": "dark",
-        "style": "1",
-        "locale": "en",
-        "toolbar_bg": "#111827",
-        "enable_publishing": false,
-        "allow_symbol_change": true,
-        "hide_side_toolbar": false,
-        "details": true,
-        "studies": [],
-        "width": "100%",
-        "height": "100%",
-        "aff_id": "167679"
-      });
-      container.appendChild(script);
-      container._injected = true;
-    }
-
-    // Listen for toggles and inject appropriate widget on first reveal
-    document.addEventListener('click', (e) => {
-      const btn = e.target.closest && e.target.closest('.chart-toggle-btn');
-      if (!btn) return;
-      const chartId = btn.dataset.chartId;
-      if (chartId === 'btc-chart') injectChart('btc-embed', 'BITFINEX:BTCUSD');
-      if (chartId === 'eth-chart') injectChart('eth-embed', 'BITFINEX:ETHUSD');
-      if (chartId === 'altcoins-chart') injectChart('altcoins-embed', 'BINANCE:SOLUSDT');
-    });
-
-    // Render small live price widgets below titles using TradingView SingleQuoteWidget
     function renderSmallPrices() {
       const mapping = [
-        // Use Binance REST-friendly pairs for client-side fallback (CORS allowed)
         { id: 'btc-price', symbol: 'BINANCE:BTCUSDT' },
         { id: 'eth-price', symbol: 'BINANCE:ETHUSDT' },
-        { id: 'alt-price', symbol: 'BINANCE:SOLUSDT' }
+        { id: 'sol-price', symbol: 'BINANCE:SOLUSDT' },
+        { id: 'ltc-price', symbol: 'BINANCE:LTCUSDT' },
+        { id: 'doge-price', symbol: 'BINANCE:DOGEUSDT' },
+        { id: 'trump-price', symbol: 'MEXC:TRUMPUSDT' }
       ];
 
       mapping.forEach(item => {
         const el = document.getElementById(item.id);
         if (!el) return;
         if (el._rendered) return;
-        // Create a lightweight single quote widget if available
         if (window.TradingView && window.TradingView.SingleQuoteWidget) {
           try {
-            // @ts-ignore
             new window.TradingView.SingleQuoteWidget({
               symbol: item.symbol,
               width: "100%",
@@ -132,75 +170,41 @@ import Layout from "../layouts/Layout.astro";
             });
             el._rendered = true;
           } catch (err) {
-            // fallback: fetch price via iframe-less link
             el.textContent = '';
           }
         }
       });
     }
 
-    async function fetchPriceForSymbol(symbolStr) {
-      if (!symbolStr) return null;
-      if (symbolStr.startsWith('BINANCE:')) {
-        const s = symbolStr.split(':')[1];
-        try {
-          const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${encodeURIComponent(s)}`);
-          if (!res.ok) return null;
-          const j = await res.json();
-          return Number(j.price);
-        } catch (e) { return null; }
-      }
-      if (symbolStr.startsWith('BITFINEX:')) {
-        const pair = symbolStr.split(':')[1];
-        const apiSym = 't' + pair.replace('/', '');
-        try {
-          const res = await fetch(`https://api-pub.bitfinex.com/v2/ticker/${apiSym}`);
-          if (!res.ok) return null;
-          const j = await res.json();
-          return Number(j[6]);
-        } catch (e) { return null; }
-      }
-      return null;
-    }
+    const formatPrice = (p) => typeof p === 'number' ? p.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 }) : p;
 
-    function formatPrice(num) {
-      if (num === null || typeof num === 'undefined' || Number.isNaN(num)) return 'N/A';
-      if (num >= 1000) return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
-      if (num >= 1) return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 });
-      return num.toString();
-    }
-
-    // If TradingView widgets cannot be used, populate live prices via REST
     (function waitAndFillFallback(retries = 0) {
-      const mapping = [
+      if (window.TradingView && window.TradingView.SingleQuoteWidget) return;
+      const needs = [
         { id: 'btc-price', symbol: 'BINANCE:BTCUSDT' },
         { id: 'eth-price', symbol: 'BINANCE:ETHUSDT' },
-        { id: 'alt-price', symbol: 'BINANCE:SOLUSDT' }
+        { id: 'sol-price', symbol: 'BINANCE:SOLUSDT' },
+        { id: 'ltc-price', symbol: 'BINANCE:LTCUSDT' },
+        { id: 'doge-price', symbol: 'BINANCE:DOGEUSDT' },
+        { id: 'trump-price', symbol: 'MEXC:TRUMPUSDT' }
       ];
-      const needs = mapping.filter(m => {
-        const el = document.getElementById(m.id);
-        return el && (!el._rendered && (!el.textContent || el.textContent.trim() === '—' || el.textContent.trim() === '' || el.textContent.trim() === 'N/A'));
-      });
-      if (needs.length === 0) return;
-      if (window.TradingView && window.TradingView.SingleQuoteWidget) return; // widgets will render themselves
       needs.forEach(async (m) => {
         const el = document.getElementById(m.id);
         if (!el) return;
-        el.textContent = '…';
         try {
           if (m.symbol.startsWith('BINANCE:')) {
             const s = m.symbol.split(':')[1];
             const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${encodeURIComponent(s)}`);
-            if (!res.ok) { el.textContent = 'N/A'; return; }
-            const j = await res.json();
-            el.textContent = j && j.price ? formatPrice(Number(j.price)) : 'N/A';
-            return;
+            if (res.ok) {
+              const j = await res.json();
+              if (j && j.price) { el.textContent = formatPrice(Number(j.price)); return; }
+            }
           }
-          // Fallback to server proxy for other providers
           const res = await fetch(`/api/price?symbol=${encodeURIComponent(m.symbol)}`);
-          if (!res.ok) { el.textContent = 'N/A'; return; }
-          const j = await res.json();
-          el.textContent = j && j.price ? formatPrice(j.price) : 'N/A';
+          if (res.ok) {
+            const j = await res.json();
+            if (j && j.price) el.textContent = formatPrice(j.price);
+          }
         } catch (e) {
           el.textContent = 'N/A';
         }
@@ -208,13 +212,27 @@ import Layout from "../layouts/Layout.astro";
       if (retries < 20) setTimeout(() => waitAndFillFallback(retries + 1), 500);
     })();
 
-    // Try rendering prices when TradingView core is ready
     (function waitAndRenderPrices(retries = 0) {
       if (window.TradingView && window.TradingView.SingleQuoteWidget) {
         renderSmallPrices();
-      } else if (retries < 20) {
-        setTimeout(() => waitAndRenderPrices(retries + 1), 200);
+      } else if (retries < 30) {
+        setTimeout(() => waitAndRenderPrices(retries + 1), 300);
       }
     })();
+
+    // Disqus Injection Engine with Explicit Isolated Identifiers
+    if (resolvedShortname) {
+      window.disqus_config = function () {
+        this.page.url = window.location.href;
+        // Setting a unique identifier separates this thread from the index terminal page
+        this.page.identifier = 'crypto-terminal-discussions';
+      };
+      (function() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://' + resolvedShortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
+    }
   </script>
 </Layout>

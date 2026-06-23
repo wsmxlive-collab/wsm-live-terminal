@@ -1,29 +1,101 @@
 ---
-const { identifier, url } = Astro.props;
-const shortname = process.env.DISQUS_SHORTNAME || import.meta.env.PUBLIC_DISQUS_SHORTNAME || '';
-const threadId = `disqus-thread-${identifier}`;
+interface Props {
+  channels?: string; 
+  defaultTitle?: string;
+}
+
+const { channels = "market-discussions", defaultTitle = "Market Discussions" } = Astro.props;
+const shortname = import.meta.env.DISQUS_SHORTNAME || import.meta.env.PUBLIC_DISQUS_SHORTNAME || "wsmx-live";
+
+const channelList = channels.split(',').map(c => c.trim());
 ---
 
-<div class="mt-4 pt-4 border-t border-gray-700">
+<div class="mt-4 pt-4 border-t border-gray-700 w-full">
+  <div class="flex flex-wrap items-center justify-between pb-2 mb-2 gap-4">
+    <h3 class="text-xs font-semibold text-gray-400 font-mono tracking-wider uppercase">
+      {defaultTitle}
+    </h3>
+    
+    {channelList.length > 1 && (
+      <div class="flex bg-[#0c1017] p-0.5 rounded border border-gray-800 gap-1">
+        {channelList.map((chan, idx) => (
+          <button 
+            class={`px-2 py-0.5 text-[11px] font-medium font-mono rounded transition-all disqus-tab-btn ${idx === 0 ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-gray-200'}`}
+            data-channel-id={chan}
+          >
+            {chan === 'metals' ? 'Precious Metals & Energy' : chan === 'indices' ? 'Global Indices' : chan.toUpperCase()}
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+
   {shortname ? (
-    <div id={threadId} class="prose max-w-none text-sm text-gray-300"></div>
+    <div id="disqus_thread" class="prose max-w-none text-sm text-gray-300 w-full"></div>
   ) : (
     <div class="text-xs text-gray-500">Comments disabled — set DISQUS_SHORTNAME in environment to enable Disqus.</div>
   )}
+</div>
 
-  {shortname ? (
-    <script is:inline>
-      {`var disqus_config = function () {
-        this.page.identifier = ${JSON.stringify(identifier)};
-        try { this.page.url = ${JSON.stringify(url || '')} || document.location.href; } catch(e) { this.page.url = document.location.href; }
-      };
-      (function() {
+{shortname ? (
+  <script is:inline data-shortname={shortname} data-initial-channel={channelList[0]}>
+    const currentScript = document.currentScript;
+    const sName = currentScript.getAttribute('data-shortname');
+    let activeChannel = currentScript.getAttribute('data-initial-channel');
+
+    function getCleanUrl(channel) {
+      // Automatically resolves the protocol and domain name dynamically (localhost or wsmlive.com)
+      return window.location.origin + window.location.pathname + '?feed=' + channel;
+    }
+
+    window.disqus_config = function () {
+      this.page.url = getCleanUrl(activeChannel);
+      this.page.identifier = 'wsm-live-channel-' + activeChannel;
+    };
+
+    function executeDisqusFrame() {
+      const box = document.getElementById('disqus_thread');
+      if (box) box.innerHTML = '';
+
+      if (window.DISQUS) {
+        window.DISQUS.reset({
+          reload: true,
+          config: function () {
+            this.page.url = getCleanUrl(activeChannel);
+            this.page.identifier = 'wsm-live-channel-' + activeChannel;
+          }
+        });
+      } else {
         var d = document, s = d.createElement('script');
-        s.src = 'https://${shortname}.disqus.com/embed.js';
+        s.src = 'https://' + sName + '.disqus.com/embed.js';
         s.setAttribute('data-timestamp', +new Date());
         s.async = true;
         (d.head || d.body).appendChild(s);
-      })();`}
-    </script>
-  ) : null}
-</div>
+      }
+    }
+
+    if (sName) {
+      if (document.readyState === 'complete') {
+        executeDisqusFrame();
+      } else {
+        window.addEventListener('load', executeDisqusFrame);
+      }
+    }
+
+    // Interactive Tab Channel Switcher Logic
+    document.querySelectorAll('.disqus-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.disqus-tab-btn').forEach(b => {
+          b.classList.remove('bg-blue-600', 'text-white');
+          b.classList.add('text-gray-400', 'hover:text-gray-200');
+        });
+        
+        btn.classList.remove('text-gray-400', 'hover:text-gray-200');
+        btn.classList.add('bg-blue-600', 'text-white');
+
+        activeChannel = btn.getAttribute('data-channel-id');
+        executeDisqusFrame();
+      });
+    });
+  </script>
+) : null}
