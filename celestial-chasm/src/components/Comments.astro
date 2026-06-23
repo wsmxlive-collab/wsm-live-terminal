@@ -4,7 +4,7 @@ interface Props {
   defaultTitle?: string;
 }
 
-const { channels = "market-discussions", defaultTitle = "Market Discussions" } = Astro.props;
+const { channels = "live-terminal-discussions", defaultTitle = "Live Market Terminal Feed" } = Astro.props;
 
 // Securely read the shortname on the server side using the Cloudflare Pages runtime context
 const cloudflareEnv = Astro.locals.runtime?.env;
@@ -18,22 +18,24 @@ const channelList = channels.split(',').map(c => c.trim());
 
 <div class="mt-4 pt-4 border-t border-gray-700 w-full">
   <div class="flex flex-wrap items-center justify-between pb-2 mb-2 gap-4">
-    <h3 class="text-xs font-semibold text-gray-400 font-mono tracking-wider uppercase">
-      {defaultTitle}
-    </h3>
+    <div class="flex flex-col gap-1">
+      <h3 class="text-xs font-semibold text-gray-400 font-mono tracking-wider uppercase">
+        {defaultTitle}
+      </h3>
+      <span class="text-[10px] text-amber-500 font-mono flex items-center gap-1.5 bg-amber-950/20 px-2 py-0.5 rounded border border-amber-900/30 w-fit">
+        💡 <span class="font-bold">To Post Anonymously:</span> Click "Name" field below & check "I'd rather post as a guest"
+      </span>
+    </div>
     
-    {channelList.length > 1 && (
-      <div class="flex bg-[#0c1017] p-0.5 rounded border border-gray-800 gap-1">
-        {channelList.map((chan, idx) => (
-          <button 
-            class={`px-2 py-0.5 text-[11px] font-medium font-mono rounded transition-all disqus-tab-btn ${idx === 0 ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-gray-200'}`}
-            data-channel-id={chan}
-          >
-            {chan === 'metals' ? '🥇 Metals' : chan === 'market-discussions' ? '📈 Markets' : '🌐 Global Macro'}
-          </button>
-        ))}
-      </div>
-    )}
+    <div class="flex bg-[#0c1017] p-0.5 rounded border border-gray-800 items-center px-2 py-1 gap-2">
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+      </span>
+      <span class="text-[11px] font-bold font-mono text-gray-200 uppercase tracking-wide">
+        💬 Terminal Live Discussion
+      </span>
+    </div>
   </div>
 
   <div id="disqus_thread" class="w-full bg-[#070b12] p-4 rounded-lg border border-gray-800 min-h-[300px]"></div>
@@ -85,21 +87,5 @@ const channelList = channels.split(',').map(c => c.trim());
     } else {
       window.addEventListener('load', executeDisqusFrame);
     }
-
-    // Interactive Tab Channel Switcher Logic
-    document.querySelectorAll('.disqus-tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.disqus-tab-btn').forEach(b => {
-          b.classList.remove('bg-blue-600', 'text-white');
-          b.classList.add('text-gray-400', 'hover:text-gray-200');
-        });
-
-        btn.classList.remove('text-gray-400', 'hover:text-gray-200');
-        btn.classList.add('bg-blue-600', 'text-white');
-
-        activeChannel = btn.getAttribute('data-channel-id');
-        executeDisqusFrame();
-      });
-    });
   })();
 </script>
