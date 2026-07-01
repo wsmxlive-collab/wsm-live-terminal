@@ -1,0 +1,268 @@
+---
+// FILE: \src\components\PremiumNewsGrid.astro
+interface Post {
+  slug: string;
+  id: string;
+  data: {
+    title: string;
+    description?: string;
+    pubDate: Date;
+    category: string;
+    author?: string;
+    currentPrice?: string;
+  };
+}
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts = [] } = Astro.props;
+
+// 1. Separate filters into clean categorical streams matching your data map
+const usaGainers            = posts.filter(p => p.data.category === 'usa-top-gainers').slice(0, 7);
+const nseGainers            = posts.filter(p => p.data.category === 'nse-top-gainers').slice(0, 7);
+const usaNews               = posts.filter(p => p.data.category === 'usa-stock-news').slice(0, 7);
+const nseNews               = posts.filter(p => p.data.category === 'nse-stock-news').slice(0, 7);
+const usaearningsReviews    = posts.filter(p => p.data.category === 'usa-earnings-reviews').slice(0, 7);
+const indearningsReviews    = posts.filter(p => p.data.category === 'ind-earnings-reviews').slice(0, 7);
+const usaIpos               = posts.filter(p => p.data.category === 'usa-ipos').slice(0, 7);
+const indiaIpos             = posts.filter(p => p.data.category === 'india-ipos').slice(0, 7);
+
+// 2. Define Left Column Layout Config Array (US Market Node) with Enhanced Font Hierarchy
+const leftPanelSections = [
+  {
+    key: "usa-top-gainers",
+    label: "USA MARKET TOP Gainers",
+    dataPool: usaGainers,
+    showAllLink: "/blog?category=usa-top-gainers",
+    showAllText: "..show all usa market top gainer posts",
+    borderClass: "border-emerald-500/40 hover:border-emerald-500/80 hover:shadow-emerald-950/10",
+    bgGradient: "from-emerald-950/15 to-transparent",
+    textClass: "text-emerald-400 group-hover/card:text-emerald-300"
+  },
+  {
+    key: "usa-earnings-reviews",
+    label: "Stock Earnings volatile movement +10 -10 % movements",
+    dataPool: usaearningsReviews,
+    showAllLink: "/blog?category=usa-earnings-reviews",
+    showAllText: "..show all usa stock earnings posts",
+    borderClass: "border-purple-500/40 hover:border-purple-500/80 hover:shadow-purple-950/10",
+    bgGradient: "from-purple-950/15 to-transparent",
+    textClass: "text-purple-400 group-hover/card:text-purple-300"
+  },
+  {
+    key: "usa-stock-news",
+    label: "USA Stock news",
+    dataPool: usaNews,
+    showAllLink: "/blog?category=usa-stock-news",
+    showAllText: "..show all usa stock news posts",
+    borderClass: "border-cyan-500/40 hover:border-cyan-500/80 hover:shadow-cyan-950/10",
+    bgGradient: "from-cyan-950/15 to-transparent",
+    textClass: "text-cyan-400 group-hover/card:text-cyan-300"
+  },
+  {
+    key: "usa-ipos",
+    label: "USA IPOS NEW Stock listings volatile movement +30% listing movements",
+    dataPool: usaIpos,
+    showAllLink: "/blog?category=usa-ipos",
+    showAllText: "..show all usa ipo posts",
+    borderClass: "border-blue-500/40 hover:border-blue-500/80 hover:shadow-blue-950/10",
+    bgGradient: "from-blue-950/15 to-transparent",
+    textClass: "text-blue-400 group-hover/card:text-blue-300"
+  }
+];
+
+// 3. Define Right Column Layout Config Array (India Market Node) with Enhanced Font Hierarchy
+const rightPanelSections = [
+  {
+    key: "nse-top-gainers",
+    label: "NSE India Top Gainers",
+    dataPool: nseGainers,
+    showAllLink: "/blog?category=nse-top-gainers",
+    showAllText: "..show all nse india top gainer posts",
+    borderClass: "border-teal-500/40 hover:border-teal-500/80 hover:shadow-teal-950/10",
+    bgGradient: "from-teal-950/15 to-transparent",
+    textClass: "text-teal-400 group-hover/card:text-teal-300"
+  },
+  {
+    key: "ind-earnings-reviews",
+    label: "Stock Earnings volatile movement +10 -10 % movements",
+    dataPool: indearningsReviews,
+    showAllLink: "/blog?category=ind-earnings-reviews",
+    showAllText: "..show all india stock earnings posts",
+    borderClass: "border-indigo-500/40 hover:border-indigo-500/80 hover:shadow-indigo-950/10",
+    bgGradient: "from-indigo-950/15 to-transparent",
+    textClass: "text-indigo-400 group-hover/card:text-indigo-300"
+  },
+  {
+    key: "nse-stock-news",
+    label: "India market news",
+    dataPool: nseNews,
+    showAllLink: "/blog?category=nse-stock-news",
+    showAllText: "..show all india market news posts",
+    borderClass: "border-amber-500/40 hover:border-amber-500/80 hover:shadow-amber-950/10",
+    bgGradient: "from-amber-950/15 to-transparent",
+    textClass: "text-amber-400 group-hover/card:text-amber-300"
+  },
+  {
+    key: "india-ipos",
+    label: "NSE India IPOS NEW Stock listings volatile movement +30% listing movements",
+    dataPool: indiaIpos,
+    showAllLink: "/blog?category=india-ipos",
+    showAllText: "..show all NSE ipo posts",
+    borderClass: "border-rose-500/40 hover:border-rose-500/80 hover:shadow-rose-950/10",
+    bgGradient: "from-rose-950/15 to-transparent",
+    textClass: "text-rose-400 group-hover/card:text-rose-300"
+  }
+];
+
+// Helper to format post dates cleanly
+function formatDate(dateObj: Date) {
+  return new Date(dateObj).toLocaleDateString("en-US", {
+    day: "numeric", month: "short", year: "2-digit"
+  });
+}
+---
+<div class="w-full bg-[#05080c] font-mono mt-8 text-[#8da2bb] text-xs antialiased selection:bg-blue-500/30 selection:text-blue-200">
+  
+  <!-- DASHBOARD CORE BANNER BLOCK -->
+  <div class="w-full text-center border-y border-gray-800/60 bg-[#090f17] py-4 mb-8 shadow-inner relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent pointer-events-none"></div>
+    <h1 class="text-xs font-bold uppercase tracking-[0.15em] text-gray-200 relative z-10 flex items-center justify-center gap-2">
+      <span class="inline-block w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+      Analysis and Blog Daily updates ( This week posts: 12, latest post date 29 june 2026)
+    </h1>
+  </div>
+
+  <!-- TWO-COLUMN FLEX MATRIX GRID -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-10 px-2 sm:px-4 max-w-[1650px] mx-auto">
+    
+    <!-- LEFT COLUMN GRID COMPONENT (USA MARKET PULSE NODE) -->
+    <div class="space-y-6 lg:border-r lg:border-gray-900/50 lg:pr-6">
+      <div class="border-l-2 border-blue-500 bg-gradient-to-r from-blue-950/20 to-transparent px-3 py-2 rounded-r-md">
+        <h2 class="font-bold text-blue-400 uppercase tracking-[0.12em] text-[11px] flex items-center gap-2">
+          <span class="text-blue-500/70 font-sans">█</span> || LEFT PANEL: US MARKET
+        </h2>
+      </div>
+
+      {leftPanelSections.map((section) => (
+        <div class={`bg-[#090d14] border rounded-xl p-5 flex flex-col justify-between shadow-xl transition-all duration-300 bg-gradient-to-b ${section.bgGradient} ${section.borderClass} group/card`}>
+          <div>
+            <div class="border-b border-gray-800/50 pb-3 mb-4 flex items-start justify-between gap-4">
+              <h3 class={`font-semibold uppercase text-sm sm:text-base tracking-wide leading-snug flex-1 transition-colors ${section.textClass}`}>
+                {section.label}
+              </h3>
+              <span class="text-[9px] font-sans font-bold bg-gray-950 border border-gray-800 px-1.5 py-0.5 rounded text-gray-500 uppercase tracking-widest shrink-0 mt-1">
+                POOL: {section.dataPool.length}
+              </span>
+            </div>
+
+            {section.dataPool.length === 0 ? (
+              <div class="py-10 text-center text-gray-600 border border-dashed border-gray-800/50 rounded-xl text-[11px]">
+                • STANDBY: WAITING FOR INTAKE TICKER METRICS •
+              </div>
+            ) : (
+              <div class="divide-y divide-gray-900/40 space-y-4">
+                {section.dataPool.map((post) => (
+                  <article class="group pt-4 first:pt-0 pb-1">
+                    <div class="flex items-start justify-between gap-4">
+                      <h4 class="text-xs font-bold text-gray-200 group-hover:text-gray-100 transition-colors leading-relaxed flex-1 tracking-tight">
+                        <a href={`/blog/${post.slug}`} class="no-underline text-current flex items-start gap-1.5">
+                          <span class="opacity-60 select-none shrink-0">•</span>
+                          <span>{post.data.title}</span>
+                        </a>
+                      </h4>
+                      <span class="text-[10px] font-medium text-gray-500 group-hover:text-gray-400 transition-colors shrink-0 pt-0.5 whitespace-nowrap bg-gray-950/60 border border-gray-800/30 px-1.5 py-0.5 rounded font-sans">
+                        {formatDate(post.data.pubDate)}
+                      </span>
+                    </div>
+                    {post.data.description && (
+                      <p class="text-[11px] text-[#78879c] mt-2 pl-4 font-sans leading-relaxed tracking-normal max-w-3xl border-l border-gray-800/40 ml-1.5">
+                        {post.data.description}
+                        <a href={`/blog/${post.slug}`} class="inline-block text-[10px] font-mono font-bold ml-2 no-underline hover:underline transition-colors whitespace-nowrap opacity-80 hover:opacity-100">
+                          ..click to view full blog post
+                        </a>
+                      </p>
+                    )}
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div class="pt-3 border-t border-gray-900/60 mt-5 flex justify-end">
+            <a href={section.showAllLink} class="text-[10px] font-bold opacity-80 hover:opacity-100 uppercase tracking-wider no-underline hover:underline transition-colors flex items-center gap-1">
+              <span>{section.showAllText}</span>
+              <span class="font-sans text-xs">→</span>
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- RIGHT COLUMN GRID COMPONENT (INDIA & COMMODITIES MATRIX) -->
+    <div class="space-y-6">
+      <div class="border-l-2 border-orange-500 bg-gradient-to-r from-orange-950/20 to-transparent px-3 py-2 rounded-r-md">
+        <h2 class="font-bold text-orange-400 uppercase tracking-[0.12em] text-[11px] flex items-center gap-2">
+          <span class="text-orange-500/70 font-sans">█</span> || RIGHT PANEL: DYNAMIC INDIA, GLOBAL STACK & COMMODITIES
+        </h2>
+      </div>
+
+      {rightPanelSections.map((section) => (
+        <div class={`bg-[#090d14] border rounded-xl p-5 flex flex-col justify-between shadow-xl transition-all duration-300 bg-gradient-to-b ${section.bgGradient} ${section.borderClass} group/card`}>
+          <div>
+            <div class="border-b border-gray-800/50 pb-3 mb-4 flex items-start justify-between gap-4">
+              <h3 class={`font-semibold uppercase text-sm sm:text-base tracking-wide leading-snug flex-1 transition-colors ${section.textClass}`}>
+                {section.label}
+              </h3>
+              <span class="text-[9px] font-sans font-bold bg-gray-950 border border-gray-800 px-1.5 py-0.5 rounded text-gray-500 uppercase tracking-widest shrink-0 mt-1">
+                POOL: {section.dataPool.length}
+              </span>
+            </div>
+
+            {section.dataPool.length === 0 ? (
+              <div class="py-10 text-center text-gray-600 border border-dashed border-gray-800/50 rounded-xl text-[11px]">
+                • STANDBY: WAITING FOR INTAKE TICKER METRICS •
+              </div>
+            ) : (
+              <div class="divide-y divide-gray-900/40 space-y-4">
+                {section.dataPool.map((post) => (
+                  <article class="group pt-4 first:pt-0 pb-1">
+                    <div class="flex items-start justify-between gap-4">
+                      <h4 class="text-xs font-bold text-gray-200 group-hover:text-gray-100 transition-colors leading-relaxed flex-1 tracking-tight">
+                        <a href={`/blog/${post.slug}`} class="no-underline text-current flex items-start gap-1.5">
+                          <span class="opacity-60 select-none shrink-0">•</span>
+                          <span>{post.data.title}</span>
+                        </a>
+                      </h4>
+                      <span class="text-[10px] font-medium text-gray-500 group-hover:text-gray-400 transition-colors shrink-0 pt-0.5 whitespace-nowrap bg-gray-900/50 border border-gray-800/20 px-1.5 py-0.5 rounded font-sans">
+                        {formatDate(post.data.pubDate)}
+                      </span>
+                    </div>
+                    {post.data.description && (
+                      <p class="text-[11px] text-[#78879c] mt-2 pl-4 font-sans leading-relaxed tracking-normal max-w-3xl border-l border-gray-800/40 ml-1.5">
+                        {post.data.description}
+                        <a href={`/blog/${post.slug}`} class="inline-block text-[10px] font-mono font-bold ml-2 no-underline hover:underline transition-colors whitespace-nowrap opacity-80 hover:opacity-100">
+                          ..click to view full blog post
+                        </a>
+                      </p>
+                    )}
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div class="pt-3 border-t border-gray-900/60 mt-5 flex justify-end">
+            <a href={section.showAllLink} class="text-[10px] font-bold opacity-80 hover:opacity-100 uppercase tracking-wider no-underline hover:underline transition-colors flex items-center gap-1">
+              <span>{section.showAllText}</span>
+              <span class="font-sans text-xs">→</span>
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</div>

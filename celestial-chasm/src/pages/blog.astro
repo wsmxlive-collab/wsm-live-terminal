@@ -1,52 +1,112 @@
 ---
+// FILE: \src\pages\blog.astro
 import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog").catch(() => []);
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const mappedPosts = sortedPosts.map(post => ({
+  ...post,
+  slug: post.slug || post.id.replace(/\.[^/.]+$/, "")
+}));
+
+// Setup client route mapping labels
+const categoryLabels: Record<string, string> = {
+  "usa-top-gainers": "USA Market Top Gainers Radar",
+  "nse-top-gainers": "NSE India Top Gainers Radar",
+  "usa-stock-news": "USA Equity Intelligence Stream",
+  "nse-stock-news": "Indian Corporate Intelligence Wire",
+  "usa-ipos": "USA IPO Early-Stage Pipeline",
+  "india-ipos": "Indian Primary Markets & Grey Market Index"
+};
 ---
+<Layout title="WSM Terminal Feed — Category Archives Matrix">
+  <div class="max-w-[1200px] mx-auto py-4 font-mono">
+    <!-- Active Route Header Box -->
+    <div class="border border-gray-800 bg-[#070a0f] rounded-xl p-6 mb-8 shadow-xl">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+        <h1 class="text-base font-bold text-gray-100 uppercase tracking-wider" id="archive-title">
+          Live Archive Database Directory
+        </h1>
+      </div>
+      <p class="text-xs text-gray-400">
+        Parsing Markdown collection parameters dynamically from active workspace frontmatter indexes.
+      </p>
+    </div>
 
-<Layout title="WSM Live - Analysis & Blog">
-  <h1 class="text-3xl font-bold text-gray-100 mb-6">Analysis & Blog</h1>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <!-- Blog Post Card 1 -->
-    <article class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg">
-      <img src="https://via.placeholder.com/400x200" alt="Blog Post Image" class="rounded-md mb-4 w-full aspect-video object-cover" />
-      <h2 class="text-xl font-semibold text-gray-100 mb-2">The Future of Algorithmic Trading</h2>
-      <p class="text-gray-400 text-sm mb-3">Explore the latest trends and technologies shaping the world of automated trading strategies.</p>
-      <a href="#" class="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-        Read More
-        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-      </a>
-    </article>
+    <!-- Feed Container List layout -->
+    <div class="space-y-4" id="archive-list-container">
+      {mappedPosts.map((post) => (
+        <article 
+          class="border border-gray-800/80 bg-[#0c1017] rounded-xl p-5 hover:border-blue-500/40 transition-all duration-200 hidden shadow-md"
+          data-category={post.data.category}
+        >
+          <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] text-gray-500 mb-2">
+            <span class="bg-gray-900 text-gray-400 border border-gray-800 px-2 py-0.5 rounded uppercase font-bold tracking-wide">
+              {categoryLabels[post.data.category] || post.data.category}
+            </span>
+            <span>{new Date(post.data.pubDate).toLocaleDateString("en-US", {year: 'numeric', month: 'short', day: 'numeric'})}</span>
+          </div>
+          <h2 class="text-sm font-bold text-gray-100 hover:text-blue-400 transition-colors mb-1.5">
+            <a href={`/blog/${post.slug}`} class="no-underline text-current">{post.data.title}</a>
+          </h2>
+          {post.data.description && <p class="text-xs text-gray-400 leading-relaxed max-w-4xl">{post.data.description}</p>}
+          <div class="mt-3 pt-3 border-t border-gray-900 flex justify-between items-center">
+            <span class="text-[10px] text-gray-600">Author: {post.data.author || "WSM Admin"}</span>
+            <a href={`/blog/${post.slug}`} class="text-[11px] font-bold text-blue-400 hover:underline no-underline">
+              Access Full Analysis Terminal Report ➔
+            </a>
+          </div>
+        </article>
+      ))}
 
-    <!-- Blog Post Card 2 -->
-    <article class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg">
-      <img src="https://via.placeholder.com/400x200" alt="Blog Post Image" class="rounded-md mb-4 w-full aspect-video object-cover" />
-      <h2 class="text-xl font-semibold text-gray-100 mb-2">Understanding Market Volatility</h2>
-      <p class="text-gray-400 text-sm mb-3">A deep dive into factors influencing market swings and how to navigate them.</p>
-      <a href="#" class="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-        Read More
-        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-      </a>
-    </article>
-
-    <!-- Blog Post Card 3 -->
-    <article class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg">
-      <img src="https://via.placeholder.com/400x200" alt="Blog Post Image" class="rounded-md mb-4 w-full aspect-video object-cover" />
-      <h2 class="text-xl font-semibold text-gray-100 mb-2">Beginner's Guide to Futures Trading</h2>
-      <p class="text-gray-400 text-sm mb-3">Start your journey in futures trading with this comprehensive guide for beginners.</p>
-      <a href="#" class="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-        Read More
-        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-      </a>
-    </article>
-
-    <!-- Blog Post Card 4 -->
-    <article class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg">
-      <img src="https://via.placeholder.com/400x200" alt="Blog Post Image" class="rounded-md mb-4 w-full aspect-video object-cover" />
-      <h2 class="text-xl font-semibold text-gray-100 mb-2">Advanced Options Strategies</h2>
-      <p class="text-gray-400 text-sm mb-3">Delve into complex options strategies to optimize your trading performance.</p>
-      <a href="#" class="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-        Read More
-        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-      </a>
-    </article>
+      <!-- Zero Result Fallback Block Box -->
+      <div id="empty-state-notice" class="hidden text-center border border-dashed border-gray-800 rounded-xl py-12">
+        <span class="text-xs text-gray-500 uppercase tracking-widest font-bold">Zero records returned for query parameter matrix</span>
+      </div>
+    </div>
   </div>
 </Layout>
+
+<script is:inline define:vars={{ categoryLabels }}>
+  function processActiveArchiveFilter() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetCat = urlParams.get('category');
+    const titleHeader = document.getElementById('archive-title');
+    const articles = document.querySelectorAll('#archive-list-container article');
+    const emptyNotice = document.getElementById('empty-state-notice');
+    
+    let parsedCount = 0;
+
+    if (targetCat) {
+      if (titleHeader && categoryLabels[targetCat]) {
+        titleHeader.innerText = `Category Feed Feed: ${categoryLabels[targetCat].toUpperCase()}`;
+      }
+      articles.forEach(article => {
+        if (article.getAttribute('data-category') === targetCat) {
+          article.classList.remove('hidden');
+          parsedCount++;
+        } else {
+          article.classList.add('hidden');
+        }
+      });
+    } else {
+      if (titleHeader) titleHeader.innerText = "Master Node Database: All Active Analysis Blogs";
+      articles.forEach(article => {
+        article.classList.remove('hidden');
+        parsedCount++;
+      });
+    }
+
+    if (parsedCount === 0 && emptyNotice) {
+      emptyNotice.classList.remove('hidden');
+    } else if (emptyNotice) {
+      emptyNotice.classList.add('hidden');
+    }
+  }
+
+  // Execute processing instantly across app viewport initialization 
+  processActiveArchiveFilter();
+</script>

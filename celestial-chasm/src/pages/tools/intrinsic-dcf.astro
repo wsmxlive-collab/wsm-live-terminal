@@ -1,0 +1,130 @@
+---
+// FILE: src/pages/tools/intrinsic-dcf.astro
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Intrinsic Value (DCF) Matrix Desk — WSM Terminal">
+  <div class="max-w-4xl mx-auto py-6 font-mono px-4">
+    <div class="mb-6">
+      <a href="/" class="text-xs text-blue-400 hover:underline no-underline flex items-center gap-1">
+        ⎋ Return to Main Asset Terminal Workspace Grid
+      </a>
+    </div>
+
+    <header class="border border-gray-800 bg-[#070a0f] rounded-xl p-6 mb-8 shadow-xl">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse"></span>
+        <h1 class="text-base font-bold text-gray-100 uppercase tracking-wider">
+          Discounted Cash Flow (DCF) Intrinsic Valuation Desk
+        </h1>
+      </div>
+      <p class="text-xs text-gray-400">Determine structural asset mathematical equilibrium targets using 10-year multi-stage operational free cashflow projection matrices.</p>
+      <div class="mt-3 flex justify-end">
+        <select id="currency-selector" class="bg-[#05080c] border border-gray-800 text-[10px] text-gray-300 rounded px-2.5 py-1 outline-none font-bold">
+          <option value="USD">USD ($)</option>
+          <option value="INR">INR (₹)</option>
+          <option value="GBP">GBP (£)</option>
+          <option value="EUR">EUR (€)</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Input Column -->
+      <div class="bg-[#090d14] border border-gray-800 rounded-xl p-5 space-y-4">
+        <h3 class="text-xs font-bold text-purple-400 uppercase tracking-wide border-b border-gray-800 pb-2">Asset Inputs</h3>
+        
+        <div class="space-y-1">
+          <label class="text-[10px] text-gray-500 uppercase font-bold">Free Cash Flow (FCF Base Year)</label>
+          <input type="number" id="dcf-fcf" value="1000" class="w-full bg-[#05080c] border border-gray-800 rounded px-2.5 py-1.5 text-xs text-gray-200 outline-none focus:border-purple-500" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[10px] text-gray-500 uppercase font-bold">Stage 1 Growth Rate (% Yr 1-5)</label>
+          <input type="number" id="dcf-growth" value="12" class="w-full bg-[#05080c] border border-gray-800 rounded px-2.5 py-1.5 text-xs text-gray-200 outline-none focus:border-purple-500" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[10px] text-gray-500 uppercase font-bold">Discount Hurdle Rate (WACC %)</label>
+          <input type="number" id="dcf-discount" value="9" class="w-full bg-[#05080c] border border-gray-800 rounded px-2.5 py-1.5 text-xs text-purple-400 font-bold outline-none focus:border-purple-500" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[10px] text-gray-500 uppercase font-bold">Perpetual Growth Terminal Rate (%)</label>
+          <input type="number" id="dcf-terminal" value="2.5" step="0.1" class="w-full bg-[#05080c] border border-gray-800 rounded px-2.5 py-1.5 text-xs text-gray-200 outline-none focus:border-purple-500" />
+        </div>
+      </div>
+
+      <!-- Output Viewport -->
+      <div class="md:col-span-2 bg-[#090d14] border border-gray-800 rounded-xl p-5 flex flex-col justify-between shadow-xl">
+        <div class="space-y-4">
+          <h3 class="text-xs font-bold text-gray-300 uppercase tracking-wide border-b border-gray-800 pb-2">Valuation Output Matrix</h3>
+          
+          <div class="bg-[#05080c] border border-gray-900 rounded-xl p-4 text-center mt-2">
+            <span class="text-[10px] text-gray-500 uppercase block font-bold mb-1">Calculated Corporate Equity Enterprise Value</span>
+            <span id="dcf-intrinsic-display" class="text-3xl font-bold text-purple-400 tracking-tight">—</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 text-center text-xs">
+            <div class="bg-[#05080c] p-2.5 rounded border border-gray-900">
+              <span class="text-[9px] text-gray-500 uppercase block font-bold">PV of 10-Yr Cash Flows</span>
+              <span id="dcf-pv-cf-display" class="font-bold text-gray-300">—</span>
+            </div>
+            <div class="bg-[#05080c] p-2.5 rounded border border-gray-900">
+              <span class="text-[9px] text-gray-500 uppercase block font-bold">PV of Terminal Value Node</span>
+              <span id="dcf-pv-terminal-display" class="font-bold text-gray-300">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    const currencyRates = { USD: 1, INR: 83.5, GBP: 0.79, EUR: 0.92 };
+    const currencySelector = document.getElementById('currency-selector');
+
+    function formatCurrency(value, currency) {
+      const rate = currencyRates[currency] || 1;
+      const converted = value * rate;
+      const currencyCode = currency === 'INR' ? 'INR' : currency === 'GBP' ? 'GBP' : currency === 'EUR' ? 'EUR' : 'USD';
+      const locale = currency === 'INR' ? 'en-IN' : 'en-US';
+      return new Intl.NumberFormat(locale, { style: 'currency', currency: currencyCode, maximumFractionDigits: 2 }).format(converted);
+    }
+
+    function calculateDCF() {
+      const currency = currencySelector?.value || 'USD';
+      const fcf = parseFloat(document.getElementById('dcf-fcf').value) || 0;
+      const growth = (parseFloat(document.getElementById('dcf-growth').value) || 0) / 100;
+      const discount = (parseFloat(document.getElementById('dcf-discount').value) || 0) / 100;
+      const terminal = (parseFloat(document.getElementById('dcf-terminal').value) || 0) / 100;
+
+      let currentFCF = fcf;
+      let sumPV = 0;
+      
+      // Calculate 10 Year Projected Outlays
+      for(let i = 1; i <= 10; i++) {
+        // Step growth slightly in Stage 2 (Years 6-10) to mimic maturity decay curves
+        const activeGrowth = i > 5 ? growth * 0.6 : growth;
+        currentFCF *= (1 + activeGrowth);
+        const pv = currentFCF / Math.pow((1 + discount), i);
+        sumPV += pv;
+      }
+
+      // Terminal Value Node modeling using standard Gordon Growth parameters
+      const terminalValue = (currentFCF * (1 + terminal)) / (discount - terminal);
+      const pvTerminalValue = discount > terminal ? (terminalValue / Math.pow((1 + discount), 10)) : 0;
+      const enterpriseValue = sumPV + pvTerminalValue;
+
+      document.getElementById('dcf-intrinsic-display').innerText = formatCurrency(enterpriseValue, currency);
+      document.getElementById('dcf-pv-cf-display').innerText = formatCurrency(sumPV, currency);
+      document.getElementById('dcf-pv-terminal-display').innerText = formatCurrency(pvTerminalValue, currency);
+    }
+
+    ['dcf-fcf', 'dcf-growth', 'dcf-discount', 'dcf-terminal'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', calculateDCF);
+    });
+    currencySelector?.addEventListener('change', calculateDCF);
+    window.addEventListener('load', calculateDCF);
+  </script>
+</Layout>

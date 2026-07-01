@@ -1,0 +1,119 @@
+---
+// FILE: src/pages/tools/dividend-sip.astro
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Dividend & SIP Reinvestment Matrix — WSM Terminal">
+  <div class="max-w-4xl mx-auto py-6 font-mono px-4">
+    <div class="mb-6">
+      <a href="/" class="text-xs text-blue-400 hover:underline no-underline flex items-center gap-1">
+        ⎋ Return to Main Operational Desk
+      </a>
+    </div>
+
+    <header class="border border-gray-800 bg-[#070a0f] rounded-xl p-6 mb-8 shadow-xl">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+        <h1 class="text-base font-bold text-gray-100 uppercase tracking-wider">
+          Dividend SIP Reinvestment Engine
+        </h1>
+      </div>
+      <p class="text-xs text-gray-400">Map out the acceleration multiplier effect of combining traditional monthly programmatic SIP allocations with automated asset dividend capture pipelines.</p>
+      <div class="mt-3 flex justify-end">
+        <select id="currency-selector" class="bg-[#05080c] border border-gray-800 text-[10px] text-gray-300 rounded px-2.5 py-1 outline-none font-bold">
+          <option value="USD">USD ($)</option>
+          <option value="INR">INR (₹)</option>
+          <option value="GBP">GBP (£)</option>
+          <option value="EUR">EUR (€)</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Inputs -->
+      <div class="bg-[#090d14] border border-gray-800 rounded-xl p-5 space-y-4">
+        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wide border-b border-gray-800 pb-2">Parameters</h3>
+        
+        <div class="space-y-1">
+          <label class="text-[10px] text-gray-500 uppercase font-bold">Monthly Cash Base SIP</label>
+          <input type="number" id="ds-sip" value="500" class="w-full bg-[#05080c] border border-gray-800 rounded px-2.5 py-1.5 text-xs text-gray-200 outline-none focus:border-amber-500" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[10px] text-gray-500 uppercase font-bold">Asset Dividend Yield (% An.)</label>
+          <input type="number" id="ds-yield" value="4" step="0.1" class="w-full bg-[#05080c] border border-gray-800 rounded px-2.5 py-1.5 text-xs text-amber-400 font-bold outline-none focus:border-amber-500" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[10px] text-gray-500 uppercase font-bold">Price Growth Expectation (% An.)</label>
+          <input type="number" id="ds-growth" value="7" step="0.5" class="w-full bg-[#05080c] border border-gray-800 rounded px-2.5 py-1.5 text-xs text-gray-200 outline-none focus:border-amber-500" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[10px] text-gray-500 uppercase font-bold">Simulation Horizon (Years)</label>
+          <input type="number" id="ds-years" value="15" class="w-full bg-[#05080c] border border-gray-800 rounded px-2.5 py-1.5 text-xs text-gray-200 outline-none focus:border-amber-500" />
+        </div>
+      </div>
+
+      <!-- Outputs -->
+      <div class="md:col-span-2 bg-[#090d14] border border-gray-800 rounded-xl p-5 flex flex-col justify-between shadow-xl">
+        <div class="space-y-4">
+          <h3 class="text-xs font-bold text-gray-300 uppercase tracking-wide border-b border-gray-800 pb-2">Outflow Accumulation Metrics</h3>
+          
+          <div class="bg-[#05080c] border border-gray-900 rounded-xl p-4 text-center mt-2">
+            <span class="text-[10px] text-gray-500 uppercase block font-bold mb-1">Total Estimated Portfolio Value</span>
+            <span id="ds-total-display" class="text-3xl font-bold text-amber-400 tracking-tight">—</span>
+          </div>
+
+          <div class="bg-[#05080c] p-3 rounded border border-gray-900 text-center text-xs">
+            <span class="text-[9px] text-gray-500 uppercase block font-bold mb-1">Projected Annual Dividend Cashflow Generated At Term</span>
+            <span id="ds-cashflow-display" class="font-bold text-emerald-400 text-sm">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    const currencyRates = { USD: 1, INR: 83.5, GBP: 0.79, EUR: 0.92 };
+    const currencySelector = document.getElementById('currency-selector');
+
+    function formatCurrency(value, currency) {
+      const rate = currencyRates[currency] || 1;
+      const converted = value * rate;
+      const currencyCode = currency === 'INR' ? 'INR' : currency === 'GBP' ? 'GBP' : currency === 'EUR' ? 'EUR' : 'USD';
+      const locale = currency === 'INR' ? 'en-IN' : 'en-US';
+      return new Intl.NumberFormat(locale, { style: 'currency', currency: currencyCode, maximumFractionDigits: 2 }).format(converted);
+    }
+
+    function calculateDividendSIP() {
+      const currency = currencySelector?.value || 'USD';
+      const monthlySip = parseFloat(document.getElementById('ds-sip').value) || 0;
+      const divYield = (parseFloat(document.getElementById('ds-yield').value) || 0) / 100;
+      const capGrowth = (parseFloat(document.getElementById('ds-growth').value) || 0) / 100;
+      const years = parseFloat(document.getElementById('ds-years').value) || 0;
+
+      const totalReturnRate = divYield + capGrowth;
+      const monthlyRate = totalReturnRate / 12;
+      const iterations = years * 12;
+      
+      let totalPortfolio = 0;
+      
+      for(let i = 0; i < iterations; i++) {
+        totalPortfolio += monthlySip;
+        totalPortfolio *= (1 + monthlyRate);
+      }
+
+      const terminalAnnualCashflow = totalPortfolio * divYield;
+
+      document.getElementById('ds-total-display').innerText = formatCurrency(totalPortfolio, currency);
+      document.getElementById('ds-cashflow-display').innerText = formatCurrency(terminalAnnualCashflow, currency) + ' / Year';
+    }
+
+    ['ds-sip', 'ds-yield', 'ds-growth', 'ds-years'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', calculateDividendSIP);
+    });
+    currencySelector?.addEventListener('change', calculateDividendSIP);
+    window.addEventListener('load', calculateDividendSIP);
+  </script>
+</Layout>

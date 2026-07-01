@@ -1,25 +1,82 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Comments from '../components/Comments.astro';
+import PremiumNewsGrid from '../components/PremiumNewsGrid.astro';
 import { getCollection } from 'astro:content';
 
+// 1. Fetch, catch errors, and sort posts natively
 const allPosts = await getCollection('blog').catch(() => []);
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-// All distinct content category feeds completely restored
-const usaGainers = sortedPosts.filter(p => p.data.category === 'usa-top-gainers').slice(0, 7);
-const nseGainers = sortedPosts.filter(p => p.data.category === 'nse-top-gainers').slice(0, 7);
-const usaNews = sortedPosts.filter(p => p.data.category === 'usa-stock-news').slice(0, 7);
-const nseNews = sortedPosts.filter(p => p.data.category === 'nse-stock-news').slice(0, 7);
-const earningsReviews = sortedPosts.filter(p => p.data.category === 'earnings-reviews').slice(0, 7);
-const usaIpos = sortedPosts.filter(p => p.data.category === 'usa-ipos').slice(0, 7);
-const indiaIpos = sortedPosts.filter(p => p.data.category === 'india-ipos').slice(0, 7);
+// 2. Safe Normalization: Formats the slug IDs safely for Windows filesystems
+const mappedPosts = sortedPosts.map(post => ({
+  ...post,
+  slug: post.slug || post.id || "wsm-terminal-post"
+}));
+
+// 3. Exact Matching Categories: Filters lists cleanly for Astro v6 components
+const usaGainers            = mappedPosts.filter(p => p.data.category === 'usa-top-gainers').slice(0, 7);
+const nseGainers            = mappedPosts.filter(p => p.data.category === 'nse-top-gainers').slice(0, 7);
+const usaNews               = mappedPosts.filter(p => p.data.category === 'usa-stock-news').slice(0, 7);
+const nseNews               = mappedPosts.filter(p => p.data.category === 'nse-stock-news').slice(0, 7);
+const usaearningsReviews    = mappedPosts.filter(p => p.data.category === 'usa-earnings-reviews').slice(0, 7);
+const indearningsReviews    = mappedPosts.filter(p => p.data.category === 'ind-earnings-reviews').slice(0, 7);
+const usaIpos               = mappedPosts.filter(p => p.data.category === 'usa-ipos').slice(0, 7);
+const indiaIpos             = mappedPosts.filter(p => p.data.category === 'india-ipos').slice(0, 7);
+
+
 
 const affiliateChartId = "B0eRLjZ7";
 
 // Clean list of top USA stock tickers mapped out for clean rendering
 const topUsaStocks = ['G', 'MSFT', 'SPCX', 'APL', 'AMZN', 'TSL', 'NVDA'];
 ---
+
+<!-- FRONTMATTER PIPELINE SCALING EXTRACTION TOOL ANURAG->
+<div class="w-full mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 font-mono">
+  {['usa-top-gainers', 'nse-top-gainers'].map((catField) => {
+    const isUS = catField === 'usa-top-gainers';
+    const postFeed = mappedPosts.filter(p => p.data.category === catField).slice(0, 3);
+    
+    return (
+      <div class="bg-gray-950 border border-gray-800/60 p-4 rounded-xl flex flex-col justify-between">
+        <div>
+          <div class="border-b border-gray-900 pb-2 mb-3 flex justify-between items-center">
+            <span class={isUS ? "text-blue-400 font-bold text-xs" : "text-orange-400 font-bold text-xs"}>
+              {isUS ? "[SECTION 1] USA MARKET HUB" : "[SECTION 6] NSE INDIA TERMINAL"}
+            </span>
+            <span class="text-[10px] text-gray-500">({postFeed.length} Live Items)</span>
+          </div>
+          
+          {postFeed.length === 0 ? (
+            <div class="text-center py-6 text-gray-600 text-[11px]">
+              Waiting for runtime markdown ingestion matrix...
+            </div>
+          ) : (
+            postFeed.map((post) => (
+              <div class="py-2 border-b border-gray-900/40 last:border-none">
+                <h4 class="text-xs text-gray-200 hover:text-blue-400 transition-colors">
+                  <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+                </h4>
+                <div class="text-[10px] text-gray-500 mt-1">
+                  {new Date(post.data.pubDate).toLocaleDateString("en-US")} .. 
+                  <a href={`/blog/${post.slug}`} class="text-blue-400 font-bold hover:underline ml-1">show more</a>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+        <div class="pt-3 mt-4 border-t border-gray-900">
+          <a href={`/blog?category=${catField}`} class="text-[10px] text-gray-400 hover:text-blue-400 flex justify-between">
+            <span>(...show all posts)</span>
+            <span>»</span>
+          </a>
+        </div>
+      </div>
+    );
+  })}
+</div>
+<!-- FRONTMATTER PIPELINE SCALING EXTRACTION TOOL -->
 
 <Layout title="WSM Live — Ultimate Multi-Grid Trading Terminal">
   
@@ -159,6 +216,10 @@ const topUsaStocks = ['G', 'MSFT', 'SPCX', 'APL', 'AMZN', 'TSL', 'NVDA'];
         </div>
       </div>
     </div>
+    <a href="/tools/ipo-history" class="text-xs font-mono font-bold text-amber-500 hover:text-amber-400 no-underline hover:underline transition-colors flex items-center gap-1 mt-3">
+      <span>View Complete Multi-Decade Asset Growth Matrix</span>
+      <span>➔</span>
+    </a>
   </div>
 </section>
 
@@ -230,7 +291,6 @@ const topUsaStocks = ['G', 'MSFT', 'SPCX', 'APL', 'AMZN', 'TSL', 'NVDA'];
     </table>
   </div>
 </section>
-
 
   <section class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-900 border border-gray-700 rounded-lg p-4">
    <div> 
@@ -333,7 +393,6 @@ const topUsaStocks = ['G', 'MSFT', 'SPCX', 'APL', 'AMZN', 'TSL', 'NVDA'];
             </div>
           </section>
 
-
      <section class="bg-gray-900/40 border border-gray-800 rounded-xl p-4 shadow-xl backdrop-blur-sm">
         <div class="border-b border-gray-800 pb-3 mb-4 flex justify-between items-center">
           <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono flex items-center gap-2">
@@ -372,9 +431,6 @@ const topUsaStocks = ['G', 'MSFT', 'SPCX', 'APL', 'AMZN', 'TSL', 'NVDA'];
             </div>
           </section>
 
-
-  
-
           <section class="bg-gray-900/40 border border-gray-800 rounded-xl p-4 shadow-xl backdrop-blur-sm">
             <div class="border-b border-gray-800 pb-3 mb-4 flex justify-between items-center">
               <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono flex items-center gap-2">
@@ -412,140 +468,29 @@ const topUsaStocks = ['G', 'MSFT', 'SPCX', 'APL', 'AMZN', 'TSL', 'NVDA'];
               </div>
             </div>
           </section>
+        </div>
+  
+    </section> 
+    
+    <!-- 🌟 CONNECTED DIRECTLY TO THE DYNAMIC MULTI-TAB GISCUS ENGINE -->
+<Comments
+  channels="market-discussions, metals, global-macro"
+  defaultTitle="Market Live Feed Discussions"
+/>
 
-        </div>
-
-  <div class="flex flex-col gap-6 mt-6">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      
-      <section class="bg-gray-900 border border-gray-700 rounded-lg p-4">
-        <div class="border-b border-gray-800 pb-2 mb-3">
-          <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono">🇺🇸 USA Top Gainers Radar</h2>
-        </div>
-        <div class="space-y-2">
-          {usaGainers.map((post) => (
-            <div class="bg-[#0c1017] p-2 rounded border border-gray-800 flex flex-col gap-2" id={`wrap-${post.slug}`}>
-              <div class="flex items-center justify-between text-xs font-mono">
-                <span class="font-bold text-blue-400">{post.data.title}</span>
-                <span class="text-gray-400 font-bold bg-gray-900 px-1.5 py-0.5 rounded text-[11px] uppercase tracking-wider">
-                  List Price: <span class="text-emerald-400">{post.data.currentPrice || 'N/A'}</span>
-                </span>
-              </div>
-              <p class="text-[11px] font-mono text-gray-400 line-clamp-2 m-0">{post.data.description}</p>
-              <div class="flex items-center justify-between mt-1">
-                <button class="live-chart-trigger px-2 py-1 text-[10px] font-mono bg-blue-950/40 text-blue-400 rounded border border-blue-900/60 hover:bg-blue-600 hover:text-white transition cursor-pointer" data-symbol={`NASDAQ:${post.data.title.split(' ')[0]}`} data-target={`pane-${post.slug}`} data-parent-box={`wrap-${post.slug}`}>View Chart</button>
-                <a href={`/blog/${post.slug}`} class="text-[10px] font-mono text-blue-400 hover:underline no-underline">Analysis ➔</a>
-              </div>
-              <div id={`pane-${post.slug}`} class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300"></div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section class="bg-gray-900 border border-gray-700 rounded-lg p-4">
-        <div class="border-b border-gray-800 pb-2 mb-3">
-          <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono">🇮🇳 NSE India Top Gainers Radar</h2>
-        </div>
-        <div class="space-y-2">
-          {nseGainers.map((post) => (
-            <div class="bg-[#0c1017] p-2 rounded border border-gray-800 flex flex-col gap-2" id={`wrap-${post.slug}`}>
-              <div class="flex items-center justify-between text-xs font-mono">
-                <span class="font-bold text-orange-400">{post.data.title}</span>
-                <span class="text-gray-400 font-bold bg-gray-900 px-1.5 py-0.5 rounded text-[11px] uppercase tracking-wider">
-                  List Price: <span class="text-emerald-400">{post.data.currentPrice || 'N/A'}</span>
-                </span>
-              </div>
-              <p class="text-[11px] font-mono text-gray-400 line-clamp-2 m-0">{post.data.description}</p>
-              <div class="flex items-center justify-between mt-1">
-                <button class="live-chart-trigger px-2 py-1 text-[10px] font-mono bg-blue-950/40 text-blue-400 rounded border border-blue-900/60 hover:bg-blue-600 hover:text-white transition cursor-pointer" data-symbol={`NSE:${post.data.title.split(' ')[0]}`} data-target={`pane-${post.slug}`} data-parent-box={`wrap-${post.slug}`}>View Chart</button>
-                <a href={`/blog/${post.slug}`} class="text-[10px] font-mono text-blue-400 hover:underline no-underline">Analysis ➔</a>
-              </div>
-              <div id={`pane-${post.slug}`} class="w-full h-0 hidden overflow-hidden rounded border border-gray-800 transition-all duration-300"></div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section class="bg-gray-900 border border-gray-700 rounded-lg p-4">
-        <div class="border-b border-gray-800 pb-2 mb-3">
-          <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono">🇺🇸 USA Equity Intelligence Stream</h2>
-        </div>
-        <div class="space-y-2">
-          {usaNews.map((post) => (
-            <div class="bg-[#0c1017] p-2 rounded border border-gray-800 flex flex-col gap-1">
-              <a href={`/blog/${post.slug}`} class="text-xs font-bold font-mono text-blue-400 hover:underline no-underline block">{post.data.title}</a>
-              <p class="text-[11px] font-mono text-gray-400 m-0 line-clamp-2">{post.data.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section class="bg-gray-900 border border-gray-700 rounded-lg p-4">
-        <div class="border-b border-gray-800 pb-2 mb-3">
-          <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono">🇮🇳 Indian Corporate Intelligence Wire</h2>
-        </div>
-        <div class="space-y-2">
-          {nseNews.map((post) => (
-            <div class="bg-[#0c1017] p-2 rounded border border-gray-800 flex flex-col gap-1">
-              <a href={`/blog/${post.slug}`} class="text-xs font-bold font-mono text-orange-400 hover:underline no-underline block">{post.data.title}</a>
-              <p class="text-[11px] font-mono text-gray-400 m-0 line-clamp-2">{post.data.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section class="bg-gray-900 border border-gray-700 rounded-lg p-4">
-        <div class="border-b border-gray-800 pb-2 mb-3">
-          <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono">📊 Corporate Quarterly Balance Sheets Audit</h2>
-        </div>
-        <div class="space-y-2">
-          {earningsReviews.map((post) => (
-            <div class="bg-[#0c1017] p-2 rounded border border-gray-800 flex flex-col gap-1">
-              <a href={`/blog/${post.slug}`} class="text-xs font-bold font-mono text-purple-400 hover:underline no-underline block">{post.data.title}</a>
-              <p class="text-[11px] font-mono text-gray-400 m-0 line-clamp-2">{post.data.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section class="bg-gray-900 border border-gray-700 rounded-lg p-4">
-        <div class="border-b border-gray-800 pb-2 mb-3">
-          <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono">🚀 USA IPO Early-Stage Pipeline</h2>
-        </div>
-        <div class="space-y-2">
-          {usaIpos.map((post) => (
-            <div class="bg-[#0c1017] p-2 rounded border border-gray-800 flex flex-col gap-1">
-              <a href={`/blog/${post.slug}`} class="text-xs font-bold font-mono text-emerald-400 hover:underline no-underline block">{post.data.title}</a>
-              <p class="text-[11px] font-mono text-gray-400 m-0 line-clamp-2">{post.data.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section class="bg-gray-900 border border-gray-700 rounded-lg p-4 lg:col-span-2">
-        <div class="border-b border-gray-800 pb-2 mb-3">
-          <h2 class="text-xs font-bold text-gray-200 uppercase tracking-wider font-mono">🚀 Indian Primary Markets & IPO Grey Market Premium Index</h2>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {indiaIpos.map((post) => (
-            <div class="bg-[#0c1017] p-2 rounded border border-gray-800 flex flex-col gap-1">
-              <a href={`/blog/${post.slug}`} class="text-xs font-bold font-mono text-amber-500 hover:underline no-underline block">{post.data.title}</a>
-              <p class="text-[11px] font-mono text-gray-400 m-0 line-clamp-2">{post.data.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-    </div>
-
-    <div id="wsm-metals-news-container" class="w-full h-[220px] overflow-hidden rounded-lg border border-gray-800/60 bg-gray-950/20"></div>
-    </section> <Comments 
-      channels="metals, market-discussions, global-macro" 
-      defaultTitle="Market Live Feed Discussions" 
-    />
 
   </div>
 
+<!--Blog Section--> 
+<!-- PREVIOUS SUB-SECTION STREAMS REMAIN ABOVE UNTOUCHED -->
+    </div>
+
+    <!-- 🌟 DYNAMIC REAL-TIME PREMIUM LIVE WIRE GRID COMPONENT 🌟 -->
+    <PremiumNewsGrid posts={mappedPosts} />
+
+ <!-- BLOG END anurag -->
+    <!-- BLOG END -->
+</div>
 </Layout>
 
 <script is:inline>
@@ -631,8 +576,6 @@ const topUsaStocks = ['G', 'MSFT', 'SPCX', 'APL', 'AMZN', 'TSL', 'NVDA'];
       document.getElementById('wsm-home-earnings-box').appendChild(eScript);
     }
 
-
-
     // 3. Macro Economic Stream Injection
     if (document.getElementById('wsm-home-economic-box')) {
       const ecScript = document.createElement('script');
@@ -645,7 +588,7 @@ const topUsaStocks = ['G', 'MSFT', 'SPCX', 'APL', 'AMZN', 'TSL', 'NVDA'];
         "width": "100%",
         "height": "100%",
         "locale": "en",
-        "feedMode": "market",
+        "feedMode": "market"
         
       });
       document.getElementById('wsm-home-economic-box').appendChild(ecScript);

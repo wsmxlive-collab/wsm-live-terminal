@@ -1,15 +1,13 @@
 ---
+// FILE: src/pages/crypto.astro
 import Layout from "../layouts/Layout.astro";
-
-// Pulls the Disqus shortname safely from environmental context
-const disqusShortname = import.meta.env.DISQUS_SHORTNAME || "";
+import Comments from "../components/Comments.astro"; // 👈 IMPORT YOUR RE-ENGINEERED GISCUS SYSTEM
 ---
-
 <Layout title="WSM Live - Crypto Terminal">
   <h1 class="text-3xl font-bold text-gray-100 mb-6">Cryptocurrency Terminal</h1>
   
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start mb-12">
-    
+    <!-- Bitcoin (BTC/USD) Asset Card Block -->
     <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg asset-card" data-ticker="BITFINEX:BTCUSD">
       <div class="flex items-center justify-between gap-4 w-full border-b border-gray-800 pb-3">
         <div class="flex items-center gap-4 min-w-0 flex-1">
@@ -17,25 +15,26 @@ const disqusShortname = import.meta.env.DISQUS_SHORTNAME || "";
           <div id="btc-price" class="price-holder min-w-[120px] h-[32px] flex items-center" data-symbol="BINANCE:BTCUSDT">—</div>
         </div>
         <button class="chart-toggle-btn p-2 rounded border border-blue-500/30 bg-blue-950/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all flex-shrink-0" title="Toggle Chart">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <svg xmlns="http://w3.org" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
         </button>
       </div>
       <div class="chart-container hidden w-full h-[360px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-btc"></div>
     </div>
 
+    <!-- Ethereum (ETH/USD) Asset Card Block -->
     <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg asset-card" data-ticker="BITFINEX:ETHUSD">
       <div class="flex items-center justify-between gap-4 w-full border-b border-gray-800 pb-3">
         <div class="flex items-center gap-4 min-w-0 flex-1">
           <h2 class="text-lg font-semibold text-gray-100 whitespace-nowrap">Ethereum (ETH/USD)</h2>
-          <div id="eth-price" class="price-holder min-w-[120px] h-[32px] flex items-center" data-symbol="BINANCE:ETHUSDT">—</div>
+          <div id="eth-price" class="price-holder min-w-[120px] h-[32px] flex items-center" data-symbol="BINANCE:BTCUSDT">—</div>
         </div>
         <button class="chart-toggle-btn p-2 rounded border border-blue-500/30 bg-blue-950/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all flex-shrink-0" title="Toggle Chart">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <svg xmlns="http://w3.org" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
         </button>
       </div>
       <div class="chart-container hidden w-full h-[360px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-eth"></div>
     </div>
-
+    <!-- Solana (SOL/USD) Asset Card Block -->
     <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg asset-card" data-ticker="BINANCE:SOLUSDT">
       <div class="flex items-center justify-between gap-4 w-full border-b border-gray-800 pb-3">
         <div class="flex items-center gap-4 min-w-0 flex-1">
@@ -43,12 +42,13 @@ const disqusShortname = import.meta.env.DISQUS_SHORTNAME || "";
           <div id="sol-price" class="price-holder min-w-[120px] h-[32px] flex items-center" data-symbol="BINANCE:SOLUSDT">—</div>
         </div>
         <button class="chart-toggle-btn p-2 rounded border border-blue-500/30 bg-blue-950/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all flex-shrink-0" title="Toggle Chart">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <svg xmlns="http://w3.org" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
         </button>
       </div>
       <div class="chart-container hidden w-full h-[360px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-sol"></div>
     </div>
 
+    <!-- Litecoin (LTC/USD) Asset Card Block -->
     <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg asset-card" data-ticker="BINANCE:LTCUSDT">
       <div class="flex items-center justify-between gap-4 w-full border-b border-gray-800 pb-3">
         <div class="flex items-center gap-4 min-w-0 flex-1">
@@ -56,12 +56,13 @@ const disqusShortname = import.meta.env.DISQUS_SHORTNAME || "";
           <div id="ltc-price" class="price-holder min-w-[120px] h-[32px] flex items-center" data-symbol="BINANCE:LTCUSDT">—</div>
         </div>
         <button class="chart-toggle-btn p-2 rounded border border-blue-500/30 bg-blue-950/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all flex-shrink-0" title="Toggle Chart">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <svg xmlns="http://w3.org" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
         </button>
       </div>
       <div class="chart-container hidden w-full h-[360px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-ltc"></div>
     </div>
 
+    <!-- Dogecoin (DOGE/USD) Asset Card Block -->
     <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg asset-card" data-ticker="BINANCE:DOGEUSDT">
       <div class="flex items-center justify-between gap-4 w-full border-b border-gray-800 pb-3">
         <div class="flex items-center gap-4 min-w-0 flex-1">
@@ -69,12 +70,13 @@ const disqusShortname = import.meta.env.DISQUS_SHORTNAME || "";
           <div id="doge-price" class="price-holder min-w-[120px] h-[32px] flex items-center" data-symbol="BINANCE:DOGEUSDT">—</div>
         </div>
         <button class="chart-toggle-btn p-2 rounded border border-blue-500/30 bg-blue-950/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all flex-shrink-0" title="Toggle Chart">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <svg xmlns="http://w3.org" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
         </button>
       </div>
       <div class="chart-container hidden w-full h-[360px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-doge"></div>
     </div>
 
+    <!-- Trumpcoin (TRUMP/USD) Asset Card Block -->
     <div class="bg-gray-900 rounded-lg p-5 border border-gray-700 shadow-lg asset-card" data-ticker="MEXC:TRUMPUSDT">
       <div class="flex items-center justify-between gap-4 w-full border-b border-gray-800 pb-3">
         <div class="flex items-center gap-4 min-w-0 flex-1">
@@ -82,46 +84,38 @@ const disqusShortname = import.meta.env.DISQUS_SHORTNAME || "";
           <div id="trump-price" class="price-holder min-w-[120px] h-[32px] flex items-center" data-symbol="MEXC:TRUMPUSDT">—</div>
         </div>
         <button class="chart-toggle-btn p-2 rounded border border-blue-500/30 bg-blue-950/40 text-blue-400 hover:bg-blue-600 hover:text-white transition-all flex-shrink-0" title="Toggle Chart">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <svg xmlns="http://w3.org" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
         </button>
       </div>
       <div class="chart-container hidden w-full h-[360px] mt-4 rounded border border-gray-700 overflow-hidden bg-[#0c1017]" id="chart-trump"></div>
     </div>
-
   </div>
 
-  <div class="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow-xl mt-8">
-    <h3 class="text-lg font-semibold text-gray-100 font-mono mb-4 flex items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      Crypto Discussions
-    </h3>
-    <div id="disqus_thread" class="w-full min-h-[300px]"></div>
+  <!-- FIXED & REPLACED DISQUS CONTAINER BLOCK: WIRED TO HIGH-PERFORMANCE MULTI-TAB GISCUS COMPONENT -->
+  <div class="bg-[#090d14] border border-gray-800 rounded-xl p-4 sm:p-6 shadow-xl mt-8">
+    <Comments 
+      channels="market-discussions, metals, global-macro, usa-dow-nifty50" 
+      defaultTitle="Crypto Terminal Intelligence Streams" 
+    />
   </div>
 
-  <script is:inline data-shortname={disqusShortname}>
-    const currentScript = document.currentScript;
-    const resolvedShortname = (currentScript ? currentScript.getAttribute('data-shortname') : '') || 'wsmx-live';
-
-    // Pure Dynamic Toggle Engine 
+  <script is:inline>
+    // Pure Dynamic Inline TradingView Chart Toggle Engine
     const cryptoCards = document.querySelectorAll('.asset-card');
     cryptoCards.forEach(card => {
       const toggleButton = card.querySelector('.chart-toggle-btn');
       const graphicBox = card.querySelector('.chart-container');
       const dataTickerFeed = card.getAttribute('data-ticker');
       const targetElementId = graphicBox ? graphicBox.getAttribute('id') : null;
-
       if (!toggleButton || !graphicBox || !targetElementId) return;
 
       toggleButton.addEventListener('click', () => {
         const isCurrentlyHidden = graphicBox.classList.contains('hidden');
-
         if (isCurrentlyHidden) {
           graphicBox.classList.remove('hidden');
           toggleButton.classList.remove('border-blue-500/30', 'bg-blue-950/40', 'text-blue-400', 'hover:bg-blue-600');
           toggleButton.classList.add('border-emerald-500/40', 'bg-emerald-950/60', 'text-emerald-400', 'hover:bg-emerald-600');
-
           if (window.TradingView && dataTickerFeed && targetElementId && graphicBox.children.length === 0) {
-            // @ts-ignore
             new window.TradingView.widget({
               "width": "100%",
               "height": "100%",
@@ -153,11 +147,9 @@ const disqusShortname = import.meta.env.DISQUS_SHORTNAME || "";
         { id: 'doge-price', symbol: 'BINANCE:DOGEUSDT' },
         { id: 'trump-price', symbol: 'MEXC:TRUMPUSDT' }
       ];
-
       mapping.forEach(item => {
         const el = document.getElementById(item.id);
-        if (!el) return;
-        if (el._rendered) return;
+        if (!el || el._rendered) return;
         if (window.TradingView && window.TradingView.SingleQuoteWidget) {
           try {
             new window.TradingView.SingleQuoteWidget({
@@ -194,7 +186,7 @@ const disqusShortname = import.meta.env.DISQUS_SHORTNAME || "";
         try {
           if (m.symbol.startsWith('BINANCE:')) {
             const s = m.symbol.split(':')[1];
-            const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${encodeURIComponent(s)}`);
+            const res = await fetch(`https://binance.com{encodeURIComponent(s)}`);
             if (res.ok) {
               const j = await res.json();
               if (j && j.price) { el.textContent = formatPrice(Number(j.price)); return; }
@@ -219,20 +211,5 @@ const disqusShortname = import.meta.env.DISQUS_SHORTNAME || "";
         setTimeout(() => waitAndRenderPrices(retries + 1), 300);
       }
     })();
-
-    // Disqus Injection Engine with Explicit Isolated Identifiers
-    if (resolvedShortname) {
-      window.disqus_config = function () {
-        this.page.url = window.location.href;
-        // Setting a unique identifier separates this thread from the index terminal page
-        this.page.identifier = 'crypto-terminal-discussions';
-      };
-      (function() {
-        var d = document, s = d.createElement('script');
-        s.src = 'https://' + resolvedShortname + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-      })();
-    }
   </script>
 </Layout>

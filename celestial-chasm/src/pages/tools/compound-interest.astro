@@ -1,0 +1,127 @@
+---
+// FILE: src/pages/tools/compound-interest.astro
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Compound Interest Optimizer — WSM Terminal">
+  <div class="max-w-4xl mx-auto py-6 font-mono px-4">
+    <div class="mb-6">
+      <a href="/" class="text-xs text-blue-400 hover:underline no-underline flex items-center gap-1">
+        ⎋ Return to Main Asset Desk Operations Terminal
+      </a>
+    </div>
+
+    <header class="border border-gray-800 bg-[#070a0f] rounded-xl p-6 mb-8 shadow-xl">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <h1 class="text-base font-bold text-gray-100 uppercase tracking-wider">
+          Compound Interest Growth Simulator
+        </h1>
+      </div>
+      <p class="text-xs text-gray-400">Model generational geometric expansion curves over long-term tracking horizons.</p>
+      <div class="mt-3 flex justify-end">
+        <select id="currency-selector" class="bg-[#05080c] border border-gray-800 text-[10px] text-gray-300 rounded px-2.5 py-1 outline-none font-bold">
+          <option value="USD">USD ($)</option>
+          <option value="INR">INR (₹)</option>
+          <option value="GBP">GBP (£)</option>
+          <option value="EUR">EUR (€)</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Input Panel -->
+      <div class="bg-[#090d14] border border-gray-800 rounded-xl p-5 space-y-4">
+        <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wide border-b border-gray-800 pb-2">Principal</h3>
+        
+        <div class="space-y-1">
+          <label class="text-[10px] text-gray-500 uppercase font-bold">Initial Principal Base</label>
+          <input type="number" id="ci-principal" value="5000" class="w-full bg-[#05080c] border border-gray-800 rounded px-2.5 py-1.5 text-gray-200 text-xs outline-none focus:border-emerald-500" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[10px] text-gray-500 uppercase font-bold">Monthly Top-Up Contribution</label>
+          <input type="number" id="ci-monthly" value="200" class="w-full bg-[#05080c] border border-gray-800 rounded px-2.5 py-1.5 text-gray-200 text-xs outline-none focus:border-emerald-500" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[10px] text-gray-500 uppercase font-bold">Annual Rate of Return (%)</label>
+          <input type="number" id="ci-rate" value="10" step="0.5" class="w-full bg-[#05080c] border border-gray-800 rounded px-2.5 py-1.5 text-emerald-400 font-bold text-xs outline-none focus:border-emerald-500" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[10px] text-gray-500 uppercase font-bold">Horizon Span (Years)</label>
+          <input type="number" id="ci-years" value="10" class="w-full bg-[#05080c] border border-gray-800 rounded px-2.5 py-1.5 text-gray-200 text-xs outline-none focus:border-emerald-500" />
+        </div>
+      </div>
+
+      <!-- Output Panel -->
+      <div class="md:col-span-2 bg-[#090d14] border border-gray-800 rounded-xl p-5 flex flex-col justify-between shadow-xl">
+        <div class="space-y-4">
+          <h3 class="text-xs font-bold text-gray-300 uppercase tracking-wide border-b border-gray-800 pb-2">Simulated Asset Outlay</h3>
+          
+          <div class="bg-[#05080c] border border-gray-900 rounded-xl p-4 text-center mt-2">
+            <span class="text-[10px] text-gray-500 uppercase block font-bold mb-1">Projected Future Capital Value</span>
+            <span id="ci-future-display" class="text-3xl font-bold text-emerald-400 tracking-tight">—</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 text-center text-xs pt-2">
+            <div class="bg-[#05080c] p-3 rounded border border-gray-900">
+              <span class="text-[9px] text-gray-500 uppercase block font-bold">Total Principal Deposited</span>
+              <span id="ci-deposited-display" class="font-bold text-gray-300">—</span>
+            </div>
+            <div class="bg-[#05080c] p-3 rounded border border-gray-900">
+              <span class="text-[9px] text-gray-500 uppercase block font-bold">Total Interest Generated</span>
+              <span id="ci-interest-display" class="font-bold text-emerald-400">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    const currencyRates = { USD: 1, INR: 83.5, GBP: 0.79, EUR: 0.92 };
+    const currencySelector = document.getElementById('currency-selector');
+
+    function formatCurrency(value, currency) {
+      const rate = currencyRates[currency] || 1;
+      const converted = value * rate;
+      const currencyCode = currency === 'INR' ? 'INR' : currency === 'GBP' ? 'GBP' : currency === 'EUR' ? 'EUR' : 'USD';
+      const locale = currency === 'INR' ? 'en-IN' : 'en-US';
+      return new Intl.NumberFormat(locale, { style: 'currency', currency: currencyCode, maximumFractionDigits: 2 }).format(converted);
+    }
+
+    function calculateCompound() {
+      const currency = currencySelector?.value || 'USD';
+      const p = parseFloat(document.getElementById('ci-principal').value) || 0;
+      const m = parseFloat(document.getElementById('ci-monthly').value) || 0;
+      const r = (parseFloat(document.getElementById('ci-rate').value) || 0) / 100;
+      const t = parseFloat(document.getElementById('ci-years').value) || 0;
+
+      const monthlyRate = r / 12;
+      const totalMonths = t * 12;
+      
+      let futureValue = p * Math.pow((1 + monthlyRate), totalMonths);
+      
+      if (monthlyRate > 0) {
+        futureValue += m * ((Math.pow((1 + monthlyRate), totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
+      } else {
+        futureValue += m * totalMonths;
+      }
+
+      const totalDeposited = p + (m * totalMonths);
+      const interestEarned = Math.max(0, futureValue - totalDeposited);
+
+      document.getElementById('ci-future-display').innerText = formatCurrency(futureValue, currency);
+      document.getElementById('ci-deposited-display').innerText = formatCurrency(totalDeposited, currency);
+      document.getElementById('ci-interest-display').innerText = formatCurrency(interestEarned, currency);
+    }
+
+    ['ci-principal', 'ci-monthly', 'ci-rate', 'ci-years'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', calculateCompound);
+    });
+    currencySelector?.addEventListener('change', calculateCompound);
+    window.addEventListener('load', calculateCompound);
+  </script>
+</Layout>

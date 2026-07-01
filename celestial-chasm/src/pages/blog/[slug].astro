@@ -1,0 +1,60 @@
+---
+// FILE: src/pages/blog/[slug].astro
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, render } from "astro:content"; // 👈 IMPORT THE NATIVE RENDER HELPER FROM ASTRO
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection("blog").catch(() => []);
+  return blogEntries.map(entry => {
+    const slug = entry.slug || entry.id || "wsm-terminal-post";
+    return {
+      params: { slug },
+      props: { entry },
+    };
+  });
+}
+
+const { entry } = Astro.props;
+
+// 🌟 ASTRO v6 REPLACEMENT: Use render(entry) instead of entry.render()
+const { Content } = await render(entry);
+---
+
+<Layout title={`${entry.data.title} — WSM Terminal Insight`} description={entry.data.description}>
+  <article class="max-w-[900px] mx-auto py-6 font-mono px-4">
+    <!-- Breadcrumb Back Link Navigation Component -->
+    <div class="mb-6">
+      <a href="/" class="text-xs text-blue-400 hover:underline no-underline flex items-center gap-1">
+        ⎋ Return to Main Operational Trading Desk Terminal Grid
+      </a>
+    </div>
+
+    <!-- Article Metadata Frame Container Box Layout -->
+    <header class="border border-gray-800 bg-[#070a0f] rounded-xl p-6 mb-8 shadow-xl">
+      <div class="flex flex-wrap items-center gap-3 text-[11px] text-gray-500 uppercase font-bold tracking-wider mb-3">
+        <span class="text-blue-400 bg-blue-950/40 border border-blue-900/50 px-2 py-0.5 rounded">
+          {entry.data.category}
+        </span>
+        <span>•</span>
+        <span>Published: {new Date(entry.data.pubDate).toLocaleDateString("en-US")}</span>
+        <span>•</span>
+        <span class="text-gray-400">By: {entry.data.author || "WSM Operator"}</span>
+      </div>
+      <h1 class="text-lg md:text-xl font-bold text-gray-100 leading-snug tracking-tight">
+        {entry.data.title}
+      </h1>
+    </header>
+
+    <!-- Content Execution Area Matrix -->
+    <main class="prose prose-invert max-w-none text-sm text-gray-300 leading-relaxed bg-[#0c1017] border border-gray-900 rounded-xl p-6 md:p-8 font-mono space-y-4 shadow-sm">
+      <Content />
+    </main>
+  </article>
+</Layout>
+
+<style is:global>
+  /* Standard content clean code structural styling injectors */
+  .prose h2 { color: #f3f4f6; font-size: 1.15rem; font-weight: 700; border-b: 1px solid #1f2937; padding-bottom: 0.35rem; margin-top: 1.5rem; }
+  .prose p { margin-bottom: 1rem; color: #d1d5db; line-height: 1.7; }
+  .prose ul { list-style-type: square; margin-left: 1.25rem; margin-bottom: 1rem; color: #9ca3af; }
+</style>

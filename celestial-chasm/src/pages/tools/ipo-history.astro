@@ -1,0 +1,99 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const usaMegaCaps = [
+  { ticker: "NVDA", entry: "0.04 Adj Entry", current: "$526,000 Approx", color: "text-emerald-400" },
+  { ticker: "APPLE", entry: "Historic Base", current: "$389,000 Approx", color: "text-emerald-400" },
+  { ticker: "MSFT", entry: "IPO 1986 Node", current: "$245,000 Approx", color: "text-emerald-400" },
+  { ticker: "AMZN", entry: "IPO 1997 Split-Adj", current: "$182,000 Approx", color: "text-emerald-400" },
+  { ticker: "TESLA", entry: "IPO Entry", current: "$148,000 Approx", color: "text-emerald-400" },
+  { ticker: "META", entry: "2012 Listing", current: "$134,000 Approx", color: "text-emerald-400" },
+  { ticker: "NFLX", entry: "2002 IPO", current: "$118,000 Approx", color: "text-emerald-400" },
+  { ticker: "AMD", entry: "1996 Listing", current: "$96,000 Approx", color: "text-emerald-400" },
+  { ticker: "INTC", entry: "Historic IPO", current: "$88,000 Approx", color: "text-emerald-400" },
+  { ticker: "ADBE", entry: "1986 Listing", current: "$82,000 Approx", color: "text-emerald-400" },
+  { ticker: "ORCL", entry: "1986 IPO", current: "$74,000 Approx", color: "text-emerald-400" },
+  { ticker: "AVGO", entry: "2000s Expansion", current: "$71,000 Approx", color: "text-emerald-400" },
+];
+
+const indiaMegaCaps = [
+  { name: "Wipro Ind", entry: "Historic Multiplier", current: "₹4,120,000 Approx", color: "text-emerald-400" },
+  { name: "Reliance Ind", entry: "Bonus Adjusted", current: "₹2,840,000 Approx", color: "text-emerald-400" },
+  { name: "Infosys", entry: "IPO 1993 Node", current: "₹1,950,000 Approx", color: "text-emerald-400" },
+  { name: "HDFC Bank", entry: "1995 Base Entry", current: "₹1,420,000 Approx", color: "text-emerald-400" },
+  { name: "Tata Motors", entry: "Cycle Lows", current: "₹1,120,000 Approx", color: "text-emerald-400" },
+  { name: "TCS", entry: "1995 Listing", current: "₹3,980,000 Approx", color: "text-emerald-400" },
+  { name: "Bharti Airtel", entry: "2002 IPO", current: "₹2,660,000 Approx", color: "text-emerald-400" },
+  { name: "ICICI Bank", entry: "1993 Expansion", current: "₹2,180,000 Approx", color: "text-emerald-400" },
+  { name: "Hindustan Unilever", entry: "2000 Listing", current: "₹1,890,000 Approx", color: "text-emerald-400" },
+  { name: "Axis Bank", entry: "1998 Entry", current: "₹1,610,000 Approx", color: "text-emerald-400" },
+  { name: "Maruti Suzuki", entry: "2003 IPO", current: "₹1,480,000 Approx", color: "text-emerald-400" },
+  { name: "SBI", entry: "2006 Listing", current: "₹1,340,000 Approx", color: "text-emerald-400" },
+];
+---
+
+<Layout title="Multi-Decade Asset Growth Matrix — WSM Terminal">
+  <div class="max-w-6xl mx-auto py-6 font-mono px-4">
+    <div class="mb-6">
+      <a href="/" class="text-xs text-blue-400 hover:underline no-underline flex items-center gap-1">
+        ⎋ Return to Main Trading Desk Terminal Grid
+      </a>
+    </div>
+
+    <header class="border border-gray-800 bg-[#070a0f] rounded-xl p-6 mb-8 shadow-xl">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+        <h1 class="text-base font-bold text-gray-100 uppercase tracking-wider">
+          The Power Of Holding Early IPO Investments vs. Today (Expanded Data Desk)
+        </h1>
+      </div>
+
+      <p class="text-xs text-gray-500">
+        Reviewing the compounded growth performance metrics of a base $100 / ₹10,000 asset allocation strategy tracked from initial listing maturities to the current year.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-[#090d14] border border-gray-800 rounded-xl p-5">
+        <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider border-b border-gray-800 pb-2 mb-4">
+          USA Blue-Chips (Base $100 Reference Model)
+        </h2>
+        <div class="space-y-3">
+          {usaMegaCaps.map((stock) => (
+            <div class="flex items-center justify-between rounded border border-gray-800 bg-[#05080c] px-3 py-2">
+              <div>
+                <div class="text-sm font-bold text-gray-100">{stock.ticker}</div>
+                <div class="text-[10px] text-gray-500">{stock.entry}</div>
+              </div>
+              <span class={`text-sm font-bold tracking-tight ${stock.color}`}>{stock.current}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="bg-[#090d14] border border-gray-800 rounded-xl p-5">
+        <h2 class="text-xs font-bold text-orange-400 uppercase tracking-wider border-b border-gray-800 pb-2 mb-4">
+          India Blue-Chips (Base ₹10,000 Reference Model)
+        </h2>
+        <div class="space-y-3">
+          {indiaMegaCaps.map((stock) => (
+            <div class="flex items-center justify-between rounded border border-gray-800 bg-[#05080c] px-3 py-2">
+              <div>
+                <div class="text-sm font-bold text-gray-100">{stock.name}</div>
+                <div class="text-[10px] text-gray-500">{stock.entry}</div>
+              </div>
+              <span class={`text-sm font-bold tracking-tight ${stock.color}`}>{stock.current}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 rounded-xl border border-amber-800/40 bg-amber-950/10 p-4 text-xs text-gray-400">
+      <p class="font-bold uppercase tracking-wide text-amber-400 mb-2">⚠️ Data Methodology & Regulatory Disclosure:</p>
+      <p>
+        The data sets metrics calculated above represent compiled split-adjusted historical pricing transformations intended purely for educational analytical tracking research. Past geometric asset compounding curves are not indicative of forward-looking return liabilities. This node operates exclusively under a free open-source licensing model and does not provide proprietary commercial investment or financial asset brokerage recommendations.
+      </p>
+    </div>
+  </div>
+</Layout>
